@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Regular Maintainance Report</title>
+	<link rel="stylesheet" href="css/fb-style.min.css" />
+	<link rel="stylesheet" href="css/jquery.mobile.structure-1.4.3.min.css">
+  	<link rel="stylesheet" href="css/jquery.mobile.icons-1.4.3.min.css">
+	<link rel="stylesheet" href="css/carousel.css">
+	<link rel="stylesheet" href="css/carousel-style.css">
+	<script src="js/jquery.js"></script>
+	<script src="js/jquery.mobile-1.4.3.min.js"></script>
+	<style>
+	.ui-field-contain>label{
+			float: left;
+			width: 55%;
+			margin: .5em 2% 2% 2%;
+	}
+	
+	
+	.ui-field-contain>label~[class*=ui-], .ui-field-contain .ui-controlgroup-controls
+	{
+		float: left;
+		width: 40%;
+		-webkit-box-sizing: border-box;
+		-moz-box-sizing: border-box;
+		box-sizing: border-box;
+	}
+	</style>
+</head>
+<body>
+		<div id="info"  data-role="page" >
+			 <div data-role="header" data-position="fixed"  >
+			 <a href="#" data-rel="back"  class="ui-btn  ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-left ui-icon-carat-l">Back</a>
+	      
+			  <h1>Chimney System From</h1>
+			  	<a href="#" class="ui-btn-right ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-check">Save</a>
+	    
+			<div data-role="navbar" data-grid="c" >
+				<ul >
+				<li><a href="#info" data-prefetch="true" data-transition="fade" data-ajax="false" class="ui-btn-active">Info<span class="ui-li-count">2</span></a></li>
+					<li><a href="#control" data-prefetch="true" data-transition="fade" data-ajax="false" >Control<span class="ui-li-count">9</span></a></li>
+					<li><a href="#fan" data-prefetch="true" data-transition="fade" data-ajax="false" >Fan<span class="ui-li-count">3</span></a></li>
+					<li><a href="#chimney" data-prefetch="true" data-transition="fade" data-ajax="false">Chimney<span class="ui-li-count">2</span></a></li>
+				
+				</ul>
+			</div>
+			</div><!-- /header -->
+	
+		
+		   
+			   
+		<div class="ui-field-contain ui-shadow ">
+			<label for="textinput-1">Device ID</label>
+				 <button  id="submit-1" data-mini="true" class=" ui-btn ui-icon-search ui-btn-icon-left ui-shadow ui-corner-all">Scan QR Code</button>
+			
+		</div>
+		<div class="ui-field-contain ui-shadow ">
+			<label for="textinput-1">Device Photo</label>
+			 <button  id="submit-1" data-mini="true" class="ui-btn ui-icon-camera ui-btn-icon-left ui-shadow ui-corner-all">Camera</button>
+			
+		</div>
+			
+		</div>
+		<div id="control"  data-role="page"  >
+			 <div data-role="header" data-position="fixed"  >
+			 <a href="#" data-rel="back"  class="ui-btn  ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-left ui-icon-carat-l">Back</a>
+	      
+			  <h1>Chimney System From</h1>
+			  	<a href="#" class="ui-btn-right ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-check">Save</a>
+	    
+			<div data-role="navbar" data-grid="c" >
+				<ul >
+					<li><a href="#info" data-prefetch="true" data-transition="fade" data-ajax="false" class="ui-btn-active">Info<span class="ui-li-count">2</span></a></li>
+					<li><a href="#control" data-prefetch="true" data-transition="fade" data-ajax="false" >Control<span class="ui-li-count">9</span></a></li>
+					<li><a href="#fan" data-prefetch="true" data-transition="fade" data-ajax="false" >Fan<span class="ui-li-count">3</span></a></li>
+					<li><a href="#chimney" data-prefetch="true" data-transition="fade" data-ajax="false">Chimney<span class="ui-li-count">2</span></a></li>
+				
+				</ul>
+			</div>
+			</div><!-- /header -->
+				
+				<div class="ui-field-contain ui-shadow ">
+					<label for="textinput-1">Check the LED lamp by pressing the lamp test switch</label>
+					 <select name="flip-1" id="flip-1" data-role="slider" data-theme="c">
+						<option value="off">Not Check</option>
+						<option value="on">Check</option>
+					</select>
+				</div>
+				<div class="ui-field-contain ui-shadow ">
+					<label for="textinput-1">Check for any abnormal noises inside the control panels</label>
+					  <select name="flip-1" id="flip-1" data-role="slider" data-theme="c">
+						<option value="off">Not Check</option>
+						<option value="on">Check</option>
+					</select>
+				</div>
+				<div class="ui-field-contain ui-shadow ">
+					<label for="textinput-1">Check the emergency stop function</label>
+					 <select name="flip-1" id="flip-1" data-role="slider" data-theme="c">
+						<option value="off">Not Check</option>
+						<option value="on">Check</option>
+					</select>
+				</div>
+				<div class="ui-field-contain ui-shadow ">
+					<label for="textinput-1">Check the Interlock function with related boiler</label>
+					 <select name="flip-1" id="flip-1" data-role="slider" data-theme="c">
+						<option value="off">Not Check</option>
+						<option value="on">Check</option>
+					</select>
+				</div>
+				<div class="ui-field-contain ui-shadow ">
+					<label for="textinput-1">Check the Manual mode control function</label>
+					 <select name="flip-1" id="flip-1" data-role="slider" data-theme="c">
+						<option value="off">Not Check</option>
+						<option value="on">Check</option>
+					</select>
+				</div>
+				<div class="ui-field-contain ui-shadow ">
+					<label for="textinput-1">Check the Auto mode control function</label>
+					 <select name="flip-1" id="flip-1" data-role="slider" data-theme="c">
+						<option value="off">Not Check</option>
+						<option value="on">Check</option>
+					</select>
+				</div>
+				<div class="ui-field-contain ui-shadow ">
+					<label for="textinput-1">Check the main switch operation of control</label>
+					 <select name="flip-1" id="flip-1" data-role="slider" data-theme="c">
+						<option value="off">Not Check</option>
+						<option value="on">Check</option>
+					</select>
+				</div>
+				<div class="ui-field-contain ui-shadow ">
+					<label for="textinput-1">Check for all flexible connection for leakage</label>
+					 <select name="flip-1" id="flip-1" data-role="slider" data-theme="c">
+						<option value="off">Not Check</option>
+						<option value="on">Check</option>
+					</select>
+				</div>
+				<div class="ui-field-contain ui-shadow ">
+					<label for="textinput-1">Insulation</label>
+					<input type="text" name="textinput-5" id="textinput-5" placeholder="A" value="" data-mini="true">
+					 <button id="submit-1" style="margin: 0.5%;" data-mini="true" class="ui-btn ui-icon-camera ui-btn-icon-left ui-shadow ui-corner-all">Camera</button>
+			
+				</div>
+				<div class="ui-field-contain ui-shadow ">
+					<label for="textinput-1">Check condition of electric contact of contactor, starter and control</label>
+					 <select name="flip-1" id="flip-1" data-role="slider" data-theme="c">
+						<option value="off">Not Check</option>
+						<option value="on">Check</option>
+					</select>
+				</div>
+				<div class="ui-field-contain ui-shadow ">
+					<label for="textinput-1">Check the function of the control value</label>
+					 <select name="flip-1" id="flip-1" data-role="slider" data-theme="c">
+						<option value="off">Not Check</option>
+						<option value="on">Check</option>
+					</select>
+				</div>
+				
+				<div class="ui-field-contain ui-shadow ">
+					<label for="textinput-1">Starting / Running current</label>
+					 	<input type="text" name="textinput-5" id="textinput-5" placeholder="A" value="" data-mini="true">
+					 <button id="submit-1" style="margin: 0.5%;" data-mini="true" class="ui-btn ui-icon-camera ui-btn-icon-left ui-shadow ui-corner-all">Camera</button>
+			
+				</div>
+				<div class="ui-field-contain ui-shadow ">
+					<label for="textinput-1">Test the MCB operation in the control pane</label>
+					 <select name="flip-1" id="flip-1" data-role="slider" data-theme="c">
+						<option value="off">Not Check</option>
+						<option value="on">Check</option>
+					</select>
+				</div>
+				<div class="ui-field-contain ui-shadow ">
+					<label for="textinput-1">Test the trip function</label>
+					 <select name="flip-1" id="flip-1" data-role="slider" data-theme="c">
+						<option value="off">Not Check</option>
+						<option value="on">Check</option>
+					</select>
+				</div>
+				<div class="ui-field-contain ui-shadow ">
+					<label for="textinput-1">Inspect the electrical circuits and controls, tighten all electrical connection</label>
+					 <select name="flip-1" id="flip-1" data-role="slider" data-theme="c">
+						<option value="off">Not Check</option>
+						<option value="on">Check</option>
+					</select>
+				</div>
+				<div class="ui-field-contain ui-shadow ">
+					<label for="textinput-1">Clean up control panels</label>
+					 <select name="flip-1" id="flip-1" data-role="slider" data-theme="c">
+						<option value="off">Not Check</option>
+						<option value="on">Check</option>
+					</select>
+				</div>
+		</div>
+		<div id="fan"  data-role="page" >
+			 <div data-role="header" data-position="fixed"  >
+			 <a href="#" data-rel="back"  class="ui-btn  ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-left ui-icon-carat-l">Back</a>
+	      
+			  <h1>Chimney System From</h1>
+			  	<a href="#" class="ui-btn-right ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-check">Save</a>
+	    
+			<div data-role="navbar" data-grid="c" >
+				<ul >
+				<li><a href="#info" data-prefetch="true" data-transition="fade" data-ajax="false" >Info<span class="ui-li-count">2</span></a></li>
+					<li><a href="#control" data-prefetch="true" data-transition="fade" data-ajax="false" >Control<span class="ui-li-count">9</span></a></li>
+					<li><a href="#fan" data-prefetch="true" data-transition="fade" data-ajax="false" class="ui-btn-active" >Fan<span class="ui-li-count">3</span></a></li>
+					<li><a href="#chimney" data-prefetch="true" data-transition="fade" data-ajax="false">Chimney<span class="ui-li-count">2</span></a></li>
+				
+				</ul>
+			</div>
+			</div><!-- /header -->
+	
+		
+		   
+			    
+		<div class="ui-field-contain ui-shadow ">
+					<label for="textinput-1">Check the flexible join of the exhaust Fan</label>
+					 <select name="flip-1" id="flip-1" data-role="slider" data-theme="c">
+						<option value="off">Not Check</option>
+						<option value="on">Check</option>
+					</select>
+				</div>
+		</div>
+		<div id="chimney"  data-role="page" >
+			 <div data-role="header" data-position="fixed"  >
+			 <a href="#" data-rel="back"  class="ui-btn  ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-left ui-icon-carat-l">Back</a>
+	      
+			  <h1>Chimney System From</h1>
+			  	<a href="#" class="ui-btn-right ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-check">Save</a>
+	    
+			<div data-role="navbar" data-grid="c" >
+				<ul >
+				<li><a href="#info" data-prefetch="true" data-transition="fade" data-ajax="false" >Info<span class="ui-li-count">2</span></a></li>
+					<li><a href="#control" data-prefetch="true" data-transition="fade" data-ajax="false" >Control<span class="ui-li-count">9</span></a></li>
+					<li><a href="#fan" data-prefetch="true" data-transition="fade" data-ajax="false" >Fan<span class="ui-li-count">3</span></a></li>
+					<li><a href="#chimney" data-prefetch="true" data-transition="fade" data-ajax="false" class="ui-btn-active">Chimney<span class="ui-li-count">2</span></a></li>
+				
+				</ul>
+			</div>
+			</div><!-- /header -->
+	
+		
+		   
+			    
+		<div class="ui-field-contain ui-shadow ">
+					<label for="textinput-1">Check for any leakage on the chimmney connection</label>
+					 <select name="flip-1" id="flip-1" data-role="slider" data-theme="c">
+						<option value="off">Not Check</option>
+						<option value="on">Check</option>
+					</select>
+				</div>
+		
+		<div class="ui-field-contain ui-shadow ">
+					<label for="textinput-1">Check the pressure of chimney</label>
+					 <select name="flip-1" id="flip-1" data-role="slider" data-theme="c">
+						<option value="off">Not Check</option>
+						<option value="on">Check</option>
+					</select>
+				</div>
+		
+				</div>	
+	
+		<!-- /footer -->
+		
+		<script src="js/zepto.js"></script>
+<!-- include carousel.js -->
+<script src="js/carousel.js"></script>
+<!-- construct the carousel -->
+<script>$('.m-carousel').carousel()</script>
+</body>
+</html>

@@ -22,99 +22,23 @@
 			vertical-align: top;
 			margin-left: 1%;
 		}
-		#photo{
-			width: 50%;
-			display: inline-block;
-			vertical-align: top;
-			margin-left: 7%;
-			margin-right: 4%;
-			margin-top: 8%;
-		}
-		#menu{
-			width: 30%;
-			display: inline-block;
-			vertical-align: top;
-			margin-top: 18%;
-			margin-left: 1%;
-		}
-		.m-image{
-			width: 80%;
-		
-			display: block;
-    margin: 0 auto;
-			
-		}
-		
-		#maint_report_btn:after { background:  url("images/report.png") 50% 50% no-repeat;  background-size: 24px 24px; }
-		#emergency_report_btn:after { background:  url("images/repair.png") 50% 50% no-repeat;  background-size: 24px 24px; }
-	
 	</style>
-	<script>
-	</script>
 	
 </head>
 <body>
-		<div data-role="page" id="home" style="background-image: url('images/bg.png'); background-attachment: fixed; background-repeat: no-repeat; background-size: 100% 100%;"  >
-			<div data-role="header" data-position="fixed" data-theme="b"  >
-				
-						  <h1>IES Maintainance Report App</h1>
-						 <div data-role="controlgroup" data-type="horizontal" class="ui-btn-right ui-corner-all">
-							<a href="#" class="ui-btn ui-corner-all">中</a>
-							<a href="#" class="ui-btn ui-btn-a ui-corner-all ">EN</a>
-						</div>
-				</div><!-- /header -->
-				
-				<div id="photo" class="m-carousel m-fluid m-carousel-photos ">
-				  <div class="m-carousel-inner">
-					<div class="m-item">
-					  <div class="m-card-light">
-						<img class="m-image" src="images/1.png">
-						
-					  </div>
-					</div>
-					<div class="m-item">
-					  <div class="m-card-light">
-						<img class="m-image"  src="images/2.png">
-						
-					  </div>
-					</div>
-					<div class="m-item">
-					  <div class="m-card-light">
-						<img  class="m-image"  src="images/3.png">
-						
-					  </div>
-					</div>
-				  </div>
-				
-				  <!-- the controls -->
-				  <div class="m-carousel-controls m-carousel-bulleted">
-				
-					<a href="#" data-slide="1" class="m-active">1</a>
-					<a href="#" data-slide="2">2</a>
-					<a href="#" data-slide="3">3</a>
-				
-				  </div>
-				</div>
-				<div id="menu" data-role="controlgroup" data-theme="b"  >
-				<a id="maint_report_btn"  href="#report" data-icon="custom"  data-transition="pop" class="ui-btn ui-alt-icon ui-btn-icon-top ui-corner-all ui-shadow ">Maintenance Report</a>
-				<a id="emergency_report_btn"  href="#report" data-icon="custom"  data-transition="pop" class="ui-btn ui-alt-icon ui-btn-icon-top ui-corner-all ui-shadow ">Emergency Report</a>
-				
-				</div>
-		
-		</div>		
-		<div data-role="page" id="report" >
+	<div data-role="page" id="main_report" data-dom-cache="true" >
 			 <div data-role="header" data-position="fixed"  >
 			 <a href="#" data-rel="back"  class="ui-btn  ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-left ui-icon-carat-l">Back</a>
 	      
-					  <h1>Maintainance Report</h1>
-					<div class="ui-btn-right">
-						<label for="select-choice-1" class="ui-hidden-accessible">Shipping:</label>
-						<select name="select-choice-1" id="select-choice-1" data-mini="true" data-inline="true">
-							<option value="standard">Grand Lisboa</option>
-							<option value="rush">Sands</option>
-							<option value="express">Wynn</option>
-						</select>
-					</div>
+			  <h1>Maintainance Report</h1>
+			<div class="ui-btn-right">
+        <label for="select-choice-1" class="ui-hidden-accessible">Shipping:</label>
+        <select name="select-choice-1" id="select-choice-1" data-mini="true" data-inline="true">
+            <option value="standard">Grand Lisboa</option>
+            <option value="rush">Sands</option>
+            <option value="express">Wynn</option>
+        </select>
+    </div>
 			</div><!-- /header -->
 	
 		
@@ -124,6 +48,8 @@
 			      <li><a href="#two" data-ajax="false" data-transition="turn">Hot Water <br/>Boiler </a></li>
 			      <li><a href="#three" data-ajax="false" data-transition="turn">Chimney<br/>system </a></li>
 			    </ul>
+			    
+		
 		<div id="one" class="tablist-content" class="ui-content" >
 			<ul data-role="listview" data-split-icon="edit" data-split-theme="a" data-inset="true">
 				<li><a href="#">
@@ -145,7 +71,7 @@
 					<a href="#purchase" data-rel="popup" data-position-to="window" data-transition="pop">Purchase album</a>
 				</li>
 			</ul>
-		</div>	    
+		</div>
 		<div id="two" class="tablist-content" class="ui-content" >
 			<ul data-role="listview" data-split-icon="edit" data-split-theme="a" data-inset="true">
 				<li><a href="#">
@@ -169,7 +95,6 @@
 			</ul>
 		</div>
 			
-		
 		<div id="three" class="tablist-content" class="ui-content" >
 			<ul data-role="listview" data-split-icon="edit" data-split-theme="a" data-inset="true">
 				<li><a href="#">
@@ -202,20 +127,22 @@
 				 	
 				</div>
 				<div data-role="controlgroup" data-type="horizontal" class="ui-mini ui-btn-left">
-					<a href="chimney_system.html" rel="external" class="ui-btn ui-btn-icon-right ui-icon-plus">Add</a>
+					<a href="#" class="ui-btn ui-btn-icon-right ui-icon-plus">Add</a>
 					<a href="#" class="ui-btn ui-btn-icon-right ui-icon-bullets">Copy</a>
 					<a href="#" class="ui-btn ui-btn-icon-right ui-icon-delete">Delete</a>
 				</div>	
 				
 			   <h1></h1>
-			<a href="#" class="ui-btn-right ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-check">Save</a>
+			<a href="#" class="ui-btn-right ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-check">Save</button>
 	    
 		</div>
-	</div>		
-
-	<script src="js/carousel.js"></script>
-	<!-- construct the carousel -->
-	<script>$('.m-carousel').carousel()</script>	
-			
+			</div>	
+		<!-- /footer -->
+		
+		<script src="js/zepto.js"></script>
+<!-- include carousel.js -->
+<script src="js/carousel.js"></script>
+<!-- construct the carousel -->
+<script>$('.m-carousel').carousel()</script>
 </body>
 </html>
