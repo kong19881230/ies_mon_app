@@ -27,22 +27,384 @@
 		-moz-box-sizing: border-box;
 		box-sizing: border-box;
 	}
+	
+	.current-page
+	{
+		background-color: #3388cc;
+		border-color: #1c4a70;
+		color: #ffffff;
+		text-shadow: 0 1px 0 #005599;
+	}
 	</style>
+	
+	<script>
+			
+			$(document).ready(function(){
+				var reportStr=	window.localStorage.getItem("report");
+				var report=JSON.parse(reportStr);
+				var forms = {
+			"name_cn":"",
+			"name_en":"",
+			"from_type": "chimney",
+			"device_id": "",
+			"device_mode": "",
+			"inspector":"",
+			"device_photo":"",
+			"items": [{
+						
+						"item_name_en": "Check the LED lamp by pressing the lamp test switch",
+						"item_name_cn": "按測試開關並檢查LED燈",
+						"index": 1,
+						"cycle": 1,
+						"group": "controller",
+						"result": {"type" : "bool",
+								   "value" : "false"
+								   }
+					 },
+					 {
+						"item_name_en": "Check for any abnormal noises inside the control panels",
+						"item_name_cn": "檢查控制箱內的任何異常聲音",
+						"index": 2,
+						"cycle": 1,
+						"group": "controller",
+						"result": {"type" : "bool",
+								   "value" : "false"
+								   }
+					 },
+					 {
+						"item_name_en": "Check the emergency stop function",
+						"item_name_cn": "檢查緊急停止功能",
+						"index": 3,
+						"cycle": 1,
+						"group": "controller",
+						"result": {"type" : "bool",
+								   "value" : "false"
+								   }
+					 },
+					 {
+						"item_name_en": "Check the Interlock function with related boiler",
+						"item_name_cn": "檢查相關於鍋爐的聯鎖功能",
+						"index": 4,
+						"cycle": 1,
+						"group": "controller",
+						"result": {"type" : "bool",
+								   "value" : "false"
+								   }
+					 },
+					 {
+						"item_name_en": "Check the Manual mode control function",
+						"item_name_cn": "檢查手動模式控制功能",
+						"index": 5,
+						"cycle": 1,
+						"group": "controller",
+						"result": {"type" : "bool",
+								   "value" : "false"
+								   }
+					 },
+					 {
+						"item_name_en": "Check the Auto mode control function",
+						"item_name_cn": "檢查自動模式控制功能",
+						"index": 6,
+						"cycle": 1,
+						"group": "controller",
+						"result": {"type" : "bool",
+								   "value" : "false"
+								   }
+					 },
+					 {
+						"item_name_en": "Check the main switch operation of control",
+						"item_name_cn": "檢查主開關的操作控制",
+						"index": 7,
+						"cycle": 1,
+						"group": "controller",
+						"result": {"type" : "bool",
+								   "value" : "false"
+								   }
+					 },
+					 {
+						"item_name_en": "Check for all flexible connection for leakage",
+						"item_name_cn": "檢查所有軟連接是否有洩漏",
+						"index": 8,
+						"cycle": 1,
+						"group": "controller",
+						"result": {"type" : "bool",
+								   "value" : "false",
+								   "min_photos": 1,
+								   "photos" : []
+								   }
+					 },
+					 {
+						"item_name_en": "Insulation;   (MΩ)",
+						"item_name_cn": "絕緣度（MΩ）",
+						"index": 9,
+						"cycle": 1,
+						"group": "controller",
+						"result": {"type" : "s_value",
+								   "value" : "",
+								   "unit" : "MΩ",
+								   "min_photos": 1,
+								   "photos" : []
+								   }
+					 },
+					 {
+						"item_name_en": "Check condition of electric contact of contactor, starter and control",
+						"item_name_cn": "檢查電接點的接觸器，起動和控制的條件",
+						"index": 10,
+						"cycle": 2,
+						"group": "controller",
+						"result": {"type" : "bool",
+								   "value" : "false"
+								   }
+					 },
+					 {
+						"item_name_en": "Check the function of the control value",
+						"item_name_cn": "檢查控制閥的功能",
+						"index": 11,
+						"cycle": 2,
+						"group": "controller",
+						"result": {"type" : "bool",
+								   "value" : "false"
+								   }
+					 },
+					 {
+						"item_name_en": "Clean up control panels",
+						"item_name_cn": "清理乾淨控制箱",
+						"index": 12,
+						"cycle": 2,
+						"group": "controller",
+						"result": {"type" : "bool",
+								   "value" : "false"
+								   }
+					 },
+					 {
+						"item_name_en": "Starting / Running current  (A)",
+						"item_name_cn": "開始/運行電流（A）",
+						"index": 13,
+						"cycle": 2,
+						"group": "controller",
+						"result": {"type" : "s_value",
+								   "value" : "",
+								   "unit" : "A",
+								   "min_photos": 1,
+								   "photos" : []
+								   }
+					 },{
+						"item_name_en": "Test the MCB operation in the control panel",
+						"item_name_cn": "測試控制箱中的MCB操作",
+						"index": 14,
+						"cycle": 2,
+						"group": "controller",
+						"result": {"type" : "bool",
+								   "value" : "false"
+								   }
+					 },{
+						"item_name_en": "Test the trip function",
+						"item_name_cn": "測試跳閘功能",
+						"index": 15,
+						"cycle": 2,
+						"group": "controller",
+						"result": {"type" : "bool",
+								   "value" : "false"
+								   }
+					 },{
+						"item_name_en": "Inspect the electrical circuits and controls, tighten all electrical connection",
+						"item_name_cn": "檢查電路和控制，擰緊所有的電氣連接",
+						"index": 16,
+						"cycle": 2,
+						"group": "controller",
+						"result": {"type" : "bool",
+								   "value" : "false"
+								   }
+					 },{
+						"item_name_en": "Check the flexible join of the exhaust Fan",
+						"item_name_cn": "檢查排氣扇的軟連接",
+						"index": 17,
+						"cycle": 1,
+						"group": "fan",
+						"result": {"type" : "bool",
+								   "value" : "false"
+								   }
+					 },{
+						"item_name_en": "Check for any leakage on the chimmney connection",
+						"item_name_cn": "檢查煙囪的連接是否有洩漏",
+						"index": 18,
+						"cycle": 1,
+						"group": "fan",
+						"result": {"type" : "bool",
+								   "value" : "false"
+								   }
+					 },{
+						"item_name_en": "Check the pressure of chimney",
+						"item_name_cn": "檢查煙囪的壓力",
+						"index": 19,
+						"cycle": 2,
+						"group": "chimney",
+						"result": {"type" : "bool",
+								   "value" : "false"
+								   }
+					 },{
+						"item_name_en": "Check the surface temperature of Chimney ( °C )",
+						"item_name_cn": "檢查的煙囪表面的溫度( °C )",
+						"index": 19,
+						"cycle": 2,
+						"group": "chimney",
+						"result": {"type" : "s_value",
+								   "value" : "",
+								   "unit" : "A"
+								   }
+					 }
+					]
+		};
+				
+				var items=jQuery.grep(forms.items, function(element, index){
+				  return element.cycle<=report.cycle_type;
+				});
+			
+		
+				var controllers = jQuery.grep(items, function(element, index){
+				  return element.group=="controller";
+				});
+				var fans = jQuery.grep(items, function(element, index){
+				  return element.group=="fan";
+				});
+				var chimneys = jQuery.grep(items, function(element, index){
+				  return element.group=="chimney";
+				});
+				
+				for(var index in controllers){ 
+					  addFormItem("control_items",controllers[index]);
+				}
+				for(var index in fans){ 
+					  addFormItem("fan_items",fans[index]);
+				}
+				for(var index in chimneys){ 
+					  addFormItem("chimney_items",chimneys[index]);
+				}
+				$('select').slider(); 
+				$(".savebtn").click(function() {
+					  alert(111);
+					for(var index in items){ 
+					  
+					  if(items[index].result.type== "bool"){
+							
+							items[index].result.value=$("#filp_"+items[index].index).val();
+							
+					  }else if(items[index].result.type== "s_value"){
+							items[index].result.value=$("#textinput_"+items[index].index).val();
+						
+					  }
+					
+					}
+					
+					  alert(JSON.stringify(items));
+				});
+				$(".info-btn").click(function(){
+						$(".info-page").addClass("ui-btn-active");
+						
+				});
+				$(".control-btn").click(function(){
+						$(".control-page").addClass("ui-btn-active");
+						
+				});
+				$(".fan-btn").click(function(){
+						$(".fan-page").addClass("ui-btn-active");
+						
+				});
+				$(".chimney-btn").click(function(){
+						$(".chimney-page").addClass("ui-btn-active");
+						
+				});
+				$(".input-textbox").change(function(event, ui) {
+					var res = event.currentTarget.id.split("_");
+							var index =res[res.length-1];
+							
+							for(var i in items){ 
+								if(items[i].index==index){
+										items[i].result.value=event.currentTarget.value;
+										
+										break;
+								}
+							}
+							$(".control_count").text(calCounter(items,"controller"));
+							$(".fan_count").text(calCounter(items,"fan"));
+							$(".chimney_count").text(calCounter(items,"chimney"));
+				});
+				
+				$('.ui-slider-switch').on('change', function(event, ui) {
+				
+							var res = event.currentTarget.id.split("_");
+							var index =res[res.length-1];
+							
+							for(var i in items){ 
+								if(items[i].index==index){
+										items[i].result.value=event.currentTarget.value;
+										
+										break;
+								}
+							}
+							$(".control_count").text(calCounter(items,"controller"));
+							$(".fan_count").text(calCounter(items,"fan"));
+							$(".chimney_count").text(calCounter(items,"chimney"));
+				});
+				$(".control_count").text(calCounter(items,"controller"));
+				$(".fan_count").text(calCounter(items,"fan"));
+				$(".chimney_count").text(calCounter(items,"chimney"));
+			});
+			function calCounter(items,group){
+					var count=0;
+				
+					for(var index in items){ 
+						if(items[index].group==group&&
+						((items[index].result.type=="bool"&&items[index].result.value=="false")||
+						(items[index].result.type=="s_value"&&items[index].result.value==""))){
+							count++;
+						}
+					}
+					return count;
+			}
+			function addFormItem(parent,item){
+		//	 
+			
+				
+				if(item.result.type == "bool"){
+				$("#"+parent).append('<div class="ui-field-contain ui-shadow "> \
+				<label for="textinput-1">'+item.item_name_en +'</label> \
+					 <select name="flip-1" id="filp_'+item.index+'" data-role="slider" data-theme="c" class="ui-slider-switch"> \
+						<option value="false">Not Check</option> \
+						<option value="true">Check</option>	\
+					</select>'+	(item.result.min_photos? ' <button id="submit-1" style="margin: 0.5%;" data-mini="true" class="ui-btn ui-icon-camera ui-btn-icon-left ui-shadow ui-corner-all">Camera</button>' :'') +
+						'</div> ' );
+						
+				}else if(item.result.type == "s_value"){
+			
+				
+					$("#"+parent).append('<div class="ui-field-contain ui-shadow "> \
+				<label for="textinput-1">'+item.item_name_en +'</label> \
+					<input class="input-textbox"  type="text" name="textinput-5" id="textinput_'+item.index+'" placeholder="'+(item.result.unit?item.result.unit:'')+'" value="" data-mini="true"/>' 
+					+	(item.result.min_photos? ' <button id="submit-1" style="margin: 0.5%;" data-mini="true" class="ui-btn ui-icon-camera ui-btn-icon-left ui-shadow ui-corner-all">Camera</button>' :'') +
+				'</div>');
+					$('#textinput_'+item.index).trigger("create")
+				}
+				
+			}			
+	</script>
 </head>
 <body>
+
+
 		<div id="info"  data-role="page" >
 			 <div data-role="header" data-position="fixed"  >
 			 <a href="#" data-rel="back"  class="ui-btn  ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-left ui-icon-carat-l">Back</a>
 	      
 			  <h1>Chimney System From</h1>
-			  	<a href="#" class="ui-btn-right ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-check">Save</a>
+			  	<a class="savebtn ui-btn-right ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-check">Save</a>
 	    
 			<div data-role="navbar" data-grid="c" >
 				<ul >
-				<li><a href="#info" data-prefetch="true" data-transition="fade" data-ajax="false" class="ui-btn-active">Info<span class="ui-li-count">2</span></a></li>
-					<li><a href="#control" data-prefetch="true" data-transition="fade" data-ajax="false" >Control<span class="ui-li-count">9</span></a></li>
-					<li><a href="#fan" data-prefetch="true" data-transition="fade" data-ajax="false" >Fan<span class="ui-li-count">3</span></a></li>
-					<li><a href="#chimney" data-prefetch="true" data-transition="fade" data-ajax="false">Chimney<span class="ui-li-count">2</span></a></li>
+				<li><a  data-prefetch="true" data-transition="slide" data-ajax="false" class="info-page ui-btn-active">Info<span  class="info_count ui-li-count">2</span></a></li>
+					<li><a href="#control" data-prefetch="true" data-transition="slide" data-ajax="false" class="control-btn" >Control<span class="control_count ui-li-count">9</span></a></li>
+					<li><a href="#fan" data-prefetch="true" data-transition="slide" data-ajax="false" class="fan-btn" >Fan<span class="fan_count ui-li-count">3</span></a></li>
+					<li><a href="#chimney" data-prefetch="true" data-transition="slide" data-ajax="false" class="chimney-btn">Chimney<span class="chimney_count ui-li-count">2</span></a></li>
 				
 				</ul>
 			</div>
@@ -68,129 +430,20 @@
 			 <a href="#" data-rel="back"  class="ui-btn  ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-left ui-icon-carat-l">Back</a>
 	      
 			  <h1>Chimney System From</h1>
-			  	<a href="#" class="ui-btn-right ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-check">Save</a>
+			  	<a href="#" class="savebtn ui-btn-right ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-check">Save</a>
 	    
 			<div data-role="navbar" data-grid="c" >
 				<ul >
-					<li><a href="#info" data-prefetch="true" data-transition="fade" data-ajax="false" class="ui-btn-active">Info<span class="ui-li-count">2</span></a></li>
-					<li><a href="#control" data-prefetch="true" data-transition="fade" data-ajax="false" >Control<span class="ui-li-count">9</span></a></li>
-					<li><a href="#fan" data-prefetch="true" data-transition="fade" data-ajax="false" >Fan<span class="ui-li-count">3</span></a></li>
-					<li><a href="#chimney" data-prefetch="true" data-transition="fade" data-ajax="false">Chimney<span class="ui-li-count">2</span></a></li>
+				<li><a href="#info" data-prefetch="true" data-transition="slide" data-ajax="false" class="info-btn ">Info<span  class="info_count ui-li-count">2</span></a></li>
+					<li><a  data-prefetch="true" data-transition="slide" data-ajax="false" class="control-page ui-btn-active" >Control<span class="control_count ui-li-count">9</span></a></li>
+					<li><a href="#fan" data-prefetch="true" data-transition="slide" data-ajax="false" class="fan-btn" >Fan<span class="fan_count ui-li-count">3</span></a></li>
+					<li><a href="#chimney" data-prefetch="true" data-transition="slide" data-ajax="false" class="chimney-btn">Chimney<span class="chimney_count ui-li-count">2</span></a></li>
 				
 				</ul>
 			</div>
 			</div><!-- /header -->
+				<div id="control_items">
 				
-				<div class="ui-field-contain ui-shadow ">
-					<label for="textinput-1">Check the LED lamp by pressing the lamp test switch</label>
-					 <select name="flip-1" id="flip-1" data-role="slider" data-theme="c">
-						<option value="off">Not Check</option>
-						<option value="on">Check</option>
-					</select>
-				</div>
-				<div class="ui-field-contain ui-shadow ">
-					<label for="textinput-1">Check for any abnormal noises inside the control panels</label>
-					  <select name="flip-1" id="flip-1" data-role="slider" data-theme="c">
-						<option value="off">Not Check</option>
-						<option value="on">Check</option>
-					</select>
-				</div>
-				<div class="ui-field-contain ui-shadow ">
-					<label for="textinput-1">Check the emergency stop function</label>
-					 <select name="flip-1" id="flip-1" data-role="slider" data-theme="c">
-						<option value="off">Not Check</option>
-						<option value="on">Check</option>
-					</select>
-				</div>
-				<div class="ui-field-contain ui-shadow ">
-					<label for="textinput-1">Check the Interlock function with related boiler</label>
-					 <select name="flip-1" id="flip-1" data-role="slider" data-theme="c">
-						<option value="off">Not Check</option>
-						<option value="on">Check</option>
-					</select>
-				</div>
-				<div class="ui-field-contain ui-shadow ">
-					<label for="textinput-1">Check the Manual mode control function</label>
-					 <select name="flip-1" id="flip-1" data-role="slider" data-theme="c">
-						<option value="off">Not Check</option>
-						<option value="on">Check</option>
-					</select>
-				</div>
-				<div class="ui-field-contain ui-shadow ">
-					<label for="textinput-1">Check the Auto mode control function</label>
-					 <select name="flip-1" id="flip-1" data-role="slider" data-theme="c">
-						<option value="off">Not Check</option>
-						<option value="on">Check</option>
-					</select>
-				</div>
-				<div class="ui-field-contain ui-shadow ">
-					<label for="textinput-1">Check the main switch operation of control</label>
-					 <select name="flip-1" id="flip-1" data-role="slider" data-theme="c">
-						<option value="off">Not Check</option>
-						<option value="on">Check</option>
-					</select>
-				</div>
-				<div class="ui-field-contain ui-shadow ">
-					<label for="textinput-1">Check for all flexible connection for leakage</label>
-					 <select name="flip-1" id="flip-1" data-role="slider" data-theme="c">
-						<option value="off">Not Check</option>
-						<option value="on">Check</option>
-					</select>
-				</div>
-				<div class="ui-field-contain ui-shadow ">
-					<label for="textinput-1">Insulation</label>
-					<input type="text" name="textinput-5" id="textinput-5" placeholder="A" value="" data-mini="true">
-					 <button id="submit-1" style="margin: 0.5%;" data-mini="true" class="ui-btn ui-icon-camera ui-btn-icon-left ui-shadow ui-corner-all">Camera</button>
-			
-				</div>
-				<div class="ui-field-contain ui-shadow ">
-					<label for="textinput-1">Check condition of electric contact of contactor, starter and control</label>
-					 <select name="flip-1" id="flip-1" data-role="slider" data-theme="c">
-						<option value="off">Not Check</option>
-						<option value="on">Check</option>
-					</select>
-				</div>
-				<div class="ui-field-contain ui-shadow ">
-					<label for="textinput-1">Check the function of the control value</label>
-					 <select name="flip-1" id="flip-1" data-role="slider" data-theme="c">
-						<option value="off">Not Check</option>
-						<option value="on">Check</option>
-					</select>
-				</div>
-				
-				<div class="ui-field-contain ui-shadow ">
-					<label for="textinput-1">Starting / Running current</label>
-					 	<input type="text" name="textinput-5" id="textinput-5" placeholder="A" value="" data-mini="true">
-					 <button id="submit-1" style="margin: 0.5%;" data-mini="true" class="ui-btn ui-icon-camera ui-btn-icon-left ui-shadow ui-corner-all">Camera</button>
-			
-				</div>
-				<div class="ui-field-contain ui-shadow ">
-					<label for="textinput-1">Test the MCB operation in the control pane</label>
-					 <select name="flip-1" id="flip-1" data-role="slider" data-theme="c">
-						<option value="off">Not Check</option>
-						<option value="on">Check</option>
-					</select>
-				</div>
-				<div class="ui-field-contain ui-shadow ">
-					<label for="textinput-1">Test the trip function</label>
-					 <select name="flip-1" id="flip-1" data-role="slider" data-theme="c">
-						<option value="off">Not Check</option>
-						<option value="on">Check</option>
-					</select>
-				</div>
-				<div class="ui-field-contain ui-shadow ">
-					<label for="textinput-1">Inspect the electrical circuits and controls, tighten all electrical connection</label>
-					 <select name="flip-1" id="flip-1" data-role="slider" data-theme="c">
-						<option value="off">Not Check</option>
-						<option value="on">Check</option>
-					</select>
-				</div>
-				<div class="ui-field-contain ui-shadow ">
-					<label for="textinput-1">Clean up control panels</label>
-					 <select name="flip-1" id="flip-1" data-role="slider" data-theme="c">
-						<option value="off">Not Check</option>
-						<option value="on">Check</option>
-					</select>
 				</div>
 		</div>
 		<div id="fan"  data-role="page" >
@@ -198,14 +451,14 @@
 			 <a href="#" data-rel="back"  class="ui-btn  ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-left ui-icon-carat-l">Back</a>
 	      
 			  <h1>Chimney System From</h1>
-			  	<a href="#" class="ui-btn-right ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-check">Save</a>
+			  	<a href="#" class="savebtn ui-btn-right ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-check">Save</a>
 	    
 			<div data-role="navbar" data-grid="c" >
 				<ul >
-				<li><a href="#info" data-prefetch="true" data-transition="fade" data-ajax="false" >Info<span class="ui-li-count">2</span></a></li>
-					<li><a href="#control" data-prefetch="true" data-transition="fade" data-ajax="false" >Control<span class="ui-li-count">9</span></a></li>
-					<li><a href="#fan" data-prefetch="true" data-transition="fade" data-ajax="false" class="ui-btn-active" >Fan<span class="ui-li-count">3</span></a></li>
-					<li><a href="#chimney" data-prefetch="true" data-transition="fade" data-ajax="false">Chimney<span class="ui-li-count">2</span></a></li>
+				<li><a href="#info" data-prefetch="true" data-transition="slide" data-ajax="false" class="info-btn ">Info<span  class="info_count ui-li-count">2</span></a></li>
+					<li><a href="#control" data-prefetch="true" data-transition="slide" data-ajax="false" class="control-btn " >Control<span class="control_count ui-li-count">9</span></a></li>
+					<li><a  data-prefetch="true" data-transition="slide" data-ajax="false" class="fan-page ui-btn-active" >Fan<span class="fan_count ui-li-count">3</span></a></li>
+					<li><a href="#chimney" data-prefetch="true" data-transition="slide" data-ajax="false" class="chimney-btn">Chimney<span class="chimney_count ui-li-count">2</span></a></li>
 				
 				</ul>
 			</div>
@@ -214,12 +467,8 @@
 		
 		   
 			    
-		<div class="ui-field-contain ui-shadow ">
-					<label for="textinput-1">Check the flexible join of the exhaust Fan</label>
-					 <select name="flip-1" id="flip-1" data-role="slider" data-theme="c">
-						<option value="off">Not Check</option>
-						<option value="on">Check</option>
-					</select>
+			<div id="fan_items">
+				
 				</div>
 		</div>
 		<div id="chimney"  data-role="page" >
@@ -227,14 +476,15 @@
 			 <a href="#" data-rel="back"  class="ui-btn  ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-left ui-icon-carat-l">Back</a>
 	      
 			  <h1>Chimney System From</h1>
-			  	<a href="#" class="ui-btn-right ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-check">Save</a>
+			  	<a href="#" class="savebtn ui-btn-right ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-check">Save</a>
 	    
 			<div data-role="navbar" data-grid="c" >
 				<ul >
-				<li><a href="#info" data-prefetch="true" data-transition="fade" data-ajax="false" >Info<span class="ui-li-count">2</span></a></li>
-					<li><a href="#control" data-prefetch="true" data-transition="fade" data-ajax="false" >Control<span class="ui-li-count">9</span></a></li>
-					<li><a href="#fan" data-prefetch="true" data-transition="fade" data-ajax="false" >Fan<span class="ui-li-count">3</span></a></li>
-					<li><a href="#chimney" data-prefetch="true" data-transition="fade" data-ajax="false" class="ui-btn-active">Chimney<span class="ui-li-count">2</span></a></li>
+				<li><a href="#info" data-prefetch="true" data-transition="slide" data-ajax="false" class="info-btn ">Info<span  class="info_count ui-li-count">2</span></a></li>
+					<li><a href="#control" data-prefetch="true" data-transition="slide" data-ajax="false" class="control-btn " >Control<span class="control_count ui-li-count">9</span></a></li>
+					<li><a href="#fan" data-prefetch="true" data-transition="slide" data-ajax="false" class="fan-btn" >Fan<span class="fan_count ui-li-count">3</span></a></li>
+					<li><a   data-prefetch="true" data-transition="slide" data-ajax="false" class="chimney-page ui-btn-active">Chimney<span class="chimney_count ui-li-count">2</span></a></li>
+				
 				
 				</ul>
 			</div>
@@ -243,20 +493,8 @@
 		
 		   
 			    
-		<div class="ui-field-contain ui-shadow ">
-					<label for="textinput-1">Check for any leakage on the chimmney connection</label>
-					 <select name="flip-1" id="flip-1" data-role="slider" data-theme="c">
-						<option value="off">Not Check</option>
-						<option value="on">Check</option>
-					</select>
-				</div>
-		
-		<div class="ui-field-contain ui-shadow ">
-					<label for="textinput-1">Check the pressure of chimney</label>
-					 <select name="flip-1" id="flip-1" data-role="slider" data-theme="c">
-						<option value="off">Not Check</option>
-						<option value="on">Check</option>
-					</select>
+			<div id="chimney_items">
+				
 				</div>
 		
 				</div>	

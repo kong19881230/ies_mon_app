@@ -11,6 +11,7 @@
 	<link rel="stylesheet" href="css/carousel-style.css">
 	<script src="js/jquery.js"></script>
 	<script src="js/jquery.mobile-1.4.3.min.js"></script>
+	<script type="text/javascript" charset="utf-8" src="cordova.js"></script>
 	<style id="inset-tablist">
 		.tablist-left {
 			width: 25%;
@@ -49,12 +50,157 @@
 		#emergency_report_btn:after { background:  url("images/repair.png") 50% 50% no-repeat;  background-size: 24px 24px; }
 	
 	</style>
-	<script>
-	</script>
-	
+	 <script type="text/javascript" charset="utf-8">
+
+			// Wait for device API libraries to load
+			//
+			document.addEventListener("deviceready", onDeviceReady, false);
+			
+			// device APIs are available
+			//
+			function onDeviceReady() {
+				
+				window.localStorage.setItem("key", "{sss}");
+			
+				// keyname is now equal to "key"
+				var value = window.localStorage.getItem("key");
+				// value is now equal to "value"
+			
+				window.localStorage.setItem("key2", "value2");
+				
+					
+				
+				
+				
+				$("#testDiv").html("<span>"+value+"</span>");
+		
+				
+				
+				
+				
+			}
+			$(document).ready(function(){
+				window.localStorage.setItem("key", "{sss}");
+					var customers= [
+								{ 	"id" : "1",
+									"name_cn" : "十六浦",
+									"name_en" : "Ponte 16 Resort Macau",
+									"seq" :"MM-0608020-10",
+									"created_at" :"2014-06-09 23:27:35"
+								},
+								{ 	"id": "2",
+									"name_cn": "蘭桂坊",
+									"name_en": "Lan Kwai Fong",
+									"seq":"MM-LM-10007-11",
+									"created_at": "2014-06-09 23:27:35"
+								},
+								{ 	"id": "3",
+									"name_cn": "凱旋門",
+									"name_en": "L'Arc Macau",
+									"seq": "MM-0606014-05",
+									"created_at": "2014-06-09 23:27:35"
+								},
+								{ 	"id": "4",
+									"name_cn": "新葡京",
+									"name_en": "Grand Lisboa",
+									"seq":"MM-0406012-04",
+									"created_at":"2014-06-09 23:27:35"
+								},
+								{ 	"id": "5",
+									"name_cn": "金沙",
+									"name_en": "Sands Macau",
+									"seq":"MM-0603005-02",
+									"created_at":"2014-06-09 23:27:35"
+								},
+								{ 	"id": "6",
+									"name_cn": "星際",
+									"name_en": "Star World",
+									"seq":"MM_LM-100903-12",
+									"created_at":"2014-06-09 23:27:35"
+								},
+								{ 	"id": "7",
+									"name_cn": "四季",
+									"name_en": "Four Season Hotel",
+									"seq":"MM_LM-100903-12",
+									"created_at":"2014-06-09 23:27:35"
+								},
+								{ 	"id": "8",
+									"name_cn": "威尼斯人一期",
+									"name_en": "Venetian Cotai",
+									"seq": "MM-0505001-15",
+									"created_at": "2014-06-09 23:27:35"
+								},
+								{ 	"id": "9",
+									"name_cn": "威尼斯人5,6期",
+									"name_en": "Sands Cotai",
+									"seq": "MM-0601006-17",
+									"created_at": "2014-06-09 23:27:35"
+								}
+								];
+							
+						var cycles=[{ 	"value": "1",
+									"name_cn": "月檢",
+									"name_en": "Monthly"
+								
+								},{ 	"value": "2",
+									"name_cn": "雙月檢",
+									"name_en": "Even Monthly"
+								
+								},{ 	"value": "3",
+									"name_cn": "半年檢",
+									"name_en": "Semi-Annually"
+								
+								},{ 	"value": "4",
+									"name_cn": "年檢",
+									"name_en": "Annually"
+								
+								}];
+						
+						alert(customers.length);
+						for(var index in customers){ 
+								$("#customers").append($('<option>', {
+									value: customers[index].id,
+									text: customers[index].name_en}));
+						}
+						
+						for(var index in cycles){ 
+								$("#cycle").append($('<option>', {
+									value: cycles[index].value,
+									text: cycles[index].name_en}));
+						}
+						
+						
+						var report=	{
+									"name" : "maintain report",
+									"type" : 0,
+									"customers_id": "",
+									"cycle_type" : 1,
+									"created_by" : "Thomas",
+									"created_at" : "2014-06-09 23:27:35",
+									"updated_at" : "2014-06-09 23:27:35",
+									"froms" :[]
+									};
+						$("#customers").bind( "change", function(event, ui) {
+							
+							report.customers_id=$("#customers").val();
+							window.localStorage.setItem("report", JSON.stringify(report));
+							
+						});
+						
+						$("#cycle").bind( "change", function(event, ui) {
+							
+							report.cycle_type=$("#cycle").val();
+							window.localStorage.setItem("report", JSON.stringify(report));
+						});
+						
+						window.localStorage.setItem("report", JSON.stringify(report));
+			});
+    </script>
 </head>
 <body>
+
 		<div data-role="page" id="home" style="background-image: url('images/bg.png'); background-attachment: fixed; background-repeat: no-repeat; background-size: 100% 100%;"  >
+			<div id="testDiv">6666</div>
 			<div data-role="header" data-position="fixed" data-theme="b"  >
 				
 						  <h1>IES Maintainance Report App</h1>
@@ -94,6 +240,7 @@
 					<a href="#" data-slide="3">3</a>
 				
 				  </div>
+				  
 				</div>
 				<div id="menu" data-role="controlgroup" data-theme="b"  >
 				<a id="maint_report_btn"  href="#report" data-icon="custom"  data-transition="pop" class="ui-btn ui-alt-icon ui-btn-icon-top ui-corner-all ui-shadow ">Maintenance Report</a>
@@ -107,13 +254,14 @@
 			 <a href="#" data-rel="back"  class="ui-btn  ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-left ui-icon-carat-l">Back</a>
 	      
 					  <h1>Maintainance Report</h1>
-					<div class="ui-btn-right">
-						<label for="select-choice-1" class="ui-hidden-accessible">Shipping:</label>
-						<select name="select-choice-1" id="select-choice-1" data-mini="true" data-inline="true">
-							<option value="standard">Grand Lisboa</option>
-							<option value="rush">Sands</option>
-							<option value="express">Wynn</option>
+					<div data-role="controlgroup" data-type="horizontal" class="ui-mini ui-btn-right">
+						<select data-native-menu="false" id="customers" name="select-choice-1" id="select-choice-1" >
+							
 						</select>
+						<select data-native-menu="false" id="cycle" name="select-choice-1" id="select-choice-1" >
+							
+						</select>
+			
 					</div>
 			</div><!-- /header -->
 	
@@ -205,8 +353,9 @@
 					<a href="chimney_system.html" rel="external" class="ui-btn ui-btn-icon-right ui-icon-plus">Add</a>
 					<a href="#" class="ui-btn ui-btn-icon-right ui-icon-bullets">Copy</a>
 					<a href="#" class="ui-btn ui-btn-icon-right ui-icon-delete">Delete</a>
-				</div>	
 				
+				</div>	
+					
 			   <h1></h1>
 			<a href="#" class="ui-btn-right ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-check">Save</a>
 	    
