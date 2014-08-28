@@ -42,221 +42,9 @@
 			$(document).ready(function(){
 				var reportStr=	window.localStorage.getItem("report");
 				var report=JSON.parse(reportStr);
-				var forms = {
-			"name_cn":"",
-			"name_en":"",
-			"from_type": "chimney",
-			"device_id": "",
-			"device_mode": "",
-			"inspector":"",
-			"device_photo":"",
-			"items": [{
-						
-						"item_name_en": "Check the LED lamp by pressing the lamp test switch",
-						"item_name_cn": "按測試開關並檢查LED燈",
-						"index": 1,
-						"cycle": 1,
-						"group": "controller",
-						"result": {"type" : "bool",
-								   "value" : "false"
-								   }
-					 },
-					 {
-						"item_name_en": "Check for any abnormal noises inside the control panels",
-						"item_name_cn": "檢查控制箱內的任何異常聲音",
-						"index": 2,
-						"cycle": 1,
-						"group": "controller",
-						"result": {"type" : "bool",
-								   "value" : "false"
-								   }
-					 },
-					 {
-						"item_name_en": "Check the emergency stop function",
-						"item_name_cn": "檢查緊急停止功能",
-						"index": 3,
-						"cycle": 1,
-						"group": "controller",
-						"result": {"type" : "bool",
-								   "value" : "false"
-								   }
-					 },
-					 {
-						"item_name_en": "Check the Interlock function with related boiler",
-						"item_name_cn": "檢查相關於鍋爐的聯鎖功能",
-						"index": 4,
-						"cycle": 1,
-						"group": "controller",
-						"result": {"type" : "bool",
-								   "value" : "false"
-								   }
-					 },
-					 {
-						"item_name_en": "Check the Manual mode control function",
-						"item_name_cn": "檢查手動模式控制功能",
-						"index": 5,
-						"cycle": 1,
-						"group": "controller",
-						"result": {"type" : "bool",
-								   "value" : "false"
-								   }
-					 },
-					 {
-						"item_name_en": "Check the Auto mode control function",
-						"item_name_cn": "檢查自動模式控制功能",
-						"index": 6,
-						"cycle": 1,
-						"group": "controller",
-						"result": {"type" : "bool",
-								   "value" : "false"
-								   }
-					 },
-					 {
-						"item_name_en": "Check the main switch operation of control",
-						"item_name_cn": "檢查主開關的操作控制",
-						"index": 7,
-						"cycle": 1,
-						"group": "controller",
-						"result": {"type" : "bool",
-								   "value" : "false"
-								   }
-					 },
-					 {
-						"item_name_en": "Check for all flexible connection for leakage",
-						"item_name_cn": "檢查所有軟連接是否有洩漏",
-						"index": 8,
-						"cycle": 1,
-						"group": "controller",
-						"result": {"type" : "bool",
-								   "value" : "false",
-								   "min_photos": 1,
-								   "photos" : []
-								   }
-					 },
-					 {
-						"item_name_en": "Insulation;   (MΩ)",
-						"item_name_cn": "絕緣度（MΩ）",
-						"index": 9,
-						"cycle": 1,
-						"group": "controller",
-						"result": {"type" : "s_value",
-								   "value" : "",
-								   "unit" : "MΩ",
-								   "min_photos": 1,
-								   "photos" : []
-								   }
-					 },
-					 {
-						"item_name_en": "Check condition of electric contact of contactor, starter and control",
-						"item_name_cn": "檢查電接點的接觸器，起動和控制的條件",
-						"index": 10,
-						"cycle": 2,
-						"group": "controller",
-						"result": {"type" : "bool",
-								   "value" : "false"
-								   }
-					 },
-					 {
-						"item_name_en": "Check the function of the control value",
-						"item_name_cn": "檢查控制閥的功能",
-						"index": 11,
-						"cycle": 2,
-						"group": "controller",
-						"result": {"type" : "bool",
-								   "value" : "false"
-								   }
-					 },
-					 {
-						"item_name_en": "Clean up control panels",
-						"item_name_cn": "清理乾淨控制箱",
-						"index": 12,
-						"cycle": 2,
-						"group": "controller",
-						"result": {"type" : "bool",
-								   "value" : "false"
-								   }
-					 },
-					 {
-						"item_name_en": "Starting / Running current  (A)",
-						"item_name_cn": "開始/運行電流（A）",
-						"index": 13,
-						"cycle": 2,
-						"group": "controller",
-						"result": {"type" : "s_value",
-								   "value" : "",
-								   "unit" : "A",
-								   "min_photos": 1,
-								   "photos" : []
-								   }
-					 },{
-						"item_name_en": "Test the MCB operation in the control panel",
-						"item_name_cn": "測試控制箱中的MCB操作",
-						"index": 14,
-						"cycle": 2,
-						"group": "controller",
-						"result": {"type" : "bool",
-								   "value" : "false"
-								   }
-					 },{
-						"item_name_en": "Test the trip function",
-						"item_name_cn": "測試跳閘功能",
-						"index": 15,
-						"cycle": 2,
-						"group": "controller",
-						"result": {"type" : "bool",
-								   "value" : "false"
-								   }
-					 },{
-						"item_name_en": "Inspect the electrical circuits and controls, tighten all electrical connection",
-						"item_name_cn": "檢查電路和控制，擰緊所有的電氣連接",
-						"index": 16,
-						"cycle": 2,
-						"group": "controller",
-						"result": {"type" : "bool",
-								   "value" : "false"
-								   }
-					 },{
-						"item_name_en": "Check the flexible join of the exhaust Fan",
-						"item_name_cn": "檢查排氣扇的軟連接",
-						"index": 17,
-						"cycle": 1,
-						"group": "fan",
-						"result": {"type" : "bool",
-								   "value" : "false"
-								   }
-					 },{
-						"item_name_en": "Check for any leakage on the chimmney connection",
-						"item_name_cn": "檢查煙囪的連接是否有洩漏",
-						"index": 18,
-						"cycle": 1,
-						"group": "fan",
-						"result": {"type" : "bool",
-								   "value" : "false"
-								   }
-					 },{
-						"item_name_en": "Check the pressure of chimney",
-						"item_name_cn": "檢查煙囪的壓力",
-						"index": 19,
-						"cycle": 2,
-						"group": "chimney",
-						"result": {"type" : "bool",
-								   "value" : "false"
-								   }
-					 },{
-						"item_name_en": "Check the surface temperature of Chimney ( °C )",
-						"item_name_cn": "檢查的煙囪表面的溫度( °C )",
-						"index": 19,
-						"cycle": 2,
-						"group": "chimney",
-						"result": {"type" : "s_value",
-								   "value" : "",
-								   "unit" : "A"
-								   }
-					 }
-					]
-		};
+				var froms =JSON.parse(window.localStorage.getItem("currentForm")); 
 				
-				var items=jQuery.grep(forms.items, function(element, index){
+				var items=jQuery.grep(froms.items, function(element, index){
 				  return element.cycle<=report.cycle_type;
 				});
 			
@@ -282,7 +70,7 @@
 				}
 				$('select').slider(); 
 				$(".savebtn").click(function() {
-					  alert(111);
+					 
 					for(var index in items){ 
 					  
 					  if(items[index].result.type== "bool"){
@@ -295,8 +83,9 @@
 					  }
 					
 					}
-					
-					  alert(JSON.stringify(items));
+					froms.items=items;
+					report.froms.push(froms);
+					window.localStorage.setItem("report", JSON.stringify(report));
 				});
 				$(".info-btn").click(function(){
 						$(".info-page").addClass("ui-btn-active");
@@ -371,7 +160,7 @@
 				<label for="textinput-1">'+item.item_name_en +'</label> \
 					 <select name="flip-1" id="filp_'+item.index+'" data-role="slider" data-theme="c" class="ui-slider-switch"> \
 						<option value="false">Not Check</option> \
-						<option value="true">Check</option>	\
+						<option'+(item.result.value==true?'selected=""':'') + ' value="true">Check</option>	\
 					</select>'+	(item.result.min_photos? ' <button id="submit-1" style="margin: 0.5%;" data-mini="true" class="ui-btn ui-icon-camera ui-btn-icon-left ui-shadow ui-corner-all">Camera</button>' :'') +
 						'</div> ' );
 						
@@ -380,10 +169,12 @@
 				
 					$("#"+parent).append('<div class="ui-field-contain ui-shadow "> \
 				<label for="textinput-1">'+item.item_name_en +'</label> \
-					<input class="input-textbox"  type="text" name="textinput-5" id="textinput_'+item.index+'" placeholder="'+(item.result.unit?item.result.unit:'')+'" value="" data-mini="true"/>' 
+					<input class="input-textbox"  type="text" name="textinput-5" id="textinput_'+item.index+'" placeholder="'+(item.result.unit?item.result.unit:'')+'" value="'+item.result.value+'" data-mini="true"/>' 
 					+	(item.result.min_photos? ' <button id="submit-1" style="margin: 0.5%;" data-mini="true" class="ui-btn ui-icon-camera ui-btn-icon-left ui-shadow ui-corner-all">Camera</button>' :'') +
 				'</div>');
-					$('#textinput_'+item.index).trigger("create")
+					
+					$('#textinput_'+item.index).textinput();
+
 				}
 				
 			}			
@@ -394,10 +185,10 @@
 
 		<div id="info"  data-role="page" >
 			 <div data-role="header" data-position="fixed"  >
-			 <a href="#" data-rel="back"  class="ui-btn  ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-left ui-icon-carat-l">Back</a>
+			 <a href="index.html#report" rel="external"  class="ui-btn  ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-left ui-icon-carat-l">Back</a>
 	      
 			  <h1>Chimney System From</h1>
-			  	<a class="savebtn ui-btn-right ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-check">Save</a>
+			  	<a href="#"  class="savebtn ui-btn-right ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-check">Save</a>
 	    
 			<div data-role="navbar" data-grid="c" >
 				<ul >
@@ -427,7 +218,7 @@
 		</div>
 		<div id="control"  data-role="page"  >
 			 <div data-role="header" data-position="fixed"  >
-			 <a href="#" data-rel="back"  class="ui-btn  ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-left ui-icon-carat-l">Back</a>
+			 <a href="index.html#report" rel="external"  class="ui-btn  ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-left ui-icon-carat-l">Back</a>
 	      
 			  <h1>Chimney System From</h1>
 			  	<a href="#" class="savebtn ui-btn-right ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-check">Save</a>
@@ -448,7 +239,7 @@
 		</div>
 		<div id="fan"  data-role="page" >
 			 <div data-role="header" data-position="fixed"  >
-			 <a href="#" data-rel="back"  class="ui-btn  ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-left ui-icon-carat-l">Back</a>
+			 <a href="index.html#report" rel="external"  class="ui-btn  ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-left ui-icon-carat-l">Back</a>
 	      
 			  <h1>Chimney System From</h1>
 			  	<a href="#" class="savebtn ui-btn-right ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-check">Save</a>
@@ -473,7 +264,7 @@
 		</div>
 		<div id="chimney"  data-role="page" >
 			 <div data-role="header" data-position="fixed"  >
-			 <a href="#" data-rel="back"  class="ui-btn  ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-left ui-icon-carat-l">Back</a>
+			 <a href="index.html#report" rel="external"  class="ui-btn  ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-left ui-icon-carat-l">Back</a>
 	      
 			  <h1>Chimney System From</h1>
 			  	<a href="#" class="savebtn ui-btn-right ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-check">Save</a>
