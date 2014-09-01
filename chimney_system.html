@@ -11,6 +11,7 @@
 	<link rel="stylesheet" href="css/carousel-style.css">
 	<script src="js/jquery.js"></script>
 	<script src="js/jquery.mobile-1.4.3.min.js"></script>
+	<script type="text/javascript" charset="utf-8" src="cordova.js"></script>
 	<style>
 	.ui-field-contain>label{
 			float: left;
@@ -19,7 +20,7 @@
 	}
 	
 	
-	.ui-field-contain>label~[class*=ui-], .ui-field-contain .ui-controlgroup-controls
+	.ui-field-contain>label~[class*=ui-], .ui-field-contain .ui-controlgroup-controls .right-container
 	{
 		float: left;
 		width: 40%;
@@ -35,15 +36,21 @@
 		color: #ffffff;
 		text-shadow: 0 1px 0 #005599;
 	}
+
+	.transparent_img {
+    opacity: 0.4;
+    filter: alpha(opacity=40); /* For IE8 and earlier */
+	}
 	</style>
 	
 	<script>
-			
+			var currentCameraID="";
 			$(document).ready(function(){
+
 				var reportStr=	window.localStorage.getItem("report");
 				var report=JSON.parse(reportStr);
-				var froms =JSON.parse(window.localStorage.getItem("currentForm")); 
-				
+				var  froms=JSON.parse(window.localStorage.getItem("currentForm")); 
+				//alert(JSON.stringify(froms));
 				var items=jQuery.grep(froms.items, function(element, index){
 				  return element.cycle<=report.cycle_type;
 				});
@@ -70,9 +77,16 @@
 				}
 				$('select').slider(); 
 				$(".savebtn").click(function() {
-					 
+					
 					for(var index in items){ 
-					  
+					  if(items[index].result.min_photos){
+					  	var imgsrc =$('#photo_camera_'+items[index].index).attr("src");
+					  	
+					  	if(imgsrc!=items[index].result.exm_photos[0]){
+
+					  		items[index].result.photos.push(imgsrc);
+					  	}
+					  }
 					  if(items[index].result.type== "bool"){
 							
 							items[index].result.value=$("#filp_"+items[index].index).val();
@@ -83,8 +97,26 @@
 					  }
 					
 					}
+					
+					froms.device_id=$('#deviceID').val();
+					
+					if($('#photo_camera_device').attr("src")!="eximages/device.png"){
+						froms.device_photo=$('#photo_camera_device').attr("src");
+					}
+					
 					froms.items=items;
-					report.froms.push(froms);
+					var editFromIndex=-1;
+					for(var index in report.froms){ 
+					  	if(report.froms[index].id==froms.id){
+					  		editFromIndex=index;
+					  	}
+					}
+					if(editFromIndex==-1){
+						report.froms.push(froms);	
+					}else{
+						report.froms[editFromIndex]	=froms;
+					}
+					
 					window.localStorage.setItem("report", JSON.stringify(report));
 				});
 				$(".info-btn").click(function(){
@@ -118,7 +150,12 @@
 							$(".fan_count").text(calCounter(items,"fan"));
 							$(".chimney_count").text(calCounter(items,"chimney"));
 				});
-				
+
+				$('.camera-btn').bind( "click", function(event, ui){
+					
+						currentCameraID=event.currentTarget.id;
+						captureImage();
+				});
 				$('.ui-slider-switch').on('change', function(event, ui) {
 				
 							var res = event.currentTarget.id.split("_");
@@ -138,6 +175,15 @@
 				$(".control_count").text(calCounter(items,"controller"));
 				$(".fan_count").text(calCounter(items,"fan"));
 				$(".chimney_count").text(calCounter(items,"chimney"));
+
+				if(froms.device_id!=""){
+					$('#deviceID').val(froms.device_id);
+				}
+				if(froms.device_photo!=""){
+					 $('#photo_camera_device').attr("src", froms.device_photo);
+					 $('#photo_camera_device').removeClass("transparent_img")
+					 $('#popphoto_camera_device').attr("src", froms.device_photo);
+				}
 			});
 			function calCounter(items,group){
 					var count=0;
@@ -160,24 +206,78 @@
 				<label for="textinput-1">'+item.item_name_en +'</label> \
 					 <select name="flip-1" id="filp_'+item.index+'" data-role="slider" data-theme="c" class="ui-slider-switch"> \
 						<option value="false">Not Check</option> \
-						<option'+(item.result.value==true?'selected=""':'') + ' value="true">Check</option>	\
-					</select>'+	(item.result.min_photos? ' <button id="submit-1" style="margin: 0.5%;" data-mini="true" class="ui-btn ui-icon-camera ui-btn-icon-left ui-shadow ui-corner-all">Camera</button>' :'') +
+						<option '+(item.result.value=="true"?'selected=""':'') + ' value="true">Check</option>	\
+					</select>'+	(item.result.min_photos? '<div style="float: left; width: 40%"  class="right-container">  <button id="camera_'+item.index+'" style="margin:5px" id="submit-1" data-mini="true"    class="camera-btn ui-btn ui-icon-camera ui-btn-icon-left ui-shadow ui-corner-all">Camera</button>\
+			<div  style="float: right;" ><a href="#popupParis'+item.index+'" data-rel="popup" data-position-to="window" data-transition="fade"><img id="photo_camera_'+item.index+'" alt="Smiley face" '+(item.result.photos.length==0?'class="transparent_img"':'') +' src="'+(item.result.photos.length>0?item.result.photos[0]:item.result.exm_photos[0])+'" width="100" height="70" style="margin:5px"/></a></div>\
+			 </div><div data-role="popup" id="popupParis'+item.index+'" data-overlay-theme="b" data-theme="b" data-corners="false">\
+			    <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-a ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a><img src="'+(item.result.photos.length>0?item.result.photos[0]:item.result.exm_photos[0])+'" id="popphoto_camera_'+item.index+'" class="popphoto"  style="max-height:250px;" alt="Paris, France"></div>' :'') +
 						'</div> ' );
-						
+						if(item.result.min_photos){
+							$('#popupParis'+item.index).trigger("create");
+							$('#popupParis'+item.index).popup();
+						}
 				}else if(item.result.type == "s_value"){
 			
 				
 					$("#"+parent).append('<div class="ui-field-contain ui-shadow "> \
 				<label for="textinput-1">'+item.item_name_en +'</label> \
 					<input class="input-textbox"  type="text" name="textinput-5" id="textinput_'+item.index+'" placeholder="'+(item.result.unit?item.result.unit:'')+'" value="'+item.result.value+'" data-mini="true"/>' 
-					+	(item.result.min_photos? ' <button id="submit-1" style="margin: 0.5%;" data-mini="true" class="ui-btn ui-icon-camera ui-btn-icon-left ui-shadow ui-corner-all">Camera</button>' :'') +
+					+	(item.result.min_photos? '<div style="float: left; width: 40%"  class="right-container">  <button id="camera_'+item.index+'" style="margin:5px" id="submit-1" data-mini="true"    class="camera-btn ui-btn ui-icon-camera ui-btn-icon-left ui-shadow ui-corner-all">Camera</button>\
+			<div  style="float: right;" ><a href="#popupParis'+item.index+'" data-rel="popup" data-position-to="window" data-transition="fade"><img id="photo_camera_'+item.index+'" alt="Smiley face" '+(item.result.photos.length==0?'class="transparent_img"':'') +' src="'+(item.result.photos.length>0?item.result.photos[0]:item.result.exm_photos[0])+'" width="100" height="70" style="margin:5px"/></a></div>\
+			 </div><div data-role="popup" id="popupParis'+item.index+'" data-overlay-theme="b" data-theme="b" data-corners="false">\
+			    <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-a ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a><img src="'+(item.result.photos.length>0?item.result.photos[0]:item.result.exm_photos[0])+'" id="popphoto_camera_'+item.index+'" class="popphoto"  style="max-height:250px;" alt="Paris, France"></div>' :'') +
 				'</div>');
-					
+				if(item.result.min_photos){
+					$('#popupParis'+item.index).trigger("create");
+					$('#popupParis'+item.index).popup();
+				}
 					$('#textinput_'+item.index).textinput();
 
 				}
 				
-			}			
+			}
+
+			function onSuccess(imageURI) {
+				
+				var image = document.getElementById('photo_'+currentCameraID);
+				var image2 = document.getElementById('popphoto_'+currentCameraID);
+				image.src = imageURI;
+				image2.src = imageURI;
+				$('#photo_'+currentCameraID).removeClass('transparent_img');
+			}
+
+			function onFail(message) {
+				alert('Failed because: ' + message);
+			}
+
+		    // A button will call this function
+		    //
+		    function captureImage() {
+		        // Launch device camera application,
+		        // allowing user to capture up to 2 images
+		       
+		        
+		         navigator.camera.getPicture(onSuccess, onFail, { quality: 50,
+				destinationType: Camera.DestinationType.FILE_URI });
+		    }
+
+		    			
+	       function onScanBarcode(){
+
+				cordova.plugins.barcodeScanner.scan(
+				  function (result) {
+					  alert("We got a barcode\n" +
+							"Result: " + result.text + "\n" +
+							"Format: " + result.format + "\n" +
+							"Cancelled: " + result.cancelled);
+
+					  $("#deviceID").val(result.text);
+				  }, 
+				  function (error) {
+					  alert("Scanning failed: " + error);
+				  }
+			   );
+		   }			
 	</script>
 </head>
 <body>
@@ -185,76 +285,104 @@
 
 		<div id="info"  data-role="page" >
 			 <div data-role="header" data-position="fixed"  >
-			 <a href="index.html#report" rel="external"  class="ui-btn  ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-left ui-icon-carat-l">Back</a>
+			 <a href="maint_report.html" rel="external"  class="ui-btn  ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-left ui-icon-carat-l">Back</a>
 	      
 			  <h1>Chimney System From</h1>
-			  	<a href="#"  class="savebtn ui-btn-right ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-check">Save</a>
+			  		<a href="#popupSaveSuccessInfo" data-rel="popup" data-position-to="window" data-transition="pop" class="savebtn ui-btn-right ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-check">Save</a>
+	    
 	    
 			<div data-role="navbar" data-grid="c" >
 				<ul >
-				<li><a  data-prefetch="true" data-transition="slide" data-ajax="false" class="info-page ui-btn-active">Info<span  class="info_count ui-li-count">2</span></a></li>
-					<li><a href="#control" data-prefetch="true" data-transition="slide" data-ajax="false" class="control-btn" >Control<span class="control_count ui-li-count">9</span></a></li>
-					<li><a href="#fan" data-prefetch="true" data-transition="slide" data-ajax="false" class="fan-btn" >Fan<span class="fan_count ui-li-count">3</span></a></li>
-					<li><a href="#chimney" data-prefetch="true" data-transition="slide" data-ajax="false" class="chimney-btn">Chimney<span class="chimney_count ui-li-count">2</span></a></li>
+				<li><a  data-prefetch="true"  data-ajax="false" class="info-page ui-btn-active">Info<span  class="info_count ui-li-count">2</span></a></li>
+					<li><a href="#control" data-prefetch="true"  data-ajax="false" class="control-btn" >Control<span class="control_count ui-li-count">9</span></a></li>
+					<li><a href="#fan" data-prefetch="true"  data-ajax="false" class="fan-btn" >Fan<span class="fan_count ui-li-count">3</span></a></li>
+					<li><a href="#chimney" data-prefetch="true"  data-ajax="false" class="chimney-btn">Chimney<span class="chimney_count ui-li-count">2</span></a></li>
 				
 				</ul>
 			</div>
 			</div><!-- /header -->
 	
 		
-		   
-			   
+		  	 <div data-role="popup" data-theme="b" id="popupSaveSuccessInfo"  class="ui-content" style="max-width:280px">
+				    <a  href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-b ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
+					<p>Save successfully!!</p>
+				</div>
+		  
 		<div class="ui-field-contain ui-shadow ">
 			<label for="textinput-1">Device ID</label>
-				 <button  id="submit-1" data-mini="true" class=" ui-btn ui-icon-search ui-btn-icon-left ui-shadow ui-corner-all">Scan QR Code</button>
-			
+				<div style="float: left; width: 40%"  class="right-container">
+				 <button style="margin:5px" id="submit-1" data-mini="true" onClick="onScanBarcode()" class=" ui-btn ui-icon-search ui-btn-icon-left ui-shadow ui-corner-all">Scan QRcode</button>
+				
+				
+				<input   class="input-textbox"  type="text" name="textinput-5" id="deviceID"   />
+					
+				
+				</div>
 		</div>
-		<div class="ui-field-contain ui-shadow ">
+		<div class="ui-field-contain ui-shadow ui-corner-all">
 			<label for="textinput-1">Device Photo</label>
-			 <button  id="submit-1" data-mini="true" class="ui-btn ui-icon-camera ui-btn-icon-left ui-shadow ui-corner-all">Camera</button>
-			
+			<div style="float: left; width: 40%"  class="right-container">
+			 <button id="camera_device" style="margin:5px" id="submit-1" data-mini="true"    class="camera-btn ui-btn ui-icon-camera ui-btn-icon-left ui-shadow ui-corner-all">Camera</button>
+			<div  style="float: right;" >
+			 <a href="#popupParis" data-rel="popup" data-position-to="window" data-transition="fade"><img id="photo_camera_device" alt="Smiley face" class="transparent_img" src="eximages/device.png" width="100" height="70" style="margin:5px"/></a>
+			 </div>
+			 
+			 </div>
+			<div data-role="popup" id="popupParis" data-overlay-theme="b" data-theme="b" data-corners="false">
+			    <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-a ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a><img src="eximages/device.png" id="popphoto_camera_device" class="popphoto"  style="max-height:250px;" alt="Paris, France">
+			</div>
 		</div>
 			
 		</div>
 		<div id="control"  data-role="page"  >
 			 <div data-role="header" data-position="fixed"  >
-			 <a href="index.html#report" rel="external"  class="ui-btn  ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-left ui-icon-carat-l">Back</a>
+			 <a href="maint_report.html" rel="external"  class="ui-btn  ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-left ui-icon-carat-l">Back</a>
 	      
 			  <h1>Chimney System From</h1>
-			  	<a href="#" class="savebtn ui-btn-right ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-check">Save</a>
+			  		<a href="#popupSaveSuccessControl" data-rel="popup" data-position-to="window" data-transition="pop" class="savebtn ui-btn-right ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-check">Save</a>
+	    
 	    
 			<div data-role="navbar" data-grid="c" >
 				<ul >
-				<li><a href="#info" data-prefetch="true" data-transition="slide" data-ajax="false" class="info-btn ">Info<span  class="info_count ui-li-count">2</span></a></li>
-					<li><a  data-prefetch="true" data-transition="slide" data-ajax="false" class="control-page ui-btn-active" >Control<span class="control_count ui-li-count">9</span></a></li>
-					<li><a href="#fan" data-prefetch="true" data-transition="slide" data-ajax="false" class="fan-btn" >Fan<span class="fan_count ui-li-count">3</span></a></li>
-					<li><a href="#chimney" data-prefetch="true" data-transition="slide" data-ajax="false" class="chimney-btn">Chimney<span class="chimney_count ui-li-count">2</span></a></li>
+				<li><a href="#info" data-prefetch="true"  data-ajax="false" class="info-btn ">Info<span  class="info_count ui-li-count">2</span></a></li>
+					<li><a  data-prefetch="true"  data-ajax="false" class="control-page ui-btn-active" >Control<span class="control_count ui-li-count">9</span></a></li>
+					<li><a href="#fan" data-prefetch="true"  data-ajax="false" class="fan-btn" >Fan<span class="fan_count ui-li-count">3</span></a></li>
+					<li><a href="#chimney" data-prefetch="true"  data-ajax="false" class="chimney-btn">Chimney<span class="chimney_count ui-li-count">2</span></a></li>
 				
 				</ul>
 			</div>
 			</div><!-- /header -->
+			
+		   <div data-role="popup" data-theme="b" id="popupSaveSuccessControl"  class="ui-content" style="max-width:280px">
+				    <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-b ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
+					<p>Save successfully!!</p>
+				</div>
 				<div id="control_items">
 				
 				</div>
 		</div>
 		<div id="fan"  data-role="page" >
 			 <div data-role="header" data-position="fixed"  >
-			 <a href="index.html#report" rel="external"  class="ui-btn  ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-left ui-icon-carat-l">Back</a>
+			 <a href="maint_report.html" rel="external"  class="ui-btn  ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-left ui-icon-carat-l">Back</a>
 	      
 			  <h1>Chimney System From</h1>
-			  	<a href="#" class="savebtn ui-btn-right ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-check">Save</a>
+			  	<a href="#popupSaveSuccessFan" data-rel="popup" data-position-to="window" data-transition="pop" class="savebtn ui-btn-right ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-check">Save</a>
+	    
 	    
 			<div data-role="navbar" data-grid="c" >
 				<ul >
-				<li><a href="#info" data-prefetch="true" data-transition="slide" data-ajax="false" class="info-btn ">Info<span  class="info_count ui-li-count">2</span></a></li>
-					<li><a href="#control" data-prefetch="true" data-transition="slide" data-ajax="false" class="control-btn " >Control<span class="control_count ui-li-count">9</span></a></li>
-					<li><a  data-prefetch="true" data-transition="slide" data-ajax="false" class="fan-page ui-btn-active" >Fan<span class="fan_count ui-li-count">3</span></a></li>
-					<li><a href="#chimney" data-prefetch="true" data-transition="slide" data-ajax="false" class="chimney-btn">Chimney<span class="chimney_count ui-li-count">2</span></a></li>
+				<li><a href="#info" data-prefetch="true"  data-ajax="false" class="info-btn ">Info<span  class="info_count ui-li-count">2</span></a></li>
+					<li><a href="#control" data-prefetch="true"  data-ajax="false" class="control-btn " >Control<span class="control_count ui-li-count">9</span></a></li>
+					<li><a  data-prefetch="true"  data-ajax="false" class="fan-page ui-btn-active" >Fan<span class="fan_count ui-li-count">3</span></a></li>
+					<li><a href="#chimney" data-prefetch="true"  data-ajax="false" class="chimney-btn">Chimney<span class="chimney_count ui-li-count">2</span></a></li>
 				
 				</ul>
 			</div>
 			</div><!-- /header -->
-	
+	<div data-role="popup" data-theme="b" id="popupSaveSuccessFan"  class="ui-content" style="max-width:280px">
+				    <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-b ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
+					<p>Save successfully!!</p>
+				</div>
 		
 		   
 			    
@@ -262,34 +390,38 @@
 				
 				</div>
 		</div>
+
 		<div id="chimney"  data-role="page" >
 			 <div data-role="header" data-position="fixed"  >
-			 <a href="index.html#report" rel="external"  class="ui-btn  ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-left ui-icon-carat-l">Back</a>
+			 <a href="maint_report.html" rel="external"  class="ui-btn  ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-left ui-icon-carat-l">Back</a>
 	      
 			  <h1>Chimney System From</h1>
-			  	<a href="#" class="savebtn ui-btn-right ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-check">Save</a>
+			  	<a href="#popupSaveSuccessChimney" data-rel="popup" data-position-to="window" data-transition="pop" class="savebtn ui-btn-right ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-check">Save</a>
 	    
 			<div data-role="navbar" data-grid="c" >
 				<ul >
-				<li><a href="#info" data-prefetch="true" data-transition="slide" data-ajax="false" class="info-btn ">Info<span  class="info_count ui-li-count">2</span></a></li>
-					<li><a href="#control" data-prefetch="true" data-transition="slide" data-ajax="false" class="control-btn " >Control<span class="control_count ui-li-count">9</span></a></li>
-					<li><a href="#fan" data-prefetch="true" data-transition="slide" data-ajax="false" class="fan-btn" >Fan<span class="fan_count ui-li-count">3</span></a></li>
-					<li><a   data-prefetch="true" data-transition="slide" data-ajax="false" class="chimney-page ui-btn-active">Chimney<span class="chimney_count ui-li-count">2</span></a></li>
+				<li><a href="#info" data-prefetch="true"  data-ajax="false" class="info-btn ">Info<span  class="info_count ui-li-count">2</span></a></li>
+					<li><a href="#control" data-prefetch="true"  data-ajax="false" class="control-btn " >Control<span class="control_count ui-li-count">9</span></a></li>
+					<li><a href="#fan" data-prefetch="true"  data-ajax="false" class="fan-btn" >Fan<span class="fan_count ui-li-count">3</span></a></li>
+					<li><a   data-prefetch="true"  data-ajax="false" class="chimney-page ui-btn-active">Chimney<span class="chimney_count ui-li-count">2</span></a></li>
 				
 				
 				</ul>
 			</div>
 			</div><!-- /header -->
-	
+	<div data-role="popup" data-theme="b" id="popupSaveSuccessChimney"  class="ui-content" style="max-width:280px">
+				    <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-b ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
+					<p>Save successfully!!</p>
+				</div>
 		
 		   
 			    
 			<div id="chimney_items">
 				
 				</div>
-		
+			
 				</div>	
-	
+		
 		<!-- /footer -->
 		
 		<script src="js/zepto.js"></script>
