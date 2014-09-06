@@ -50,31 +50,24 @@
 				var reportStr=	window.localStorage.getItem("report");
 				var report=JSON.parse(reportStr);
 				var  froms=JSON.parse(window.localStorage.getItem("currentForm")); 
+				 var custom_tab_list=froms.catalogs;
+
 				//alert(JSON.stringify(froms));
-				var items=jQuery.grep(froms.items, function(element, index){
-				  return element.cycle<=report.cycle_type;
-				});
-			
-		
-				var controllers = jQuery.grep(items, function(element, index){
-				  return element.group=="controller";
-				});
-				var fans = jQuery.grep(items, function(element, index){
-				  return element.group=="fan";
-				});
-				var chimneys = jQuery.grep(items, function(element, index){
-				  return element.group=="chimney";
-				});
 				
-				for(var index in controllers){ 
-					  addFormItem("control_items",controllers[index]);
+				var items=froms.items;
+				updateNavBar(custom_tab_list);
+			
+				for(var i in custom_tab_list){
+					//$('#tab_navbar').append(createCustomTabTitle(custom_tab_list[i]));
+					$('#tab_container').append(createCustomTab(custom_tab_list[i]));
+					var tmp = jQuery.grep(items, function(element, index){
+					  return element.group==custom_tab_list[i];
+					});
+					for(var j in tmp){ 
+					  addFormItem(custom_tab_list[i]+"_items",tmp[j],parseInt(j)+1);
+					}
 				}
-				for(var index in fans){ 
-					  addFormItem("fan_items",fans[index]);
-				}
-				for(var index in chimneys){ 
-					  addFormItem("chimney_items",chimneys[index]);
-				}
+				//$('#tab_navbar_com').trigger('create');
 				$('select').slider(); 
 				$(".savebtn").click(function() {
 					
@@ -119,22 +112,15 @@
 					
 					window.localStorage.setItem("report", JSON.stringify(report));
 				});
-				$(".info-btn").click(function(){
-						$(".info-page").addClass("ui-btn-active");
-						
+				$(".tab-btn").click(function(event, ui){
+						$(event.currentTarget.id).addClass("ui-btn-active");
+						$('.custom_tab').hide();
+						var tabname=event.currentTarget.id.split("_");
+						$('#'+tabname).show();
 				});
-				$(".control-btn").click(function(){
-						$(".control-page").addClass("ui-btn-active");
-						
-				});
-				$(".fan-btn").click(function(){
-						$(".fan-page").addClass("ui-btn-active");
-						
-				});
-				$(".chimney-btn").click(function(){
-						$(".chimney-page").addClass("ui-btn-active");
-						
-				});
+						$('.custom_tab').hide();
+						$('#info').show();
+
 				$(".input-textbox").change(function(event, ui) {
 					var res = event.currentTarget.id.split("_");
 							var index =res[res.length-1];
@@ -146,9 +132,7 @@
 										break;
 								}
 							}
-							$(".control_count").text(calCounter(items,"controller"));
-							$(".fan_count").text(calCounter(items,"fan"));
-							$(".chimney_count").text(calCounter(items,"chimney"));
+							refreshAllCounter();
 				});
 
 				$('.camera-btn').bind( "click", function(event, ui){
@@ -168,14 +152,14 @@
 										break;
 								}
 							}
-							$(".control_count").text(calCounter(items,"controller"));
-							$(".fan_count").text(calCounter(items,"fan"));
-							$(".chimney_count").text(calCounter(items,"chimney"));
+						refreshAllCounter();
 				});
-				$(".control_count").text(calCounter(items,"controller"));
-				$(".fan_count").text(calCounter(items,"fan"));
-				$(".chimney_count").text(calCounter(items,"chimney"));
-
+				function refreshAllCounter(){
+					for(var i in custom_tab_list){
+						$("."+custom_tab_list[i]+"_count").text(calCounter(items,custom_tab_list[i]));
+					}
+				}
+				refreshAllCounter();
 				if(froms.device_id!=""){
 					$('#deviceID').val(froms.device_id);
 				}
@@ -197,13 +181,13 @@
 					}
 					return count;
 			}
-			function addFormItem(parent,item){
+			function addFormItem(parent,item,i){
 		//	 
 			
 				
 				if(item.result.type == "bool"){
 				$("#"+parent).append('<div class="ui-field-contain ui-shadow "> \
-				<label for="textinput-1">'+item.item_name_en +'</label> \
+				<label for="textinput-1">'+i+'. '+item.item_name_en +'</label> \
 					 <select name="flip-1" id="filp_'+item.index+'" data-role="slider" data-theme="c" class="ui-slider-switch"> \
 						<option value="false">Not Check</option> \
 						<option '+(item.result.value=="true"?'selected=""':'') + ' value="true">Check</option>	\
@@ -220,7 +204,7 @@
 			
 				
 					$("#"+parent).append('<div class="ui-field-contain ui-shadow "> \
-				<label for="textinput-1">'+item.item_name_en +'</label> \
+				<label for="textinput-1">'+i+'. '+item.item_name_en +'</label> \
 					<input class="input-textbox"  type="text" name="textinput-5" id="textinput_'+item.index+'" placeholder="'+(item.result.unit?item.result.unit:'')+'" value="'+item.result.value+'" data-mini="true"/>' 
 					+	(item.result.min_photos? '<div style="float: left; width: 40%"  class="right-container">  <button id="camera_'+item.index+'" style="margin:5px" id="submit-1" data-mini="true"    class="camera-btn ui-btn ui-icon-camera ui-btn-icon-left ui-shadow ui-corner-all">Camera</button>\
 			<div  style="float: right;" ><a href="#popupParis'+item.index+'" data-rel="popup" data-position-to="window" data-transition="fade"><img id="photo_camera_'+item.index+'" alt="Smiley face" '+(item.result.photos.length==0?'class="transparent_img"':'') +' src="'+(item.result.photos.length>0?item.result.photos[0]:item.result.exm_photos[0])+'" width="100" height="70" style="margin:5px"/></a></div>\
@@ -235,6 +219,16 @@
 
 				}
 				
+			}
+			function updateNavBar(custom_tab_list){
+				$('#tab_navbar').remove();
+				var navbar='<div id="tab_navbar" data-role="navbar" data-grid="'+String.fromCharCode(96 + custom_tab_list.length)+'" ><ul>';
+				navbar+='<li><a  data-prefetch="true"  data-ajax="false" id="info_btn" class="tab-btn ui-btn-active">Info<span  class="info_count ui-li-count">2</span></a></li>';
+				for(var i in custom_tab_list){
+					navbar+=createCustomTabTitle(custom_tab_list[i]);
+				}				
+				navbar+='</ul></div>';
+				$('#navbar_container').append(navbar).trigger('create');
 			}
 
 			function onSuccess(imageURI) {
@@ -260,8 +254,16 @@
 		         navigator.camera.getPicture(onSuccess, onFail, { quality: 50,
 				destinationType: Camera.DestinationType.FILE_URI });
 		    }
-
-		    			
+		    function createCustomTab(name){
+		    	return '<div id="'+name+'"  data-role="tabs" class="custom_tab" >\
+								<div id="'+name+'_items">\
+								</div>\
+						</div>';
+		    }
+		     function createCustomTabTitle(name){
+		    	return '<li><a href="#" data-prefetch="true" id="'+name+'_btn"  data-ajax="false" class="tab-btn ui-link ui-btn">'+capitaliseFirstLetter(name)+'\
+		    		<span class="'+name+'_count ui-li-count">2</span></a></li>';
+		    }			
 	       function onScanBarcode(){
 
 				cordova.plugins.barcodeScanner.scan(
@@ -277,29 +279,33 @@
 					  alert("Scanning failed: " + error);
 				  }
 			   );
-		   }			
+		   }		
+		   function capitaliseFirstLetter(string)
+			{
+			    return string.charAt(0).toUpperCase() + string.slice(1);
+			}	
 	</script>
 </head>
 <body>
 
 
-		<div id="info"  data-role="page" >
+		<div id="chimney_from"  data-role="page" >
 			 <div data-role="header" data-position="fixed"  >
 			 <a href="maint_report.html" rel="external"  class="ui-btn  ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-left ui-icon-carat-l">Back</a>
 	      
 			  <h1>Chimney System From</h1>
 			  		<a href="#popupSaveSuccessInfo" data-rel="popup" data-position-to="window" data-transition="pop" class="savebtn ui-btn-right ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-check">Save</a>
 	    
-	    
-			<div data-role="navbar" data-grid="c" >
-				<ul >
-				<li><a  data-prefetch="true"  data-ajax="false" class="info-page ui-btn-active">Info<span  class="info_count ui-li-count">2</span></a></li>
-					<li><a href="#control" data-prefetch="true"  data-ajax="false" class="control-btn" >Control<span class="control_count ui-li-count">9</span></a></li>
-					<li><a href="#fan" data-prefetch="true"  data-ajax="false" class="fan-btn" >Fan<span class="fan_count ui-li-count">3</span></a></li>
-					<li><a href="#chimney" data-prefetch="true"  data-ajax="false" class="chimney-btn">Chimney<span class="chimney_count ui-li-count">2</span></a></li>
+	    	<div id="navbar_container">
+	    		<div id="tab_navbar" data-role="navbar" data-grid="c" >
+				<ul>
+				<li><a  data-prefetch="true"  data-ajax="false" id="info_btn" class="tab-btn ui-btn-active">Info<span  class="info_count ui-li-count">2</span></a></li>
+					
 				
 				</ul>
 			</div>
+	    	</div>
+			
 			</div><!-- /header -->
 	
 		
@@ -307,120 +313,33 @@
 				    <a  href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-b ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
 					<p>Save successfully!!</p>
 				</div>
-		  
-		<div class="ui-field-contain ui-shadow ">
-			<label for="textinput-1">Device ID</label>
-				<div style="float: left; width: 40%"  class="right-container">
-				 <button style="margin:5px" id="submit-1" data-mini="true" onClick="onScanBarcode()" class=" ui-btn ui-icon-search ui-btn-icon-left ui-shadow ui-corner-all">Scan QRcode</button>
-				
-				
-				<input   class="input-textbox"  type="text" name="textinput-5" id="deviceID"   />
+			<div id="tab_container">
+		<div id="info" data-role="tabs" class="custom_tab">
+			<div class="ui-field-contain ui-shadow ">
+				<label for="textinput-1">Device ID</label>
+					<div style="float: left; width: 40%"  class="right-container">
+					 <button style="margin:5px" id="submit-1" data-mini="true" onClick="onScanBarcode()" class=" ui-btn ui-icon-search ui-btn-icon-left ui-shadow ui-corner-all">Scan QRcode</button>
 					
-				
+					
+					<input   class="input-textbox"  type="text" name="textinput-5" id="deviceID"   />
+						
+					
+					</div>
+			</div>
+			<div class="ui-field-contain ui-shadow ui-corner-all">
+				<label for="textinput-1">Device Photo</label>
+				<div style="float: left; width: 40%"  class="right-container">
+				 <button id="camera_device" style="margin:5px" id="submit-1" data-mini="true"    class="camera-btn ui-btn ui-icon-camera ui-btn-icon-left ui-shadow ui-corner-all">Camera</button>
+				<div  style="float: right;" >
+				 <a href="#popupParis" data-rel="popup" data-position-to="window" data-transition="fade"><img id="photo_camera_device" alt="Smiley face" class="transparent_img" src="eximages/device.png" width="100" height="70" style="margin:5px"/></a>
+				 </div>
+				 
+				 </div>
+				<div data-role="popup" id="popupParis" data-overlay-theme="b" data-theme="b" data-corners="false">
+				    <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-a ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a><img src="eximages/device.png" id="popphoto_camera_device" class="popphoto"  style="max-height:250px;" alt="Paris, France">
 				</div>
-		</div>
-		<div class="ui-field-contain ui-shadow ui-corner-all">
-			<label for="textinput-1">Device Photo</label>
-			<div style="float: left; width: 40%"  class="right-container">
-			 <button id="camera_device" style="margin:5px" id="submit-1" data-mini="true"    class="camera-btn ui-btn ui-icon-camera ui-btn-icon-left ui-shadow ui-corner-all">Camera</button>
-			<div  style="float: right;" >
-			 <a href="#popupParis" data-rel="popup" data-position-to="window" data-transition="fade"><img id="photo_camera_device" alt="Smiley face" class="transparent_img" src="eximages/device.png" width="100" height="70" style="margin:5px"/></a>
-			 </div>
-			 
-			 </div>
-			<div data-role="popup" id="popupParis" data-overlay-theme="b" data-theme="b" data-corners="false">
-			    <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-a ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a><img src="eximages/device.png" id="popphoto_camera_device" class="popphoto"  style="max-height:250px;" alt="Paris, France">
 			</div>
 		</div>
-			
-		</div>
-		<div id="control"  data-role="page"  >
-			 <div data-role="header" data-position="fixed"  >
-			 <a href="maint_report.html" rel="external"  class="ui-btn  ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-left ui-icon-carat-l">Back</a>
-	      
-			  <h1>Chimney System From</h1>
-			  		<a href="#popupSaveSuccessControl" data-rel="popup" data-position-to="window" data-transition="pop" class="savebtn ui-btn-right ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-check">Save</a>
-	    
-	    
-			<div data-role="navbar" data-grid="c" >
-				<ul >
-				<li><a href="#info" data-prefetch="true"  data-ajax="false" class="info-btn ">Info<span  class="info_count ui-li-count">2</span></a></li>
-					<li><a  data-prefetch="true"  data-ajax="false" class="control-page ui-btn-active" >Control<span class="control_count ui-li-count">9</span></a></li>
-					<li><a href="#fan" data-prefetch="true"  data-ajax="false" class="fan-btn" >Fan<span class="fan_count ui-li-count">3</span></a></li>
-					<li><a href="#chimney" data-prefetch="true"  data-ajax="false" class="chimney-btn">Chimney<span class="chimney_count ui-li-count">2</span></a></li>
-				
-				</ul>
-			</div>
-			</div><!-- /header -->
-			
-		   <div data-role="popup" data-theme="b" id="popupSaveSuccessControl"  class="ui-content" style="max-width:280px">
-				    <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-b ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
-					<p>Save successfully!!</p>
-				</div>
-				<div id="control_items">
-				
-				</div>
-		</div>
-		<div id="fan"  data-role="page" >
-			 <div data-role="header" data-position="fixed"  >
-			 <a href="maint_report.html" rel="external"  class="ui-btn  ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-left ui-icon-carat-l">Back</a>
-	      
-			  <h1>Chimney System From</h1>
-			  	<a href="#popupSaveSuccessFan" data-rel="popup" data-position-to="window" data-transition="pop" class="savebtn ui-btn-right ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-check">Save</a>
-	    
-	    
-			<div data-role="navbar" data-grid="c" >
-				<ul >
-				<li><a href="#info" data-prefetch="true"  data-ajax="false" class="info-btn ">Info<span  class="info_count ui-li-count">2</span></a></li>
-					<li><a href="#control" data-prefetch="true"  data-ajax="false" class="control-btn " >Control<span class="control_count ui-li-count">9</span></a></li>
-					<li><a  data-prefetch="true"  data-ajax="false" class="fan-page ui-btn-active" >Fan<span class="fan_count ui-li-count">3</span></a></li>
-					<li><a href="#chimney" data-prefetch="true"  data-ajax="false" class="chimney-btn">Chimney<span class="chimney_count ui-li-count">2</span></a></li>
-				
-				</ul>
-			</div>
-			</div><!-- /header -->
-	<div data-role="popup" data-theme="b" id="popupSaveSuccessFan"  class="ui-content" style="max-width:280px">
-				    <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-b ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
-					<p>Save successfully!!</p>
-				</div>
-		
-		   
-			    
-			<div id="fan_items">
-				
-				</div>
-		</div>
-
-		<div id="chimney"  data-role="page" >
-			 <div data-role="header" data-position="fixed"  >
-			 <a href="maint_report.html" rel="external"  class="ui-btn  ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-left ui-icon-carat-l">Back</a>
-	      
-			  <h1>Chimney System From</h1>
-			  	<a href="#popupSaveSuccessChimney" data-rel="popup" data-position-to="window" data-transition="pop" class="savebtn ui-btn-right ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-check">Save</a>
-	    
-			<div data-role="navbar" data-grid="c" >
-				<ul >
-				<li><a href="#info" data-prefetch="true"  data-ajax="false" class="info-btn ">Info<span  class="info_count ui-li-count">2</span></a></li>
-					<li><a href="#control" data-prefetch="true"  data-ajax="false" class="control-btn " >Control<span class="control_count ui-li-count">9</span></a></li>
-					<li><a href="#fan" data-prefetch="true"  data-ajax="false" class="fan-btn" >Fan<span class="fan_count ui-li-count">3</span></a></li>
-					<li><a   data-prefetch="true"  data-ajax="false" class="chimney-page ui-btn-active">Chimney<span class="chimney_count ui-li-count">2</span></a></li>
-				
-				
-				</ul>
-			</div>
-			</div><!-- /header -->
-	<div data-role="popup" data-theme="b" id="popupSaveSuccessChimney"  class="ui-content" style="max-width:280px">
-				    <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-b ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
-					<p>Save successfully!!</p>
-				</div>
-		
-		   
-			    
-			<div id="chimney_items">
-				
-				</div>
-			
-				</div>	
 		
 		<!-- /footer -->
 		
