@@ -225,8 +225,7 @@
 							window.localStorage.setItem("report", JSON.stringify(report));
 						});
 						$("#add_btn").click(function (e) {
-							var new_froms={};
-						   	
+								var new_froms={};
 							   	var new_froms = jQuery.extend(true, {}, empty_froms[current_catalog_index]);
 							   	new_froms.id=report.id+"_"+current_catalog_index+"_"+(report.froms.length+1)+getTimeStr();
 							    new_froms.items=jQuery.grep(new_froms.items, function(element, index){
@@ -268,13 +267,11 @@
 								
 								var res =this.id.split("_");
 								var index =res[res.length-1];
-								if(current_catalog_index==2){
-									var current_froms=fromhash[current_catalog_index][index];
-									window.localStorage.setItem("currentForm", JSON.stringify(current_froms));
-									window.location.href="maint_from.html";
-								}else{
-									window.location.href="comingsoon.html";
-								}
+								
+								var current_froms=fromhash[current_catalog_index][index];
+								window.localStorage.setItem("currentForm", JSON.stringify(current_froms));
+								window.location.href="maint_from.html";
+								
 
 							});
 							$(".from-item").click(function(event, ui) {
@@ -356,8 +353,6 @@
 					data-transition="pop" \
 					class="edit_btn ui-btn ui-btn-icon-notext ui-icon-edit ui-btn-a"></a>\
 				</li>');
-
-						
 					
 			}
 

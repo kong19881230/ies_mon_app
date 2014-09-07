@@ -18,9 +18,16 @@
 			width: 55%;
 			margin: .5em 2% 2% 2%;
 	}
+	.mycontrolgroup .ui-controlgroup-controls
+	{
+		width: 100% !important;
+	}
+	.controlgroup-textinput
+	{
+		width: 44.5% !important;
+	}
 	
-	
-	.ui-field-contain>label~[class*=ui-], .ui-field-contain .ui-controlgroup-controls .right-container
+	.ui-field-contain>label~[class*=ui-], .ui-field-contain .right-container 
 	{
 		float: left;
 		width: 40%;
@@ -51,9 +58,15 @@
 				var report=JSON.parse(reportStr);
 				var  froms=JSON.parse(window.localStorage.getItem("currentForm")); 
 				 var custom_tab_list=froms.catalogs;
-
-				//alert(JSON.stringify(froms));
+				var from_default_name={};
+	
+				from_default_name["heat"]={"cn":"熱交換器表單","en":"Heat Transfer Compact Unit From"};
+				from_default_name["boiler"]={"cn":"鍋爈表單","en":"Boiler From"};
+				from_default_name["chimney"]={"cn":"鍋爈表單","en":"Chimney From"};
 				
+			
+				$('#title').text(from_default_name[froms.from_type]["en"]);
+
 				var items=froms.items;
 				updateNavBar(custom_tab_list);
 			
@@ -87,12 +100,16 @@
 					  }else if(items[index].result.type== "s_value"){
 							items[index].result.value=$("#textinput_"+items[index].index).val();
 						
+					  }else if(items[index].result.type== "d_value"){
+					  		items[index].result.value[0]=$("#textinput_0_"+items[index].index).val();
+					  		items[index].result.value[1]=$("#textinput_1_"+items[index].index).val();
 					  }
 					
 					}
 					
 					froms.device_id=$('#deviceID').val();
-					
+					froms.name_en=from_default_name[froms.from_type]["en"]+" "+froms.device_id;
+					froms.name_cn=from_default_name[froms.from_type]["cn"]+" "+froms.device_id;
 					if($('#photo_camera_device').attr("src")!="eximages/device.png"){
 						froms.device_photo=$('#photo_camera_device').attr("src");
 					}
@@ -124,11 +141,16 @@
 				$(".input-textbox").change(function(event, ui) {
 					var res = event.currentTarget.id.split("_");
 							var index =res[res.length-1];
-							
+							var input_index=res[res.length-2];
 							for(var i in items){ 
 								if(items[i].index==index){
-										items[i].result.value=event.currentTarget.value;
 										
+										if(items[i].result.type=="s_value"){
+											items[i].result.value=event.currentTarget.value;
+										}else if (items[i].result.type=="d_value"){
+											items[i].result.value[input_index]=event.currentTarget.value;
+												
+										}	
 										break;
 								}
 							}
@@ -147,8 +169,7 @@
 							
 							for(var i in items){ 
 								if(items[i].index==index){
-										items[i].result.value=event.currentTarget.value;
-										
+									items[i].result.value=event.currentTarget.value;
 										break;
 								}
 							}
@@ -167,6 +188,9 @@
 					 $('#photo_camera_device').attr("src", froms.device_photo);
 					 $('#photo_camera_device').removeClass("transparent_img")
 					 $('#popphoto_camera_device').attr("src", froms.device_photo);
+				}else{
+					$('#photo_camera_device').attr("src", froms.exm_photos);
+					$('#popphoto_camera_device').attr("src", froms.exm_photos);
 				}
 			});
 			function calCounter(items,group){
@@ -175,7 +199,8 @@
 					for(var index in items){ 
 						if(items[index].group==group&&
 						((items[index].result.type=="bool"&&items[index].result.value=="false")||
-						(items[index].result.type=="s_value"&&items[index].result.value==""))){
+						(items[index].result.type=="s_value"&&items[index].result.value=="")||
+						(items[index].result.type=="d_value"&&(items[index].result.value[0]=="" || items[index].result.value[1]=="")))){
 							count++;
 						}
 					}
@@ -186,37 +211,54 @@
 			
 				
 				if(item.result.type == "bool"){
-				$("#"+parent).append('<div class="ui-field-contain ui-shadow "> \
-				<label for="textinput-1">'+i+'. '+item.item_name_en +'</label> \
-					 <select name="flip-1" id="filp_'+item.index+'" data-role="slider" data-theme="c" class="ui-slider-switch"> \
-						<option value="false">Not Check</option> \
-						<option '+(item.result.value=="true"?'selected=""':'') + ' value="true">Check</option>	\
-					</select>'+	(item.result.min_photos? '<div style="float: left; width: 40%"  class="right-container">  <button id="camera_'+item.index+'" style="margin:5px" id="submit-1" data-mini="true"    class="camera-btn ui-btn ui-icon-camera ui-btn-icon-left ui-shadow ui-corner-all">Camera</button>\
-			<div  style="float: right;" ><a href="#popupParis'+item.index+'" data-rel="popup" data-position-to="window" data-transition="fade"><img id="photo_camera_'+item.index+'" alt="Smiley face" '+(item.result.photos.length==0?'class="transparent_img"':'') +' src="'+(item.result.photos.length>0?item.result.photos[0]:item.result.exm_photos[0])+'" width="100" height="70" style="margin:5px"/></a></div>\
-			 </div><div data-role="popup" id="popupParis'+item.index+'" data-overlay-theme="b" data-theme="b" data-corners="false">\
-			    <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-a ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a><img src="'+(item.result.photos.length>0?item.result.photos[0]:item.result.exm_photos[0])+'" id="popphoto_camera_'+item.index+'" class="popphoto"  style="max-height:250px;" alt="Paris, France"></div>' :'') +
-						'</div> ' );
-						if(item.result.min_photos){
-							$('#popupParis'+item.index).trigger("create");
-							$('#popupParis'+item.index).popup();
-						}
+					$("#"+parent).append('<div id="item_'+item.index+'" class="ui-field-contain ui-shadow "> \
+							<label for="textinput-1">'+i+'. '+item.item_name_en +'</label> \
+								 <select name="flip-1" id="filp_'+item.index+'" data-role="slider" data-theme="c" class="ui-slider-switch"> \
+									<option value="false">Not Check</option> \
+									<option '+(item.result.value=="true"?'selected=""':'') + ' value="true">Check</option>	\
+								</select>'+'</div>');
+					
 				}else if(item.result.type == "s_value"){
 			
 				
-					$("#"+parent).append('<div class="ui-field-contain ui-shadow "> \
+					$("#"+parent).append('<div id="item_'+item.index+'" class="ui-field-contain ui-shadow "> \
 				<label for="textinput-1">'+i+'. '+item.item_name_en +'</label> \
 					<input class="input-textbox"  type="text" name="textinput-5" id="textinput_'+item.index+'" placeholder="'+(item.result.unit?item.result.unit:'')+'" value="'+item.result.value+'" data-mini="true"/>' 
-					+	(item.result.min_photos? '<div style="float: left; width: 40%"  class="right-container">  <button id="camera_'+item.index+'" style="margin:5px" id="submit-1" data-mini="true"    class="camera-btn ui-btn ui-icon-camera ui-btn-icon-left ui-shadow ui-corner-all">Camera</button>\
-			<div  style="float: right;" ><a href="#popupParis'+item.index+'" data-rel="popup" data-position-to="window" data-transition="fade"><img id="photo_camera_'+item.index+'" alt="Smiley face" '+(item.result.photos.length==0?'class="transparent_img"':'') +' src="'+(item.result.photos.length>0?item.result.photos[0]:item.result.exm_photos[0])+'" width="100" height="70" style="margin:5px"/></a></div>\
-			 </div><div data-role="popup" id="popupParis'+item.index+'" data-overlay-theme="b" data-theme="b" data-corners="false">\
-			    <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-a ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a><img src="'+(item.result.photos.length>0?item.result.photos[0]:item.result.exm_photos[0])+'" id="popphoto_camera_'+item.index+'" class="popphoto"  style="max-height:250px;" alt="Paris, France"></div>' :'') +
-				'</div>');
-				if(item.result.min_photos){
-					$('#popupParis'+item.index).trigger("create");
-					$('#popupParis'+item.index).popup();
-				}
+					+'</div>');
+				
 					$('#textinput_'+item.index).textinput();
 
+				}else if(item.result.type == "d_value"){
+			
+				
+					$("#"+parent).append('<div id="item_'+item.index+'" class="ui-field-contain ui-shadow  "> \
+				<label for="textinput-1">'+i+'. '+item.item_name_en +'</label> \
+					<div class="mycontrolgroup" id="controlgroup_'+item.index+'" data-role="controlgroup" data-type="horizontal" >\
+					<input class="input-textbox" data-wrapper-class="controlgroup-textinput ui-btn"  type="text" name="textinput-5" id="textinput_0_'+item.index+'" placeholder="'+(item.result.unit?item.result.unit[0]:'')+'" value="'+item.result.value[0]+'" data-mini="true"/>\
+					<input class="input-textbox" data-wrapper-class="controlgroup-textinput ui-btn"   type="text" name="textinput-5" id="textinput_1_'+item.index+'" placeholder="'+(item.result.unit?item.result.unit[1]:'')+'" value="'+item.result.value[1]+'" data-mini="true"/>' 
+					+'</div></div>');
+
+					$('#textinput_0_'+item.index).textinput();
+					$('#textinput_1_'+item.index).textinput();	
+					$('#controlgroup_'+item.index).controlgroup();
+				}else if(item.result.type == "none"){
+			
+				
+					$("#"+parent).append('<div id="item_'+item.index+'" class="ui-field-contain ui-shadow  "> \
+				<label for="textinput-1">'+i+'. '+item.item_name_en +'</label> \
+					</div>');
+
+				}
+
+				if(item.result.min_photos){
+
+					$('#item_'+item.index).append('<div style="float: right; width: 40%;margin-right:1.5%;"  class="right-container">  <button id="camera_'+item.index+'" style="margin:5px" id="submit-1" data-mini="true"    class="camera-btn ui-btn ui-icon-camera ui-btn-icon-left ui-shadow ui-corner-all">Camera</button>\
+					<div  style="float: right;" ><a href="#popupParis'+item.index+'" data-rel="popup" data-position-to="window" data-transition="fade"><img id="photo_camera_'+item.index+'" alt="Smiley face" '+(item.result.photos.length==0?'class="transparent_img"':'') +' src="'+(item.result.photos.length>0?item.result.photos[0]:item.result.exm_photos[0])+'" width="100" height="70" style="margin:5px"/></a></div>\
+					 </div><div data-role="popup" id="popupParis'+item.index+'" data-overlay-theme="b" data-theme="b" data-corners="false">\
+					    <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-a ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a><img src="'+(item.result.photos.length>0?item.result.photos[0]:item.result.exm_photos[0])+'" id="popphoto_camera_'+item.index+'" class="popphoto"  style="max-height:250px;" alt="Paris, France"></div>');
+
+					$('#popupParis'+item.index).trigger("create");
+					$('#popupParis'+item.index).popup();
 				}
 				
 			}
@@ -293,7 +335,7 @@
 			 <div data-role="header" data-position="fixed"  >
 			 <a href="maint_report.html" rel="external"  class="ui-btn  ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-left ui-icon-carat-l">Back</a>
 	      
-			  <h1>Chimney System From</h1>
+			  <h1 id="title">Chimney System From</h1>
 			  		<a href="#popupSaveSuccessInfo" data-rel="popup" data-position-to="window" data-transition="pop" class="savebtn ui-btn-right ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-check">Save</a>
 	    
 	    	<div id="navbar_container">
