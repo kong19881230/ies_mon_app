@@ -87,7 +87,7 @@
 	$(document).ready(function(){
 				var report={};
 				var reportstr=window.localStorage.getItem("report");
-				if(reportstr==null||reportstr==""){
+				if(reportstr!=null||reportstr==""){
 					report=	{
 									"id" : "1",
 									"name" : "maintain report",

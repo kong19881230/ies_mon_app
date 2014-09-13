@@ -331,8 +331,24 @@
 
 						$('#copy_btn').addClass("ui-state-disabled");
 		                $('#delete_pop_btn').addClass("ui-state-disabled");
-
-			
+		                $('#save').click(function() {
+						  var reprot_str = JSON.stringify(report);
+						  // tmp value: [{"id":21,"children":[{"id":196},{"id":195},{"id":49},{"id":194}]},{"id":29,"children":[{"id":184},{"id":152}]},...]
+						  $.ajax({
+						    type: 'POST',
+						    url: 'http://uniquecode.net/job/ms/add_maint_item.php',
+						    //url: 'http://localhost/ies_report_sys/submit_maint_report.php',
+						    data: {'report': reprot_str},
+						    success: function(msg) {
+						      alert(msg);
+						       
+						    },
+						     error: function(XMLHttpRequest, textStatus, errorThrown) {
+			                   alert(textStatus);
+			                }
+						  });
+						});	
+						
 });
 
 			function clearCurrentFromIndex(){
@@ -437,7 +453,7 @@
 				</div>	
 					
 			   <h1></h1>
-			<a href="#" class="ui-btn-right ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-check">Save</a>
+			<a id="save" href="#" class="ui-btn-right ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-check">Save</a>
 	    
 		</div>
 	</div>		
