@@ -109,6 +109,8 @@
 					}
 					
 					froms.device_id=$('#deviceID').val();
+					froms.device_model=$('#deviceModel').val();
+					
 					froms.name_en=from_default_name[froms.from_type]["en"]+" "+froms.device_id;
 					froms.name_cn=from_default_name[froms.from_type]["cn"]+" "+froms.device_id;
 					if($('#photo_camera_device').attr("src")!="eximages/device.png"){
@@ -365,6 +367,16 @@
 					
 					
 					<input   class="input-textbox"  type="text" name="textinput-5" id="deviceID"   />
+						
+					
+					</div>
+			</div>
+			<div class="ui-field-contain ui-shadow ">
+				<label for="textinput-1">Device Model</label>
+					<div style="float: left; width: 40%"  class="right-container">
+				
+					
+					<input   class="input-textbox"  type="text" name="textinput-5" id="deviceModel"   />
 						
 					
 					</div>

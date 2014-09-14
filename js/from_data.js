@@ -111,7 +111,8 @@ empty_froms[0]={
 						"group": "pump",
 						"result": {"type" : "d_value",
 								   "value" : ["",""],
-								   "unit" : ["0~1MΩ","1~2MΩ"],
+								   "unit" : ["MΩ","MΩ"],
+								   "hint" : ["0~1","1~2"],
 								   "min_photos": 1,
 								   "photos" : [],
 								   "exm_photos" : ["eximages/0_9.png"]
@@ -125,7 +126,8 @@ empty_froms[0]={
 						"group": "pump",
 						"result": {"type" : "d_value",
 								   "value" : ["",""],
-								   "unit" : ["0~1Bar","1~2Bar"],
+								   "unit" : ["Bar","Bar"],
+								   "hint" : ["0~1","1~2"],
 								   "min_photos": 1,
 								   "photos" : [],
 								   "exm_photos" : ["eximages/0_10.png"]
@@ -139,7 +141,8 @@ empty_froms[0]={
 						"group": "heat",
 						"result": {"type" : "d_value",
 								   "value" : ["",""],
-								   "unit" : ["0~1℃","0~2℃"]
+								   "unit" : ["℃","℃"],
+								   "hint" : ["0~1","1~2"]
 								   }
 					 },
 					 {
@@ -160,7 +163,8 @@ empty_froms[0]={
 						"group": "heat",
 						"result": {"type" : "d_value",
 								   "value" : ["",""],
-								   "unit" : ["0~1℃","0~2℃"]
+								   "unit" : ["℃","℃"],
+								   "hint" : ["0~1","1~2"]
 								   }
 					 },{
 						"item_name_en": "Check and record the Temp. of Plate heat Exchanger; (Sec. In / Sec. Out) (℃)",
@@ -170,7 +174,8 @@ empty_froms[0]={
 						"group": "heat",
 						"result": {"type" : "d_value",
 								   "value" : ["",""],
-								   "unit" : ["0~1℃","0~2℃"]
+								   "unit" : ["℃","℃"],
+								   "hint" : ["0~1","1~2"]
 								   }
 					 },{
 						"item_name_en": "Check and record the pressure of the calorifier (Bar)",
@@ -180,7 +185,8 @@ empty_froms[0]={
 						"group": "heat",
 						"result": {"type" : "d_value",
 								   "value" : ["",""],
-								   "unit" : ["0~1Bar","1~2Bar"]
+								   "unit" : ["Bar","Bar"],
+								   "hint" : ["0~1","1~2"]
 								   }
 					 },{
 						"item_name_en": "Check and record the pressure of Plate heat Exchanger; (Pri. In / Pri. Out) (Bar)",
@@ -190,7 +196,8 @@ empty_froms[0]={
 						"group": "heat",
 						"result": {"type" : "d_value",
 								   "value" : ["",""],
-								   "unit" : ["0~1Bar","1~2Bar"]
+								   "unit" : ["Bar","Bar"],
+								   "hint" : ["0~1","1~2"]
 								   }
 					 },{
 						"item_name_en": "Check and record the pressure of Plate heat Exchanger; (Sec. In / Sec. Out) (Bar)",
@@ -200,7 +207,8 @@ empty_froms[0]={
 						"group": "heat",
 						"result": {"type" : "d_value",
 								   "value" : ["",""],
-								   "unit" : ["0~1Bar","1~2Bar"]
+								   "unit" : ["Bar","Bar"],
+								   "hint" : ["0~1","1~2"]
 								   }
 					 },{
 						"item_name_en": "Check the main switch operation of control",
@@ -288,7 +296,8 @@ empty_froms[1]={
 						"group": "burner",
 						"result": {"type" : "s_value",
 								   "value" : "",
-								   "unit" : "20~25%"
+								   "unit" : "%",
+								   "hint" : "20~25"
 								   }
 					 },
 					 {
@@ -299,7 +308,8 @@ empty_froms[1]={
 						"group": "burner",
 						"result": {"type" : "s_value",
 								   "value" : "",
-								   "unit" : "20~25ppm"
+								   "unit" : "ppm",
+								   "hint" : "20~25"
 								   }
 					 },
 					 {
@@ -362,7 +372,8 @@ empty_froms[1]={
 						"group": "burner",
 						"result": {"type" : "d_value",
 								   "value" : ["",""],
-								   "unit" : ["0~1A","1~2A"]
+								   "unit" : ["A","A"],
+								   "hint" : ["0~1","1~2"]
 								   }
 					 },
 					 {
@@ -383,7 +394,8 @@ empty_froms[1]={
 						"group": "boiler",
 						"result": {"type" : "s_value",
 								   "value" : "",
-								   "unit" : "20~25°C"
+								   "unit" : "°C",
+								    "hint" : "20~25"
 								   }
 					 },
 					 {
@@ -394,7 +406,8 @@ empty_froms[1]={
 						"group": "boiler",
 						"result": {"type" : "s_value",
 								   "value" : "",
-								   "unit" : "100~120mbar"
+								   "unit" : "mbar",
+								   "hint" : "100~120"
 								   }
 					 },
 					 {
@@ -405,7 +418,8 @@ empty_froms[1]={
 						"group": "boiler",
 						"result": {"type" : "s_value",
 								   "value" : "",
-								   "unit" : "90~100%"
+								   "unit" : "%",
+								   "hint" : "90~100"
 								   }
 					 },
 					 {
@@ -500,7 +514,8 @@ empty_froms[1]={
 						"group": "controller",
 						"result": {"type" : "s_value",
 								   "value" : "",
-								   "unit" : "20~25°C"
+								   "unit" : "°C",
+								   "hint" : "20~25"
 								   }
 					 },{
 						"item_name_en": "Check the air intake and exhaust vent outlets that no blockage or any restriction occur",
@@ -555,7 +570,8 @@ empty_froms[1]={
 						"group": "fan",
 						"result": {"type" : "s_value",
 								   "value" : "",
-								   "unit" : "20~25°C"
+								   "unit" : "°C",
+								   "hint" : "20~25"
 								   }
 
 					 },{
@@ -575,7 +591,8 @@ empty_froms[1]={
 						"group": "fan",
 						"result": {"type" : "s_value",
 								   "value" : "",
-								   "unit" : "20~25%"
+								   "unit" : "°C",
+								   "hint" : "20~25"
 								   }
 					   
 					 },{
@@ -586,7 +603,8 @@ empty_froms[1]={
 						"group": "fan",
 						"result": {"type" : "s_value",
 								   "value" : "",
-								   "unit" : "20~25ppm"
+								   "unit" : "ppm",
+								   "hint" : "20~25"
 								   }
 					   
 					 },{
@@ -597,7 +615,8 @@ empty_froms[1]={
 						"group": "fan",
 						"result": {"type" : "s_value",
 								   "value" : "",
-								   "unit" : "20~25%"
+								   "unit" : "°C",
+								   "hint" : "20~25"
 								   }
 					   
 					 },{
@@ -688,7 +707,8 @@ empty_froms[1]={
 						"group": "fan",
 						"result": {"type" : "s_value",
 								   "value" : "",
-								   "unit" : "20~25°C"
+								   "unit" : "°C",
+								   "hint" : "20~25"
 								   }
 
 					 },{
@@ -699,7 +719,8 @@ empty_froms[1]={
 						"group": "boiler",
 						"result": {"type" : "s_value",
 								   "value" : "",
-								   "unit" : "20~25°C"
+								   "unit" : "°C",
+								   "hint" : "20~25"
 								   }
 
 					 },{
@@ -710,7 +731,8 @@ empty_froms[1]={
 						"group": "fan",
 						"result": {"type" : "s_value",
 								   "value" : "",
-								   "unit" : "20~25°C"
+								   "unit" : "°C",
+								   "hint" : "20~25"
 								   }
 
 					 },{
@@ -847,7 +869,8 @@ empty_froms[2]={
 						"group": "controller",
 						"result": {"type" : "s_value",
 								   "value" : "",
-								   "unit" : "0~1MΩ",
+								   "unit" : "MΩ",
+								   "hint" : "0~1",
 								   "min_photos": 1,
 								   "photos" : [],
 								   "exm_photos" : ["eximages/2_9.png"]
@@ -891,7 +914,8 @@ empty_froms[2]={
 						"group": "controller",
 						"result": {"type" : "d_value",
 								   "value" : ["",""],
-								   "unit" : ["0~1A","1~2A"],
+								   "unit" : ["A","A"],
+								   "hint" : ["0~1","1~2"],
 								   "min_photos": 1,
 								   "photos" : [],
 								   "exm_photos" : ["eximages/2_13.png"]
@@ -958,7 +982,8 @@ empty_froms[2]={
 						"group": "chimney",
 						"result": {"type" : "s_value",
 								   "value" : "",
-								   "unit" : "A"
+								   "unit" : "°C",
+								   "hint" : "20~25"
 								   }
 					 }
 					]

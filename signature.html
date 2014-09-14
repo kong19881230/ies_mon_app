@@ -444,16 +444,19 @@ function buzzDevice(pos){
 <div data-role="page" id="page1">
     <div data-theme="a" data-role="header">
         <h3>Signature</h3>
-		<a id="back" data-rel="back" data-role="button" data-theme="b" class="ui-btn-left">Back</a>
+		<a id="back" href="maint_report.html" rel="external" data-role="button" data-theme="b" class="ui-btn-left">Back</a>
 		
 		<a id="etch" data-role="button" data-theme="b" class="ui-btn-right">Etch OFF</a>
-		<a id="save" data-role="button" data-theme="b" class="ui-btn-right">Save</a>
+		<a href="#popupSaveSuccessInfo" data-rel="popup" data-position-to="window" data-transition="pop"  id="save" data-role="button" data-theme="b" class="ui-btn-right">Save</a>
     </div>
      <div id="summary" class="ui-body ui-body-a ui-corner-all">
 
  
   </div>
-
+<div data-role="popup" data-theme="b" id="popupSaveSuccessInfo"  class="ui-content" style="max-width:280px">
+				    <a  href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-b ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
+					<p>Save successfully!!</p>
+				</div>
 
   <div data-role="popup" id="popupSignature" data-overlay-theme="b" data-theme="b" data-dismissible="false" >
 
