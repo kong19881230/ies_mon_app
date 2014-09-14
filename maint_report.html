@@ -236,7 +236,9 @@
 						     window.localStorage.setItem("currentForm", JSON.stringify(new_froms));
 							 window.location.href="maint_from.html";
 						});
-						
+						$("#sign").click(function (e) {
+							 window.location.href="signature.html";
+						});
 						var fromhash={};
 						
 						for(var i in indexToCatalog){
@@ -453,7 +455,11 @@
 				</div>	
 					
 			   <h1></h1>
-			<a id="save" href="#" class="ui-btn-right ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-check">Save</a>
+			   <div data-role="controlgroup" data-type="horizontal" class="ui-mini ui-btn-right">
+			   <a id="sign" href="#" class=" ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-check">Sign</a>
+			<a id="save" href="#" class=" ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-check">Save</a>
+
+			</div>
 	    
 		</div>
 	</div>		
