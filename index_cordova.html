@@ -3,9 +3,9 @@
 <head>
     <title>Sketch Pad</title>
     <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; minimum-scale=1.0; user-scalable=0;" />
-	<link rel="stylesheet" href="lib/jquery.mobile/jquery.mobile-1.2.0.min.css" />
-	<script src="lib/jquery/jquery-1.8.2.min.js"></script>
-	<script src="lib/jquery.mobile/jquery.mobile-1.2.0.min.js"></script>
+	<link rel="stylesheet" href="css/jquery.mobile-1.4.3.min.css" />
+	<script src="js/jquery.min.js"></script>
+	<script src="js/jquery.mobile-1.4.3.min.js"></script>
 	<script src="cordova.js"></script>
     <style type="text/css">
 	  body {
@@ -101,18 +101,20 @@ $(document).ready(function () {
 	$("[data-role=footer]").fixedtoolbar({ tapToggle: false });
 	
 	// reset palette selection (css) and select the clicked color for canvas strokeStyle
-	$(".palette").click(function(){
-		$(".palette").css("border-color", "#777");
-		$(".palette").css("border-style", "solid");
-		$(this).css("border-color", "#fff");
-		$(this).css("border-style", "dashed");
-		color = $(this).css("background-color");
+	// $(".palette").click(function(){
+	// 	$(".palette").css("border-color", "#777");
+	// 	$(".palette").css("border-style", "solid");
+	// 	$(this).css("border-color", "#fff");
+	// 	$(this).css("border-style", "dashed");
+	// 	color = $(this).css("background-color");
 		ctx.beginPath();
 		ctx.strokeStyle = color;
-	});
+	// });
 	// link the new button with newCanvas() function
 	$("#new").click(function() {
+
 		newCanvas();
+
 	});
     
     // hide help popup when clicked anywhere on screen
@@ -131,6 +133,12 @@ $(document).ready(function () {
 			startWatch();
 		}
 	});
+//$("#save").click(function(){
+		// alert(111);
+		// var dataURL = $("#canvas").toDataURL();
+      //$("#canvasImg").src = dataURL;
+      // alert(111);
+//	});
 });
 
 // function to setup a new canvas for drawing
@@ -316,32 +324,15 @@ function buzzDevice(pos){
     <div data-theme="a" data-role="header">
         <h3>Sketch Pad</h3>
 		<a id="new" data-role="button" data-theme="b" class="ui-btn-left">New</a>
-		<a id="etch" data-role="button" data-theme="b" class="ui-btn-right">Etch OFF</a>
+		<!-- <img id="canvasImg" width="100" height="100" class="ui-btn-left"></img> -->
+		<!-- <a id="etch" data-role="button" data-theme="b" class="ui-btn-right">Etch OFF</a> -->
+		<a id="save" data-role="button" data-theme="b" class="ui-btn-right">Save</a>
+		
     </div>
     <div id="content"></div>
-    <div data-theme="a" data-role="footer" data-position="fixed">
-		<div class="palette-case">
-			<div class="palette-box">
-				<div class="palette white"></div>
-			</div>	
-			<div class="palette-box">
-				<div class="palette red"></div>
-			</div>
-			<div class="palette-box">
-				<div class="palette blue"></div>
-			</div>
-			<div class="palette-box">
-				<div class="palette green"></div>
-			</div>
-			<div class="palette-box">
-				<div class="palette black"></div>
-			</div>		
-			<div style="clear:both"></div>
-		</div>
-    </div>
+     
 	<div id="debug" style="display:none;position:absolute;top:45px;left:1px;right:1px;height:60px;background-color:#eea"></div>
     <div id="etchHelp">Turning <strong>Etch ON</strong> will enable drawing using the device's accelerometer by tilting the device in any direction.</div>
 </div> 
-<script src="http://debug-software.intel.com/target/target-script-min.js#1b241e6f-8fea-4baf-a130-0a2469b2b965"/>
 </body>
 </html>
