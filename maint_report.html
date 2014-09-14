@@ -97,6 +97,7 @@
 	$(document).ready(function(){
 				
 				 report =JSON.parse(window.localStorage.getItem("report")); 
+				 $("#signature").attr("src",report.signature);
 				var current_catalog_index=parseInt(window.localStorage.getItem("current_catalog_index"));
 				
 				if(isNaN(current_catalog_index)){
@@ -456,6 +457,7 @@
 					
 			   <h1></h1>
 			   <div data-role="controlgroup" data-type="horizontal" class="ui-mini ui-btn-right">
+			     <img  id="signature" class=" ui-btn ui-btn-a"  height="40" >
 			   <a id="sign" href="#" class=" ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-check">Sign</a>
 			<a id="save" href="#" class=" ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-check">Save</a>
 

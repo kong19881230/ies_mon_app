@@ -3,7 +3,9 @@
 <head>
     <title>Sketch Pad</title>
     <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; minimum-scale=1.0; user-scalable=0;" />
-	<link rel="stylesheet" href="css/jquery.mobile-1.4.3.min.css" />
+    <link rel="stylesheet" href="css/fb-style.min.css" />
+	<link rel="stylesheet" href="css/jquery.mobile.structure-1.4.3.min.css">
+  	<link rel="stylesheet" href="css/jquery.mobile.icons-1.4.3.min.css">
 	<script src="js/jquery.min.js"></script>
 	<script src="js/jquery.mobile-1.4.3.min.js"></script>
 	<script src="cordova.js"></script>
@@ -46,6 +48,9 @@
 	  .red{
 		background-color:#c22;
 	  }
+	  .center-wrapper{
+			text-align: center;
+		}
 	  .blue{
 		background-color:#22c;
 	  }
@@ -93,9 +98,13 @@ $(document).ready(function () {
 	$("#etch").hide();
 	var reportStr=	window.localStorage.getItem("report");
 	var report=JSON.parse(reportStr);
+	$("#canvasImg").attr("src",report.signature);
 	// Call onDeviceReady when Cordova is loaded and talking with the native device
 	document.addEventListener("deviceready", onDeviceReady, false);
-		
+		$("#save").click(function(){
+	      report.signature=$("#canvasImg").attr("src");
+	      window.localStorage.setItem("report", JSON.stringify(report));
+	});
 	// setup a new canvas for drawing
 	
 	
@@ -112,7 +121,7 @@ $(document).ready(function () {
 		
 	// });
 	// link the new button with newCanvas() function
-	$("#new").click(function() {
+	$("#sign_pop_btn").click(function() {
 
 		newCanvas();
 
@@ -139,18 +148,17 @@ $(document).ready(function () {
 
 	ctx.beginPath();
 		ctx.strokeStyle = color;
-	$("#save").click(function(){
+	$("#save_sign").click(function(){
 			var dataURL = document.getElementById("canvas").toDataURL();
 	      $("#canvasImg").attr("src",dataURL);
-	   
 	});
 });
 
 // function to setup a new canvas for drawing
 function newCanvas(){
 	//define and resize canvas
-    $("#content").height($(window).height()-90);
-    var canvas = '<canvas id="canvas" width="'+$(window).width()+'" height="'+($(window).height()-90)+'"></canvas>';
+    $("#content").height($(window).height()-180);
+    var canvas = '<canvas id="canvas" width="'+$(window).width()+'" height="'+($(window).height()-180)+'"></canvas>';
 	$("#content").html(canvas);
     
     // setup canvas
@@ -161,7 +169,7 @@ function newCanvas(){
     // set starting point in center
     ctx.beginPath();
 	x = $(window).width()/2 ;
-	y = ($(window).height()-90)/2 ;
+	y = ($(window).height()-180)/2 ;
 	ctx.moveTo(x, y);
 	
 	// setup to trigger drawing on mouse or touch
@@ -327,15 +335,141 @@ function buzzDevice(pos){
 <body>
 <div data-role="page" id="page1">
     <div data-theme="a" data-role="header">
-        <h3>Sketch Pad</h3>
-		<a id="new" data-role="button" data-theme="b" class="ui-btn-left">New</a>
+        <h3>Signature</h3>
+		<a id="back" data-rel="back" data-role="button" data-theme="b" class="ui-btn-left">Back</a>
 		
 		<a id="etch" data-role="button" data-theme="b" class="ui-btn-right">Etch OFF</a>
 		<a id="save" data-role="button" data-theme="b" class="ui-btn-right">Save</a>
-		
     </div>
-    <img id="canvasImg" x="200" width="100" height="100" ></img>
-    <div id="content"></div>
+     <div class="ui-body ui-body-a ui-corner-all">
+<h3>Ponte 16 Resort Macau Monthly Maintance Report</h3>
+      <p>Customer:  Ponte 16 Resort Macau</p>
+      <p>Type:  Monthly</p>
+ 	  <p>Date:  14/9/2014</p>
+ 	  <p>Total Deivce:  5</p>
+    
+  		<table data-role="table" id="movie-table" data-mode="reflow" class="ui-responsive table-stroke">
+			  <thead>
+			    <tr>
+			      <th data-priority="1">Device ID</th>
+			      <th data-priority="persist">Device Model</th>
+			      <th data-priority="2">Device Type</th>
+			      <th data-priority="3">Device Remark</th>
+			    </tr>
+			  </thead>
+			  <tbody>
+			    <tr>
+			      <th>1-12321-1233</th>
+			      <td>MMEE-123-123</td>
+			      <td>chinmey</td>
+			      <td></td>
+			    </tr>
+         		 <tr>
+			      <th>1-221-1233</th>
+			      <td>MMEE-123-123</td>
+			      <td>boiler</td>
+			      <td></td>
+			    </tr>
+			     <tr>
+			      <th>1-221-1233</th>
+			      <td>MMEE-123-123</td>
+			      <td>boiler</td>
+			      <td></td>
+			    </tr>
+			     <tr>
+			      <th>1-221-1233</th>
+			      <td>MMEE-123-123</td>
+			      <td>boiler</td>
+			      <td></td>
+			    </tr>
+			     <tr>
+			      <th>1-221-1233</th>
+			      <td>MMEE-123-123</td>
+			      <td>boiler</td>
+			      <td></td>
+			    </tr>
+         </tbody>
+       </table>
+ 
+  </div>
+  <div class="ui-body ui-body-a ui-corner-all">
+<h3>Ponte 16 Resort Macau Monthly Maintance Report</h3>
+      <p>Customer:  Ponte 16 Resort Macau</p>
+      <p>Type:  Monthly</p>
+ 	  <p>Date:  14/9/2014</p>
+ 	  <p>Total Deivce:  5</p>
+    
+  		<table data-role="table" id="movie-table" data-mode="reflow" class="ui-responsive table-stroke">
+			  <thead>
+			    <tr>
+			      <th data-priority="1">Device ID</th>
+			      <th data-priority="persist">Device Model</th>
+			      <th data-priority="2">Device Type</th>
+			      <th data-priority="3">Device Remark</th>
+			    </tr>
+			  </thead>
+			  <tbody>
+			    <tr>
+			      <th>1-12321-1233</th>
+			      <td>MMEE-123-123</td>
+			      <td>chinmey</td>
+			      <td></td>
+			    </tr>
+         		 <tr>
+			      <th>1-221-1233</th>
+			      <td>MMEE-123-123</td>
+			      <td>boiler</td>
+			      <td></td>
+			    </tr>
+			     <tr>
+			      <th>1-221-1233</th>
+			      <td>MMEE-123-123</td>
+			      <td>boiler</td>
+			      <td></td>
+			    </tr>
+			     <tr>
+			      <th>1-221-1233</th>
+			      <td>MMEE-123-123</td>
+			      <td>boiler</td>
+			      <td></td>
+			    </tr>
+			     <tr>
+			      <th>1-221-1233</th>
+			      <td>MMEE-123-123</td>
+			      <td>boiler</td>
+			      <td></td>
+			    </tr>
+         </tbody>
+       </table>
+ 
+  </div>
+
+  <div data-role="popup" id="popupSignature" data-overlay-theme="b" data-theme="b" data-dismissible="false" >
+
+			    <div role="main" class="ui-content">
+			      <div id="content"></div>
+			      
+			    </div>
+
+			     <!-- <div data-role="footer" data-theme="c" data-position="fixed"> -->
+						  <div class="center-wrapper">
+  
+			        <a id="save_sign" href="#" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b" data-rel="back" data-transition="flow">Save</a>
+			        <a href="#" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b" data-rel="back">Cancel</a>
+			        <!-- </div> -->
+				</div>
+			</div>
+<div data-role="footer" data-theme="c" data-position="fixed">
+  
+	
+	 <a id="sign_pop_btn" href="#popupSignature" data-rel="popup" data-position-to="window" data-transition="pop" data-role="button" data-theme="b" class="ui-btn-right">Sign</a>
+	   <img  id="canvasImg"   width="200" height="50" >
+   
+	<!--   -->
+		
+</div>
+    
+    
      
 	<div id="debug" style="display:none;position:absolute;top:45px;left:1px;right:1px;height:60px;background-color:#eea"></div>
     <div id="etchHelp">Turning <strong>Etch ON</strong> will enable drawing using the device's accelerometer by tilting the device in any direction.</div>
