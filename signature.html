@@ -91,7 +91,8 @@ $(document).ready(function () {
 	// hide the accelerometer aka etch on/off button
 
 	$("#etch").hide();
-
+	var reportStr=	window.localStorage.getItem("report");
+	var report=JSON.parse(reportStr);
 	// Call onDeviceReady when Cordova is loaded and talking with the native device
 	document.addEventListener("deviceready", onDeviceReady, false);
 		
