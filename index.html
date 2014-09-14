@@ -87,12 +87,12 @@
 	$(document).ready(function(){
 				var report={};
 				var reportstr=window.localStorage.getItem("report");
-				if(reportstr==null||reportstr==""){
+				if(reportstr!=null||reportstr==""){
 					report=	{
 									"id" : "1",
 									"name" : "maintain report",
 									"type" : 0,
-									"customers_id": "",
+									"customer_id": "1",
 									"cycle_type" : 1,
 									"created_by" : "Thomas",
 									"created_at" : "2014-06-09 23:27:35",
@@ -103,9 +103,10 @@
 												"name_cn":"",
 												"name_en":"Heat Transfer Compact Unit Report 1",
 												"from_type": "heat",
-												"device_id": "",
-												"device_mode": "",
+												"device_id": "H-01",
+												"device_model": "",
 												"inspector":"",
+												"remark":"",
 												"device_photo":"",
 												"items": []}
 												,{
@@ -113,9 +114,10 @@
 												"name_cn":"",
 												"name_en":"Heat Transfer Compact Unit Report 2",
 												"from_type": "heat",
-												"device_id": "",
-												"device_mode": "",
+												"device_id": "H-02",
+												"device_model": "MM-123-2323",
 												"inspector":"",
+												"remark":"",
 												"device_photo":"",
 												"items": []}
 												,{
@@ -123,9 +125,10 @@
 												"name_cn":"",
 												"name_en":"Hot Water Boiler Report 1",
 												"from_type": "boiler",
-												"device_id": "",
-												"device_mode": "",
+												"device_id": "B-01",
+												"device_model": "MM-23223-2323",
 												"inspector":"",
+												"remark":"",
 												"device_photo":"",
 												"items": []}
 												,{
@@ -133,8 +136,9 @@
 												"name_cn":"",
 												"name_en":"Hot Water Boiler Report 2",
 												"from_type": "boiler",
-												"device_id": "",
-												"device_mode": "",
+												"device_id": "B-02",
+												"device_model": "MM-23223-231",
+												"remark":"",
 												"inspector":"",
 												"device_photo":"",
 												"items": []}	
