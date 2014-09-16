@@ -7,8 +7,9 @@
 	<link rel="stylesheet" href="css/fb-style.min.css" />
 	<link rel="stylesheet" href="css/jquery.mobile.structure-1.4.3.min.css">
   	<link rel="stylesheet" href="css/jquery.mobile.icons-1.4.3.min.css">
-	<link rel="stylesheet" href="css/carousel.css">
-	<link rel="stylesheet" href="css/carousel-style.css">
+
+	<link rel="stylesheet" href="css/listview-grid.css">
+
 	<script src="js/jquery.js"></script>
 	<script src="js/jquery.mobile-1.4.3.min.js"></script>
 	<script type="text/javascript" charset="utf-8" src="cordova.js"></script>
@@ -53,6 +54,7 @@
 	<script>
 			
 			var currentCameraID="";
+			var currentRemarkCameraID="";
 			$(document).ready(function(){
 
 				var reportStr=	window.localStorage.getItem("report");
@@ -60,7 +62,10 @@
 				var  froms=JSON.parse(window.localStorage.getItem("currentForm")); 
 				 var custom_tab_list=froms.catalogs;
 				var from_default_name={};
-	
+				var remarks=[{
+								"text":"",
+								"photos":[]
+				}]
 				from_default_name["heat"]={"cn":"熱交換器表單","en":"Heat Transfer Compact Unit From"};
 				from_default_name["boiler"]={"cn":"鍋爈表單","en":"Boiler From"};
 				from_default_name["chimney"]={"cn":"鍋爈表單","en":"Chimney From"};
@@ -107,7 +112,13 @@
 					  }
 					
 					}
-					
+					for(var i in remarks){
+						remarks[i].text=$("#remark_text_"+i).val();
+						for(var j in remarks[i].photos){
+							var imgsrc =$('#remark_img_'+j+'_'+i).attr("src");
+							remarks[i].photos[j]=imgsrc;
+						}
+					}
 					froms.device_id=$('#deviceID').val();
 					froms.device_model=$('#deviceModel').val();
 					
@@ -140,7 +151,18 @@
 				});
 						$('.custom_tab').hide();
 						$('#info').show();
+				$("#add_remark_btn").click(function(event, ui){
+					
+					$("#remark_container").append(createRemark(remarks.length));
+					$("#remark_container").trigger("create");
 
+					remarks.push({text:"", photos:[]});
+					$('.remark_camera').bind( "click", function(event, ui){
+						currentRemarkCameraID=event.currentTarget.id;
+						
+						captureRemarkImage();
+				});
+				});	
 				$(".input-textbox").change(function(event, ui) {
 					var res = event.currentTarget.id.split("_");
 							var index =res[res.length-1];
@@ -160,6 +182,10 @@
 							refreshAllCounter();
 				});
 
+				$('.remark_camera').bind( "click", function(event, ui){
+						currentRemarkCameraID=event.currentTarget.id;
+						captureRemarkImage();
+				});
 				$('.camera-btn').bind( "click", function(event, ui){
 					
 						currentCameraID=event.currentTarget.id;
@@ -198,6 +224,24 @@
 					$('#photo_camera_device').attr("src", froms.exm_photos);
 					$('#popphoto_camera_device').attr("src", froms.exm_photos);
 				}
+
+				function onRemarkImageSuccess(imageURI) {
+				
+			
+					var index=getIndex(currentRemarkCameraID);
+							$("#photos_"+index).prepend('<li><a  href="#">\
+	                <img id="remark_img_'+remarks[index].photos.length+'_'+index+'" src="'+imageURI+'" class="ui-li-thumb">\
+	            </li>');
+							remarks[index].photos.push(imageURI);
+							alert(remarks[index].photos.length);
+				}
+			    function captureRemarkImage() {
+			        // Launch device camera application,
+			        // allowing user to capture up to 2 images
+			 		 onRemarkImageSuccess(111);
+			         navigator.camera.getPicture(onRemarkImageSuccess, onFail, { quality: 50,
+					destinationType: Camera.DestinationType.FILE_URI });
+			    }
 			});
 			function calCounter(items,group){
 					var count=0;
@@ -212,6 +256,11 @@
 					}
 					return count;
 			}
+			function getIndex(id){
+					var res =id.split("_");
+					var index =res[res.length-1];
+					return index;
+				}
 			function addFormItem(parent,item,i){
 		//	 
 			
@@ -302,6 +351,7 @@
 		         navigator.camera.getPicture(onSuccess, onFail, { quality: 50,
 				destinationType: Camera.DestinationType.FILE_URI });
 		    }
+		    
 		    function createCustomTab(name){
 		    	return '<div id="'+name+'"  data-role="tabs" class="custom_tab" >\
 								<div id="'+name+'_items">\
@@ -328,6 +378,18 @@
 				  }
 			   );
 		   }		
+		   function createRemark(index){
+		   	 return '<div class=" ui-shadow ui-content">\
+				        <label for="textinput-hide" class="ui-hidden-accessible">Remark</label>\
+						<input id="remark_text_'+index+'" type="text" name="textinput-hide" id="textinput-hide" placeholder="Text input" value="">\
+				        <ul id="photos_'+index+'" data-role="listview" data-inset="true">\
+				             <li><a id="camera_remark_'+index+'" href="#" class="remark_camera">\
+				                <img src="images/camera-icon.jpg" class="ui-li-thumb">\
+				            </a></li>\
+				        </ul>\
+				        </div>\
+				    </div>';
+		   }
 		   function capitaliseFirstLetter(string)
 			{
 			    return string.charAt(0).toUpperCase() + string.slice(1);
@@ -335,15 +397,16 @@
 	</script>
 </head>
 <body>
-
-
+	
 		<div id="chimney_from"  data-role="page" >
 			 <div data-role="header" data-position="fixed"  >
 			 <a href="maint_report.html" rel="external"  class="ui-btn  ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-left ui-icon-carat-l">Back</a>
 	      
 			  <h1 id="title">Chimney System From</h1>
-			  		<a href="#popupSaveSuccessInfo" data-rel="popup" data-position-to="window" data-transition="pop" class="savebtn ui-btn-right ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-check">Save</a>
-	    
+			   <div data-role="controlgroup" data-type="horizontal" class="ui-mini ui-btn-right">
+			  <a href="#remark" data-ajax="false" data-transition="pop" class="ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-check">Remark</a>
+			  		<a href="#popupSaveSuccessInfo" data-rel="popup" data-position-to="window" data-transition="pop" class="savebtn ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-check">Save</a>
+	    	</div>
 	    	<div id="navbar_container">
 	    		<div id="tab_navbar" data-role="navbar" data-grid="c" >
 				<ul>
@@ -398,7 +461,50 @@
 				</div>
 			</div>
 		</div>
-		
+	
+</div>
+</div>
+<div data-role="page" data-theme="a" id="remark" class="my-page">
+	<div data-role="header" data-position="fixed" data-theme="b" >
+			 <a href="#" data-rel="back"  class="ui-btn  ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-left ui-icon-carat-l">Back</a>
+	      
+			  <h1 id="title">Remarks</h1>
+			
+			  		<a id="save_remark" href="#popupSaveRemarkSuccessInfo" data-rel="popup" data-position-to="window" data-transition="pop" class="savebtn ui-btn-right ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-check">Save</a>
+	    	</div>
+	    	 <div data-role="popup" data-theme="b" id="popupSaveRemarkSuccessInfo"  class="ui-content" style="max-width:280px">
+				    <a  href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-b ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
+					<p>Save successfully!!</p>
+				</div>
+    <div id="remark_container" role="main"   >
+    <div class=" ui-shadow ui-content">
+        <label for="textinput-hide" class="ui-hidden-accessible">Text Input:</label>
+		<input id="remark_text_0" type="text" name="textinput-hide" id="textinput-hide" placeholder="Text input" value="">
+        <ul id="photos_0" data-role="listview" data-inset="true">
+           
+          
+             <li><a id="camera_remark_0" href="#" class="remark_camera">
+                <img src="images/camera-icon.jpg" class="ui-li-thumb">
+              
+            </a></li>
+        </ul>
+        </div>
+    </div><!-- /content -->
+<div data-role="footer" data-theme="b" data-position="fixed">
+			
+				<div class="ui-bar">
+				</div>
+				<div data-role="controlgroup" data-type="horizontal" class="ui-mini ui-btn-left">
+					<a id="add_remark_btn" href="#" rel="external" class="ui-btn ui-btn-icon-right ui-icon-plus">Add</a>
+				
+				</div>	
+					
+			   <h1></h1>
+			
+	    
+		</div>
+   
+</div>
 		<!-- /footer -->
 		
 		<script src="js/zepto.js"></script>
