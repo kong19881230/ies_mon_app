@@ -55,6 +55,10 @@
 			
 			var currentCameraID="";
 			var currentRemarkCameraID="";
+			var empty_remark={
+								"text":"",
+								"photos":[]
+				};
 			$(document).ready(function(){
 
 				var reportStr=	window.localStorage.getItem("report");
@@ -62,10 +66,26 @@
 				var  froms=JSON.parse(window.localStorage.getItem("currentForm")); 
 				 var custom_tab_list=froms.catalogs;
 				var from_default_name={};
-				var remarks=[{
-								"text":"",
-								"photos":[]
-				}]
+				var remarks=froms.remark;
+alert( JSON.stringify(froms.remark));
+				if(remarks.length==0){
+
+
+					remarks.push(empty_remark);
+				}
+
+				for(var i in remarks){
+					$("#remark_container").append(createRemark(i,remarks[i].text));
+					$("#remark_container").trigger("create");
+					for(var j in remarks[i].photos){
+						
+						$("#photos_"+i).prepend(createRemarkPhoto(j,i,remarks[i].photos[j]));
+					
+					}
+					
+				}
+
+
 				from_default_name["heat"]={"cn":"熱交換器表單","en":"Heat Transfer Compact Unit From"};
 				from_default_name["boiler"]={"cn":"鍋爈表單","en":"Boiler From"};
 				from_default_name["chimney"]={"cn":"鍋爈表單","en":"Chimney From"};
@@ -121,7 +141,8 @@
 					}
 					froms.device_id=$('#deviceID').val();
 					froms.device_model=$('#deviceModel').val();
-					
+					froms.remark=remarks;
+					alert( JSON.stringify(froms.remark));
 					froms.name_en=from_default_name[froms.from_type]["en"]+" "+froms.device_id;
 					froms.name_cn=from_default_name[froms.from_type]["cn"]+" "+froms.device_id;
 					if($('#photo_camera_device').attr("src")!="eximages/device.png"){
@@ -153,10 +174,10 @@
 						$('#info').show();
 				$("#add_remark_btn").click(function(event, ui){
 					
-					$("#remark_container").append(createRemark(remarks.length));
+					$("#remark_container").append(createRemark(remarks.length,""));
 					$("#remark_container").trigger("create");
 
-					remarks.push({text:"", photos:[]});
+					remarks.push(empty_remark);
 					$('.remark_camera').bind( "click", function(event, ui){
 						currentRemarkCameraID=event.currentTarget.id;
 						
@@ -229,16 +250,14 @@
 				
 			
 					var index=getIndex(currentRemarkCameraID);
-							$("#photos_"+index).prepend('<li><a  href="#">\
-	                <img id="remark_img_'+remarks[index].photos.length+'_'+index+'" src="'+imageURI+'" class="ui-li-thumb">\
-	            </li>');
+							$("#photos_"+index).prepend(createRemarkPhoto(remarks[index].photos.length,index,imageURI));
 							remarks[index].photos.push(imageURI);
 							alert(remarks[index].photos.length);
 				}
 			    function captureRemarkImage() {
 			        // Launch device camera application,
 			        // allowing user to capture up to 2 images
-			 		 onRemarkImageSuccess(111);
+			 		 onRemarkImageSuccess(222);
 			         navigator.camera.getPicture(onRemarkImageSuccess, onFail, { quality: 50,
 					destinationType: Camera.DestinationType.FILE_URI });
 			    }
@@ -378,10 +397,10 @@
 				  }
 			   );
 		   }		
-		   function createRemark(index){
+		   function createRemark(index,value){
 		   	 return '<div class=" ui-shadow ui-content">\
 				        <label for="textinput-hide" class="ui-hidden-accessible">Remark</label>\
-						<input id="remark_text_'+index+'" type="text" name="textinput-hide" id="textinput-hide" placeholder="Text input" value="">\
+						<input id="remark_text_'+index+'" type="text" name="textinput-hide" id="textinput-hide" placeholder="Text input" value="'+value+'">\
 				        <ul id="photos_'+index+'" data-role="listview" data-inset="true">\
 				             <li><a id="camera_remark_'+index+'" href="#" class="remark_camera">\
 				                <img src="images/camera-icon.jpg" class="ui-li-thumb">\
@@ -389,6 +408,11 @@
 				        </ul>\
 				        </div>\
 				    </div>';
+		   }
+		   function createRemarkPhoto(p_index,index,image){
+		   		return '<li><a  href="#">\
+	                <img id="remark_img_'+p_index+'_'+index+'" src="'+image+'" class="ui-li-thumb">\
+	            </li>';
 		   }
 		   function capitaliseFirstLetter(string)
 			{
@@ -477,18 +501,7 @@
 					<p>Save successfully!!</p>
 				</div>
     <div id="remark_container" role="main"   >
-    <div class=" ui-shadow ui-content">
-        <label for="textinput-hide" class="ui-hidden-accessible">Text Input:</label>
-		<input id="remark_text_0" type="text" name="textinput-hide" id="textinput-hide" placeholder="Text input" value="">
-        <ul id="photos_0" data-role="listview" data-inset="true">
-           
-          
-             <li><a id="camera_remark_0" href="#" class="remark_camera">
-                <img src="images/camera-icon.jpg" class="ui-li-thumb">
-              
-            </a></li>
-        </ul>
-        </div>
+  
     </div><!-- /content -->
 <div data-role="footer" data-theme="b" data-position="fixed">
 			

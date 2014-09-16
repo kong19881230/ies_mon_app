@@ -254,7 +254,17 @@ function showReportSummary(report){
 			       <th data-priority="3">Device Remark</th>\
 			     </tr></thead><tbody>';
 	for(i=0; i<report.froms.length; i++){
-	    content += '<tr><td>' + report.froms[i].device_id +'</td><td>'+ report.froms[i].device_model+'</td><td>'+ report.froms[i].from_type+'</td><td>'+ report.froms[i].remark +'</td></tr>';
+	    content += '<tr><td>' + report.froms[i].device_id +'</td><td>'+ report.froms[i].device_model+'</td><td>'+ report.froms[i].from_type+'</td><td>';
+
+	    if( report.froms[i].remark.length>0){
+	    	for(var j in report.froms[i].remark){
+	    	content +='<li>'+report.froms[i].remark[j].text+'</li>';
+	    	}
+	    }else{
+	    	content +=' ';
+	    }
+
+	     content +='</td></tr>';
 	}
 	content += "</tbody></table>";
 

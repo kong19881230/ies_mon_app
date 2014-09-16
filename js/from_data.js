@@ -9,6 +9,7 @@ empty_froms[0]={
 			"device_model": "",
 			"inspector":"",
 			"device_photo":"",
+			"remark":[],
 			"exm_photos" : ["eximages/0_device.png"],
 			"items": [{
 						
@@ -275,6 +276,7 @@ empty_froms[1]={
 			"device_id": "",
 			"device_model": "",
 			"inspector":"",
+			"remark":[],
 			"device_photo":"",
 			"exm_photos" : ["eximages/1_device.png"],
 			"items": [{
@@ -774,6 +776,7 @@ empty_froms[2]={
 			"from_type": "chimney",
 			"device_id": "",
 			"device_model": "",
+			"remark":[],
 			"inspector":"",
 			"device_photo":"",
 			"exm_photos" : ["eximages/2_device.png"],
