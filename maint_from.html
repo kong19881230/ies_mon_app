@@ -252,12 +252,10 @@ alert( JSON.stringify(froms.remark));
 					var index=getIndex(currentRemarkCameraID);
 							$("#photos_"+index).prepend(createRemarkPhoto(remarks[index].photos.length,index,imageURI));
 							remarks[index].photos.push(imageURI);
-							alert(remarks[index].photos.length);
 				}
 			    function captureRemarkImage() {
 			        // Launch device camera application,
 			        // allowing user to capture up to 2 images
-			 		 onRemarkImageSuccess(222);
 			         navigator.camera.getPicture(onRemarkImageSuccess, onFail, { quality: 50,
 					destinationType: Camera.DestinationType.FILE_URI });
 			    }

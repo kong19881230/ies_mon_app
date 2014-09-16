@@ -9,6 +9,7 @@
   	<link rel="stylesheet" href="css/jquery.mobile.icons-1.4.3.min.css">
 	<link rel="stylesheet" href="css/carousel.css">
 	<link rel="stylesheet" href="css/carousel-style.css">
+	<link rel="stylesheet" href="css/listview-grid.css">
 	<script src="js/jquery.js"></script>
 	
 	<script src="js/jquery.mobile-1.4.3.min.js"></script>
@@ -43,7 +44,91 @@
 		#emergency_report_btn:after { background:  url("images/repair.png") 50% 50% no-repeat;  background-size: 24px 24px; }
 	
 	</style>
-	
+	<script>
+	var empty_remark={
+								"text":"",
+								"photos":[]
+				};
+var currentRemarkCameraID="";
+				$(document).ready(function(){
+						var remarks=[];
+
+						if(remarks.length==0){
+
+
+							remarks.push(empty_remark);
+						}
+
+						for(var i in remarks){
+							$("#remark_container").append(createRemark(i,remarks[i].text));
+							$("#remark_container").trigger("create");
+							for(var j in remarks[i].photos){
+								
+								$("#photos_"+i).prepend(createRemarkPhoto(j,i,remarks[i].photos[j]));
+							
+							}
+							
+						}
+
+						$("#add_remark_btn").click(function(event, ui){
+							
+							$("#remark_container").append(createRemark(remarks.length,""));
+							$("#remark_container").trigger("create");
+
+							remarks.push(empty_remark);
+							$('.remark_camera').bind( "click", function(event, ui){
+								currentRemarkCameraID=event.currentTarget.id;
+								captureRemarkImage();
+							});
+						});	
+
+						$('.remark_camera').bind( "click", function(event, ui){
+			
+						currentRemarkCameraID=event.currentTarget.id;
+						captureRemarkImage();
+						});
+
+						function onRemarkImageSuccess(imageURI) {
+			
+							var index=getIndex(currentRemarkCameraID);
+							alert(index);
+									$("#photos_"+index).prepend(createRemarkPhoto(remarks[index].photos.length,index,imageURI));
+							
+									remarks[index].photos.push(imageURI);
+									alert(remarks[index].photos.length);
+						}
+
+					    function captureRemarkImage() {
+					        // Launch device camera application,
+					        // allowing user to capture up to 2 images
+					 	
+					         navigator.camera.getPicture(onRemarkImageSuccess, onFail, { quality: 50,
+							destinationType: Camera.DestinationType.FILE_URI });
+					    }
+					    	function getIndex(id){
+					var res =id.split("_");
+					var index =res[res.length-1];
+					return index;
+				}
+				});
+		 function createRemark(index,value){
+		   	 return '<div class=" ui-shadow ui-content">\
+				        <label for="textinput-hide" class="ui-hidden-accessible">Remark</label>\
+						<input id="remark_text_'+index+'" type="text" name="textinput-hide" id="textinput-hide" placeholder="Text input" value="'+value+'">\
+				        <ul id="photos_'+index+'" data-role="listview" data-inset="true">\
+				             <li><a id="camera_remark_'+index+'" href="#" class="remark_camera">\
+				                <img src="images/camera-icon.jpg" class="ui-li-thumb">\
+				            </a></li>\
+				        </ul>\
+				        </div>\
+				    </div>';
+		   }
+		   function createRemarkPhoto(p_index,index,image){
+		   		return '<li><a  href="#">\
+	                <img id="remark_img_'+p_index+'_'+index+'" src="'+image+'" class="ui-li-thumb">\
+	            </li>';
+		   }
+	</script>
 </head>
 <body>
 
@@ -125,8 +210,24 @@
 					</div>
 			</div>
 		  </div>
-		  <div id="actual">
-		   
+		  <div id="actual" class="my-page">
+		   			<div id="remark_container" role="main"   >
+  
+    </div><!-- /content -->
+<div data-role="footer" data-theme="b" data-position="fixed">
+			
+				<div class="ui-bar">
+				</div>
+				<div data-role="controlgroup" data-type="horizontal" class="ui-mini ui-btn-left">
+					<a id="add_remark_btn" href="#" rel="external" class="ui-btn ui-btn-icon-right ui-icon-plus">Add</a>
+				
+				</div>	
+					
+			   <h1></h1>
+			
+	    
+		</div>
+   
 		  </div>
 		  <div id="report">
 		    <ul data-role="listview" data-inset="true">
