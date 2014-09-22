@@ -383,10 +383,10 @@ alert( JSON.stringify(froms.remark));
 
 				cordova.plugins.barcodeScanner.scan(
 				  function (result) {
-					  alert("We got a barcode\n" +
-							"Result: " + result.text + "\n" +
-							"Format: " + result.format + "\n" +
-							"Cancelled: " + result.cancelled);
+					  // alert("We got a barcode\n" +
+							// "Result: " + result.text + "\n" +
+							// "Format: " + result.format + "\n" +
+							// "Cancelled: " + result.cancelled);
 
 					  $("#deviceID").val(result.text);
 				  }, 
