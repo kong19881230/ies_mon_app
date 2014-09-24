@@ -9,43 +9,47 @@
   	<link rel="stylesheet" href="css/jquery.mobile.icons-1.4.3.min.css">
 	<link rel="stylesheet" href="css/carousel.css">
 	<link rel="stylesheet" href="css/carousel-style.css">
+	<link rel="stylesheet" href="css/listview-grid1.css">
 	<script src="js/jquery.js"></script>
 	
 	<script src="js/jquery.mobile-1.4.3.min.js"></script>
 	<script type="text/javascript" charset="utf-8" src="cordova.js"></script>
 	<style id="inset-tablist">
-		.tablist-left {
-			width: 25%;
-			display: inline-block;
-		}
-		.tablist-content {
-			width: 73%;
-			display: inline-block;
-			vertical-align: top;
-			margin-left: 1%;
-		}
+		
 		#photo{
-			width: 50%;
+			
 			display: inline-block;
 			vertical-align: top;
-			margin-left: 7%;
-			margin-right: 4%;
-			margin-top: 8%;
+			margin-left: 20%;
+			margin-right: 20%;
+			margin-top: 4%;
 		}
 		#menu{
-			width: 30%;
-			display: inline-block;
-			vertical-align: top;
-			margin-top: 18%;
-			margin-left: 1%;
+			
+			margin-top: 6%;
+			
+		}
+		#menu .ui-controlgroup-controls {
+			
+			width: 80%!important;
+			display: block;
+    		margin: 0 auto;
+		}
+		#menu a{
+			
+			width: 45%!important; 
 		}
 		.m-image{
 			width: 80%;
 		
 			display: block;
-    margin: 0 auto;
+    		margin: 0 auto;
 			
 		}
+		.m-card-light {
+			background: rgba(0, 0, 0, 0.5);
+			color: #000;
+			}
 		li.ui-tabs-active > a {
     background-color: rgb(51, 136, 204)!important;
     border-color: rgb(51, 136, 204) !important;
@@ -164,7 +168,7 @@
 </head>
 <body>
 
-		<div data-role="page" id="home" style="background-image: url('images/bg.png'); background-attachment: fixed; background-repeat: no-repeat; background-size: 100% 100%;"  >
+		<div data-role="page" id="home" class="my-page" style="background-image: url('images/bg.png'); background-attachment: fixed; background-repeat: no-repeat; background-size: 100% 100%;"  >
 			
 			<div data-role="header" data-position="fixed" data-theme="b"  >
 				
@@ -175,8 +179,14 @@
 						</div>
 				</div><!-- /header -->
 				
-				<div id="photo" class="m-carousel m-fluid m-carousel-photos ">
+				<div id="photo" class="m-carousel m-fluid  ">
 				  <div class="m-carousel-inner">
+				  <div class="m-item">
+					  <div class="m-card-light">
+						<img  class="m-image"  src="images/3.png">
+						
+					  </div>
+					</div>
 					<div class="m-item">
 					  <div class="m-card-light">
 						<img class="m-image" src="images/1.png">
@@ -189,12 +199,7 @@
 						
 					  </div>
 					</div>
-					<div class="m-item">
-					  <div class="m-card-light">
-						<img  class="m-image"  src="images/3.png">
-						
-					  </div>
-					</div>
+					
 				  </div>
 				
 				  <!-- the controls -->
@@ -207,12 +212,73 @@
 				  </div>
 				  
 				</div>
-				<div id="menu" data-role="controlgroup" data-theme="b"  >
-				<a id="maint_report_btn"  href="maint_report.html" rel="external" data-icon="custom"  data-transition="pop" class="ui-btn ui-alt-icon ui-btn-icon-top ui-corner-all ui-shadow ">Maintenance Report</a>
-				<a id="emergency_report_btn"  href="service_report.html" rel="external"  data-icon="custom"  data-transition="pop" class="ui-btn ui-alt-icon ui-btn-icon-top ui-corner-all ui-shadow ">Emergency Report</a>
+				<div id="menu" data-role="controlgroup" data-type="horizontal" data-theme="b"  >
+				<a id="maint_report_btn"   href="#popupSelectMaintReport" data-rel="popup" data-position-to="window" data-transition="pop"  data-icon="custom"   class="ui-btn ui-alt-icon ui-btn-icon-top ui-corner-all ui-shadow ">Maintenance Report</a>
+				<a id="emergency_report_btn"   href="#popupSelectServiceReport" data-rel="popup" data-position-to="window" data-transition="pop"  data-icon="custom"  class="ui-btn ui-alt-icon ui-btn-icon-top ui-corner-all ui-shadow ">Emergency Report</a>
 				
 				</div>
-		
+				<div data-role="popup" id="popupSelectMaintReport" data-overlay-theme="b" data-theme="a" data-dismissible="false" style="width:660px;height:260px;" >
+				  <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-b ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
+			    <div data-role="header" data-theme="b">
+			    <h1>Select a action</h1>
+			    </div>
+			   <div role="main" class="ui-content">
+
+			        <ul data-role="listview" data-inset="true">
+			        	<li><a href="#">
+			            	<img src="images/report.png" class="ui-li-thumb">
+			                <p>New Report</p>
+			              
+			            </a></li>
+			        	<li><a href="#">
+			            	<img src="images/report.png" class="ui-li-thumb">
+			            	<p>Maintance Report 1</p>
+			            	<p class="ui-li-aside">Modified</p>
+			            </a></li>
+			        	<li><a href="#">
+			            	<img src="images/report.png" class="ui-li-thumb">
+			            	<p>Maintance Report 2</p>
+			            </a></li>
+			        	<li><a href="#">
+			            	<img src="images/report.png" class="ui-li-thumb">
+			            	<p>Maintance Report 3</p>
+			            </a></li>
+			        	
+			        </ul>
+
+			    </div><!-- /content -->
+			</div>
+			<div data-role="popup" id="popupSelectServiceReport" data-overlay-theme="b" data-theme="a" data-dismissible="false" style="width:660px;height:260px;" >
+				  <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-b ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
+			    <div data-role="header" data-theme="b">
+			    <h1>Select a action</h1>
+			    </div>
+			   <div role="main" class="ui-content">
+
+			        <ul data-role="listview" data-inset="true">
+			        	<li><a href="#">
+			            	<img src="images/report.png" class="ui-li-thumb">
+			                <p>New Report</p>
+			              
+			            </a></li>
+			        	<li><a href="#">
+			            	<img src="images/report.png" class="ui-li-thumb">
+			            	<p>Maintance Report 1</p>
+			            	<p class="ui-li-aside">Modified</p>
+			            </a></li>
+			        	<li><a href="#">
+			            	<img src="images/report.png" class="ui-li-thumb">
+			            	<p>Maintance Report 2</p>
+			            </a></li>
+			        	<li><a href="#">
+			            	<img src="images/report.png" class="ui-li-thumb">
+			            	<p>Maintance Report 3</p>
+			            </a></li>
+			        	
+			        </ul>
+
+			    </div><!-- /content -->
+			</div>
 		</div>		
 		
 
