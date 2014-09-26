@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html>
-	<head>
+<head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Regular Maintainance Report</title>
 	<link rel="stylesheet" href="css/fb-style.min.css" />
 	<link rel="stylesheet" href="css/jquery.mobile.structure-1.4.3.min.css">
-  	<link rel="stylesheet" href="css/jquery.mobile.icons-1.4.3.min.css">
+	<link rel="stylesheet" href="css/jquery.mobile.icons-1.4.3.min.css">
 	<link rel="stylesheet" href="css/carousel.css">
 	<link rel="stylesheet" href="css/carousel-style.css">
 	<link rel="stylesheet" href="css/listview-grid1.css">
@@ -33,7 +33,7 @@
 			
 			width: 80%!important;
 			display: block;
-    		margin: 0 auto;
+			margin: 0 auto;
 		}
 		#menu a{
 			
@@ -41,26 +41,26 @@
 		}
 		.m-image{
 			width: 80%;
-		
+
 			display: block;
-    		margin: 0 auto;
+			margin: 0 auto;
 			
 		}
 		.m-card-light {
 			background: rgba(0, 0, 0, 0.5);
 			color: #000;
-			}
+		}
 		li.ui-tabs-active > a {
-    background-color: rgb(51, 136, 204)!important;
-    border-color: rgb(51, 136, 204) !important;
-    color: rgb(255, 255, 255) !important;
-    text-shadow: 0 1px 0 rgb(0, 85, 153) !important;
-}
+			background-color: rgb(51, 136, 204)!important;
+			border-color: rgb(51, 136, 204) !important;
+			color: rgb(255, 255, 255) !important;
+			text-shadow: 0 1px 0 rgb(0, 85, 153) !important;
+		}
 		#maint_report_btn:after { background:  url("images/report.png") 50% 50% no-repeat;  background-size: 24px 24px; }
 		#emergency_report_btn:after { background:  url("images/repair.png") 50% 50% no-repeat;  background-size: 24px 24px; }
-	
+
 	</style>
-	 <script type="text/javascript" charset="utf-8">
+	<script type="text/javascript" charset="utf-8">
 
 			// Wait for device API libraries to load
 			//
@@ -70,221 +70,221 @@
 			//
 			function onDeviceReady() {
 				StatusBar.overlaysWebView(false);
-				window.localStorage.setItem("key", "{sss}");
-			
-				// keyname is now equal to "key"
-				var value = window.localStorage.getItem("key");
-				// value is now equal to "value"
-			
-				window.localStorage.setItem("key2", "value2");
-				
-					
 				
 				
-		
+
+				
+				
+
 				
 				
 				
 				
 			}
-	
-	$(document).ready(function(){
-				var report={};
-				var reportstr=window.localStorage.getItem("report");
-				if(reportstr!=null||reportstr==""){
-					report=	{
-									"id" : "1",
-									"name" : "maintain report",
-									"type" : 0,
-									"customer_id": "1",
-									"cycle_type" : 1,
-									"created_by" : "Thomas",
-									"created_at" : "2014-06-09 23:27:35",
-									"updated_at" : "2014-06-09 23:27:35",
-									"froms" :[
-												{
-												"id": "1_1_1_191046",
-												"name_cn":"",
-												"name_en":"Heat Transfer Compact Unit Report 1",
-												"from_type": "heat",
-												"device_id": "H-01",
-												"device_model": "",
-												"inspector":"",
-												"remark":[],
-												"device_photo":"",
-												"items": []}
-												,{
-												"id": "1_1_2_191047",
-												"name_cn":"",
-												"name_en":"Heat Transfer Compact Unit Report 2",
-												"from_type": "heat",
-												"device_id": "H-02",
-												"device_model": "MM-123-2323",
-												"inspector":"",
-												"remark":[],
-												"device_photo":"",
-												"items": []}
-												,{
-												"id": "1_2_3_191048",
-												"name_cn":"",
-												"name_en":"Hot Water Boiler Report 1",
-												"from_type": "boiler",
-												"device_id": "B-01",
-												"device_model": "MM-23223-2323",
-												"inspector":"",
-												"remark":[],
-												"device_photo":"",
-												"items": []}
-												,{
-												"id": "1_2_4_191049",
-												"name_cn":"",
-												"name_en":"Hot Water Boiler Report 2",
-												"from_type": "boiler",
-												"device_id": "B-02",
-												"device_model": "MM-23223-231",
-												"remark":[],
-												"inspector":"",
-												"device_photo":"",
-												"items": []}	
-											]
-									};
-				}else{
-					 report =JSON.parse(window.localStorage.getItem("report")); 
+
+			$(document).ready(function(){
+
+				var mReportQueue=[];
+
+				var currentMReport={};
+				var sReportQueue=[];
+
+				var currentSReport={};
+
+				var mReportQueueStr=window.localStorage.getItem("mReportQueue");
+				if(mReportQueueStr!=null){
+					mReportQueue =JSON.parse(mReportQueueStr); 
 				}
-					
+				var sReportQueueStr=window.localStorage.getItem("sReportQueue");
+				if(sReportQueueStr!=null){
+					sReportQueue =JSON.parse(sReportQueueStr); 
+				}
+				
+				alert(JSON.stringify(mReportQueue));
+				alert(JSON.stringify(sReportQueue));
+				for(var index in mReportQueue){
+					$("#m_report_list").append(createReportItem(index,mReportQueue[index]));
+				}
+				
+				for(var index in sReportQueue){
+					$("#s_report_list").append(createReportItem(index,sReportQueue[index]));
+				}
 
-							
-					
-				$("#maint_report_btn").click(function (e) {
-					   
-					   window.localStorage.setItem("report", JSON.stringify(report));
-					   
-				});		
-			
-});
-			
+				$("#m_report_list").listview('refresh');
+				$("#s_report_list").listview('refresh');
+				
+				$("#new_m_report").click(function(event, ui) {
+					currentMReport=	{
+						"id" : "",
+						"name" : "maintain report",
+						"type" : 0,
+						"customer_id": "1",
+						"cycle_type" : 1,
+						"created_by" : "Thomas",
+						"created_at" : "2014-06-09 23:27:35",
+						"updated_at" : "2014-06-09 23:27:35",
+						"froms" :[],
+						"status" :"padding",
+						"index":-1
+					};
+					window.localStorage.setItem("currentMReport", JSON.stringify(currentMReport));
+					window.location.href="maint_report.html";
+				});
+				$("#new_s_report").click(function(event, ui) {
+					currentMReport=	{
+						"id" : "",
+						"name" : "service report",
+						"type" : 1,
+						"customer_id": "1",
+						"cycle_type" : 1,
+						"created_by" : "Thomas",
+						"created_at" : "2014-06-09 23:27:35",
+						"updated_at" : "2014-06-09 23:27:35",
+						"froms" :[],
+						"status" :"padding",
+						"index":-1
+					};
+					window.localStorage.setItem("currentSReport", JSON.stringify(currentMReport));
+					window.location.href="service_report.html";
+				});	
+				$(".report_item").click(function(event, ui) {
+					alert(this.id);
+					var res =this.id.split("_");
+					var index =res[res.length-1];
+					var type=res[res.length-2];
+					alert(this.id);
+					if(type==0){
+						currentMReport=mReportQueue[index];
+						currentMReport.index=index;
+						window.localStorage.setItem("currentMReport", JSON.stringify(currentMReport));
+						window.location.href="maint_report.html";
+					}else{
+						currentSReport=sReportQueue[index];
+						currentSReport.index=index;
+						window.localStorage.setItem("currentSReport", JSON.stringify(currentMReport));
+						window.location.href="service_report.html";
+					}
 
-    </script>
+
+				});
+					
+				var index=0;
+				 setInterval(function () {
+				 	if(index>=2){
+				 		$('.m-carousel').carousel('move', 1);
+                		index=0;
+				 		
+				 	}else{
+				 		$('.m-carousel').carousel('next');	
+				 		index++;
+                	}
+                }, 10000);
+		        
+			});
+function createReportItem(index,report){
+	return '<li><a id="report_item_'+report.type+'_'+index+'" href="#" class="report_item">\
+	<img  src="images/report.png"\ class="ui-li-thumb">\
+	<p>'+report.name+report.cycle_type+'</p>\
+	<p class="ui-li-aside">'+report.status+'</p>\
+</a></li>';
+}
+
+</script>
 </head>
 <body>
 
-		<div data-role="page" id="home" class="my-page" style="background-image: url('images/bg.png'); background-attachment: fixed; background-repeat: no-repeat; background-size: 100% 100%;"  >
-			
-			<div data-role="header" data-position="fixed" data-theme="b"  >
-				
-						  <h1>IES Maintainance Report App</h1>
-						 <div data-role="controlgroup" data-type="horizontal" class="ui-btn-right ui-corner-all">
-							<a href="#" class="ui-btn ui-corner-all">中</a>
-							<a href="#" class="ui-btn ui-btn-a ui-corner-all ">EN</a>
-						</div>
-				</div><!-- /header -->
-				
-				<div id="photo" class="m-carousel m-fluid  ">
-				  <div class="m-carousel-inner">
-				  <div class="m-item">
-					  <div class="m-card-light">
+	<div data-role="page" id="home" class="my-page" style="background-image: url('images/bg.png'); background-attachment: fixed; background-repeat: no-repeat; background-size: 100% 100%;"  >
+
+		<div data-role="header" data-position="fixed" data-theme="b"  >
+
+			<h1>IES Maintainance Report App</h1>
+			<div data-role="controlgroup" data-type="horizontal" class="ui-btn-right ui-corner-all">
+				<a href="#" class="ui-btn ui-corner-all">中</a>
+				<a href="#" class="ui-btn ui-btn-a ui-corner-all ">EN</a>
+			</div>
+		</div><!-- /header -->
+
+		<div id="photo" class="m-carousel m-fluid  ">
+			<div class="m-carousel-inner">
+				<div class="m-item">
+					<div class="m-card-light">
 						<img  class="m-image"  src="images/3.png">
 						
-					  </div>
 					</div>
-					<div class="m-item">
-					  <div class="m-card-light">
+				</div>
+				<div class="m-item">
+					<div class="m-card-light">
 						<img class="m-image" src="images/1.png">
 						
-					  </div>
 					</div>
-					<div class="m-item">
-					  <div class="m-card-light">
+				</div>
+				<div class="m-item">
+					<div class="m-card-light">
 						<img class="m-image"  src="images/2.png">
 						
-					  </div>
 					</div>
-					
-				  </div>
-				
-				  <!-- the controls -->
-				  <div class="m-carousel-controls m-carousel-bulleted">
-				
-					<a href="#" data-slide="1" class="m-active">1</a>
-					<a href="#" data-slide="2">2</a>
-					<a href="#" data-slide="3">3</a>
-				
-				  </div>
-				  
 				</div>
-				<div id="menu" data-role="controlgroup" data-type="horizontal" data-theme="b"  >
-				<a id="maint_report_btn"   href="#popupSelectMaintReport" data-rel="popup" data-position-to="window" data-transition="pop"  data-icon="custom"   class="ui-btn ui-alt-icon ui-btn-icon-top ui-corner-all ui-shadow ">Maintenance Report</a>
-				<a id="emergency_report_btn"   href="#popupSelectServiceReport" data-rel="popup" data-position-to="window" data-transition="pop"  data-icon="custom"  class="ui-btn ui-alt-icon ui-btn-icon-top ui-corner-all ui-shadow ">Emergency Report</a>
+
+			</div>
+
+			<!-- the controls -->
+			<div class="m-carousel-controls m-carousel-bulleted">
 				
-				</div>
-				<div data-role="popup" id="popupSelectMaintReport" data-overlay-theme="b" data-theme="a" data-dismissible="false" style="width:660px;height:260px;" >
-				  <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-b ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
-			    <div data-role="header" data-theme="b">
-			    <h1>Select a action</h1>
-			    </div>
-			   <div role="main" class="ui-content">
-
-			        <ul data-role="listview" data-inset="true">
-			        	<li><a href="#">
-			            	<img src="images/report.png" class="ui-li-thumb">
-			                <p>New Report</p>
-			              
-			            </a></li>
-			        	<li><a href="#">
-			            	<img src="images/report.png" class="ui-li-thumb">
-			            	<p>Maintance Report 1</p>
-			            	<p class="ui-li-aside">Modified</p>
-			            </a></li>
-			        	<li><a href="#">
-			            	<img src="images/report.png" class="ui-li-thumb">
-			            	<p>Maintance Report 2</p>
-			            </a></li>
-			        	<li><a href="#">
-			            	<img src="images/report.png" class="ui-li-thumb">
-			            	<p>Maintance Report 3</p>
-			            </a></li>
-			        	
-			        </ul>
-
-			    </div><!-- /content -->
+				<a href="#" data-slide="1" class="m-active">1</a>
+				<a href="#" data-slide="2">2</a>
+				<a href="#" data-slide="3">3</a>
+				
 			</div>
-			<div data-role="popup" id="popupSelectServiceReport" data-overlay-theme="b" data-theme="a" data-dismissible="false" style="width:660px;height:260px;" >
-				  <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-b ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
-			    <div data-role="header" data-theme="b">
-			    <h1>Select a action</h1>
-			    </div>
-			   <div role="main" class="ui-content">
 
-			        <ul data-role="listview" data-inset="true">
-			        	<li><a href="#">
-			            	<img src="images/report.png" class="ui-li-thumb">
-			                <p>New Report</p>
-			              
-			            </a></li>
-			        	<li><a href="#">
-			            	<img src="images/report.png" class="ui-li-thumb">
-			            	<p>Maintance Report 1</p>
-			            	<p class="ui-li-aside">Modified</p>
-			            </a></li>
-			        	<li><a href="#">
-			            	<img src="images/report.png" class="ui-li-thumb">
-			            	<p>Maintance Report 2</p>
-			            </a></li>
-			        	<li><a href="#">
-			            	<img src="images/report.png" class="ui-li-thumb">
-			            	<p>Maintance Report 3</p>
-			            </a></li>
-			        	
-			        </ul>
+		</div>
+		<div id="menu" data-role="controlgroup" data-type="horizontal" data-theme="b"  >
+			<a id="maint_report_btn"   href="#popupSelectMaintReport" data-rel="popup" data-position-to="window" data-transition="pop"  data-icon="custom"   class="ui-btn ui-alt-icon ui-btn-icon-top ui-corner-all ui-shadow ">Maintenance Report</a>
+			<a id="emergency_report_btn"   href="#popupSelectServiceReport" data-rel="popup" data-position-to="window" data-transition="pop"  data-icon="custom"  class="ui-btn ui-alt-icon ui-btn-icon-top ui-corner-all ui-shadow ">Emergency Report</a>
 
-			    </div><!-- /content -->
+		</div>
+		<div data-role="popup" id="popupSelectMaintReport" data-overlay-theme="b" data-theme="a" data-dismissible="false" style="width:660px;height:260px;" >
+			<a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-b ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
+			<div data-role="header" data-theme="b">
+				<h1>Select a action</h1>
 			</div>
-		</div>		
-		
+			<div role="main" class="ui-content">
+
+				<ul id="m_report_list" data-role="listview" data-inset="true">
+					<li><a id="new_m_report"  href="#">
+						<img src="images/report.png" class="ui-li-thumb">
+						<p>New Report</p>
+
+					</a></li>
+
+
+				</ul>
+
+			</div><!-- /content -->
+		</div>
+		<div data-role="popup" id="popupSelectServiceReport" data-overlay-theme="b" data-theme="a" data-dismissible="false" style="width:660px;height:260px;" >
+			<a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-b ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
+			<div data-role="header" data-theme="b">
+				<h1>Select a action</h1>
+			</div>
+			<div role="main" class="ui-content">
+
+				<ul id="s_report_list" data-role="listview" data-inset="true">
+					<li><a id="new_s_report" href="#">
+						<img src="images/report.png" class="ui-li-thumb">
+						<p>New Report</p>
+					</a></li>
+
+
+				</ul>
+
+			</div><!-- /content -->
+		</div>
+	</div>		
+
 
 	<script src="js/carousel.js"></script>
 	<!-- construct the carousel -->
 	<script>$('.m-carousel').carousel()</script>	
-			
+
 </body>
 </html>

@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html>
-	<head>
+<head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Regular Maintainance Report</title>
 	<link rel="stylesheet" href="css/fb-style.min.css" />
 	<link rel="stylesheet" href="css/jquery.mobile.structure-1.4.3.min.css">
-  	<link rel="stylesheet" href="css/jquery.mobile.icons-1.4.3.min.css">
+	<link rel="stylesheet" href="css/jquery.mobile.icons-1.4.3.min.css">
 	<link rel="stylesheet" href="css/carousel.css">
 	<link rel="stylesheet" href="css/carousel-style.css">
 	<script src="js/jquery.js"></script>
@@ -41,9 +41,9 @@
 		}
 		.m-image{
 			width: 80%;
-		
+			
 			display: block;
-    margin: 0 auto;
+			margin: 0 auto;
 			
 		}
 
@@ -54,17 +54,17 @@
 			margin: 0 auto;
 		}
 		li.ui-tabs-active > a {
-    background-color: rgb(51, 136, 204)!important;
-    border-color: rgb(51, 136, 204) !important;
-    color: rgb(255, 255, 255) !important;
-    text-shadow: 0 1px 0 rgb(0, 85, 153) !important;
-}
+			background-color: rgb(51, 136, 204)!important;
+			border-color: rgb(51, 136, 204) !important;
+			color: rgb(255, 255, 255) !important;
+			text-shadow: 0 1px 0 rgb(0, 85, 153) !important;
+		}
 		#maint_report_btn:after { background:  url("images/report.png") 50% 50% no-repeat;  background-size: 24px 24px; }
 		#emergency_report_btn:after { background:  url("images/repair.png") 50% 50% no-repeat;  background-size: 24px 24px; }
-	
+		
 	</style>
 	<script src="js/from_data.js"></script>
-	 <script type="text/javascript" charset="utf-8">
+	<script type="text/javascript" charset="utf-8">
 
 			// Wait for device API libraries to load
 			//
@@ -75,29 +75,29 @@
 			function onDeviceReady() {
 				
 				window.localStorage.setItem("key", "{sss}");
-			
+				
 				// keyname is now equal to "key"
 				var value = window.localStorage.getItem("key");
 				// value is now equal to "value"
-			
+				
 				window.localStorage.setItem("key2", "value2");
 				
-					
+				
 				
 				
 				
 				$("#testDiv").html("<span>"+value+"</span>");
-		
+				
 				
 				
 				
 				
 			}
-	
-	$(document).ready(function(){
+			
+			$(document).ready(function(){
 				
-				 report =JSON.parse(window.localStorage.getItem("report")); 
-				 
+				var report =JSON.parse(window.localStorage.getItem("currentMReport")); 
+				
 				var current_catalog_index=parseInt(window.localStorage.getItem("current_catalog_index"));
 				
 				if(isNaN(current_catalog_index)){
@@ -110,374 +110,397 @@
 					$("#popSignatureImg").attr("src",report.signature);
 				}
 				var current_from_index=-1;
+				
+
+				var customers= [
+				{ 	"id" : "1",
+				"name_cn" : "十六浦",
+				"name_en" : "Ponte 16 Resort Macau",
+				"seq" :"MM-0608020-10",
+				"created_at" :"2014-06-09 23:27:35"
+			},
+			{ 	"id": "2",
+			"name_cn": "蘭桂坊",
+			"name_en": "Lan Kwai Fong",
+			"seq":"MM-LM-10007-11",
+			"created_at": "2014-06-09 23:27:35"
+		},
+		{ 	"id": "3",
+		"name_cn": "凱旋門",
+		"name_en": "L'Arc Macau",
+		"seq": "MM-0606014-05",
+		"created_at": "2014-06-09 23:27:35"
+	},
+	{ 	"id": "4",
+	"name_cn": "新葡京",
+	"name_en": "Grand Lisboa",
+	"seq":"MM-0406012-04",
+	"created_at":"2014-06-09 23:27:35"
+},
+{ 	"id": "5",
+"name_cn": "金沙",
+"name_en": "Sands Macau",
+"seq":"MM-0603005-02",
+"created_at":"2014-06-09 23:27:35"
+},
+{ 	"id": "6",
+"name_cn": "星際",
+"name_en": "Star World",
+"seq":"MM_LM-100903-12",
+"created_at":"2014-06-09 23:27:35"
+},
+{ 	"id": "7",
+"name_cn": "四季",
+"name_en": "Four Season Hotel",
+"seq":"MM_LM-100903-12",
+"created_at":"2014-06-09 23:27:35"
+},
+{ 	"id": "8",
+"name_cn": "威尼斯人一期",
+"name_en": "Venetian Cotai",
+"seq": "MM-0505001-15",
+"created_at": "2014-06-09 23:27:35"
+},
+{ 	"id": "9",
+"name_cn": "威尼斯人5,6期",
+"name_en": "Sands Cotai",
+"seq": "MM-0601006-17",
+"created_at": "2014-06-09 23:27:35"
+}
+];
+
+var cycles=[{ 	"value": "1",
+"name_cn": "月檢",
+"name_en": "Monthly"
+
+},{ 	"value": "2",
+"name_cn": "雙月檢",
+"name_en": "Even Monthly"
+
+},{ 	"value": "6",
+"name_cn": "半年檢",
+"name_en": "Semi-Annually"
+
+},{ 	"value": "12",
+"name_cn": "年檢",
+"name_en": "Annually"
+
+}];
+var catalogToIndex={};
+catalogToIndex["heat"]=0;
+catalogToIndex["boiler"]=1;
+catalogToIndex["chimney"]=2;
+var indexToCatalog=["heat","boiler","chimney"];
+
+var fromhash={};
+
+for(var i in indexToCatalog){
+
+	fromhash[i]=jQuery.grep(report.froms, function(element, index){
+		return element.from_type==indexToCatalog[i];
+	});
+	reloadFromList(index);
+	
+}
+
+
+for(var index in customers){ 
+	$("#customers").append($('<option>', {
+		value: customers[index].id,
+		text: customers[index].name_en}));
+}
+
+for(var index in cycles){ 
+	$("#cycle").append($('<option>', {
+		value: cycles[index].value,
+		text: cycles[index].name_en}));
+}
+$('select').selectmenu('refresh', true);
+
+
+$("#customers").bind( "change", function(event, ui) {
+	
+	report.customers_id=$("#customers").val();
+	window.localStorage.setItem("report", JSON.stringify(report));
+	
+});
+
+$("#cycle").bind( "change", function(event, ui) {
+	
+	report.cycle_type=$("#cycle").val();
+	window.localStorage.setItem("report", JSON.stringify(report));
+});
+$("#add_btn").click(function (e) {
+	var new_froms={};
+	var new_froms = jQuery.extend(true, {}, empty_froms[current_catalog_index]);
+	new_froms.id=report.id+"_"+current_catalog_index+"_"+(report.froms.length+1)+getTimeStr();
+	new_froms.items=jQuery.grep(new_froms.items, function(element, index){
+		return element.cycle<=report.cycle_type;
+	});
+	
+	
+	window.localStorage.setItem("currentForm", JSON.stringify(new_froms));
+	window.location.href="maint_from.html";
+});
+$("#sign").click(function (e) {
+	window.location.href="signature.html";
+});
+var fromhash={};
+
+for(var i in indexToCatalog){
+
+	refreshFromHash(i);
+	
+}
+addFromListEvent();
+function refreshFromHash(i){
+	fromhash[i]=jQuery.grep(report.froms, function(element, index){
+		return element.from_type==indexToCatalog[i];
+	});
+	reloadFromList(i);
+}
+function reloadFromList(index){
+	$('#'+indexToCatalog[index]+'_list').empty();
+
+	
+	for(var i in fromhash[index]){ 
+		
+		addFromInCatalog('#'+indexToCatalog[index]+'_list',fromhash[index][i],i,fromhash[index].length);
+	}
+	
+	$('#'+indexToCatalog[index]+'_list').listview('refresh');
+}	
+function addFromListEvent(){	
+	$(".edit_btn").click(function(event, ui) {
+		
+		var res =this.id.split("_");
+		var index =res[res.length-1];
+		
+		var current_froms=fromhash[current_catalog_index][index];
+		window.localStorage.setItem("currentForm", JSON.stringify(current_froms));
+		window.location.href="maint_from.html";
 		
 
-					var customers= [
-								{ 	"id" : "1",
-									"name_cn" : "十六浦",
-									"name_en" : "Ponte 16 Resort Macau",
-									"seq" :"MM-0608020-10",
-									"created_at" :"2014-06-09 23:27:35"
-								},
-								{ 	"id": "2",
-									"name_cn": "蘭桂坊",
-									"name_en": "Lan Kwai Fong",
-									"seq":"MM-LM-10007-11",
-									"created_at": "2014-06-09 23:27:35"
-								},
-								{ 	"id": "3",
-									"name_cn": "凱旋門",
-									"name_en": "L'Arc Macau",
-									"seq": "MM-0606014-05",
-									"created_at": "2014-06-09 23:27:35"
-								},
-								{ 	"id": "4",
-									"name_cn": "新葡京",
-									"name_en": "Grand Lisboa",
-									"seq":"MM-0406012-04",
-									"created_at":"2014-06-09 23:27:35"
-								},
-								{ 	"id": "5",
-									"name_cn": "金沙",
-									"name_en": "Sands Macau",
-									"seq":"MM-0603005-02",
-									"created_at":"2014-06-09 23:27:35"
-								},
-								{ 	"id": "6",
-									"name_cn": "星際",
-									"name_en": "Star World",
-									"seq":"MM_LM-100903-12",
-									"created_at":"2014-06-09 23:27:35"
-								},
-								{ 	"id": "7",
-									"name_cn": "四季",
-									"name_en": "Four Season Hotel",
-									"seq":"MM_LM-100903-12",
-									"created_at":"2014-06-09 23:27:35"
-								},
-								{ 	"id": "8",
-									"name_cn": "威尼斯人一期",
-									"name_en": "Venetian Cotai",
-									"seq": "MM-0505001-15",
-									"created_at": "2014-06-09 23:27:35"
-								},
-								{ 	"id": "9",
-									"name_cn": "威尼斯人5,6期",
-									"name_en": "Sands Cotai",
-									"seq": "MM-0601006-17",
-									"created_at": "2014-06-09 23:27:35"
-								}
-								];
-							
-						var cycles=[{ 	"value": "1",
-									"name_cn": "月檢",
-									"name_en": "Monthly"
-								
-								},{ 	"value": "2",
-									"name_cn": "雙月檢",
-									"name_en": "Even Monthly"
-								
-								},{ 	"value": "6",
-									"name_cn": "半年檢",
-									"name_en": "Semi-Annually"
-								
-								},{ 	"value": "12",
-									"name_cn": "年檢",
-									"name_en": "Annually"
-								
-								}];
-						var catalogToIndex={};
-						catalogToIndex["heat"]=0;
-						catalogToIndex["boiler"]=1;
-						catalogToIndex["chimney"]=2;
-						var indexToCatalog=["heat","boiler","chimney"];
-
-						var fromhash={};
-						
-						for(var i in indexToCatalog){
-
-							fromhash[i]=jQuery.grep(report.froms, function(element, index){
-							  return element.from_type==indexToCatalog[i];
-							});
-							reloadFromList(index);
-							
-						}
-					
-
-						for(var index in customers){ 
-								$("#customers").append($('<option>', {
-									value: customers[index].id,
-									text: customers[index].name_en}));
-						}
-						
-						for(var index in cycles){ 
-								$("#cycle").append($('<option>', {
-									value: cycles[index].value,
-									text: cycles[index].name_en}));
-						}
-						$('select').selectmenu('refresh', true);
-						
-						
-						$("#customers").bind( "change", function(event, ui) {
-							
-							report.customers_id=$("#customers").val();
-							window.localStorage.setItem("report", JSON.stringify(report));
-							
-						});
-						
-						$("#cycle").bind( "change", function(event, ui) {
-							
-							report.cycle_type=$("#cycle").val();
-							window.localStorage.setItem("report", JSON.stringify(report));
-						});
-						$("#add_btn").click(function (e) {
-								var new_froms={};
-							   	var new_froms = jQuery.extend(true, {}, empty_froms[current_catalog_index]);
-							   	new_froms.id=report.id+"_"+current_catalog_index+"_"+(report.froms.length+1)+getTimeStr();
-							    new_froms.items=jQuery.grep(new_froms.items, function(element, index){
-								  return element.cycle<=report.cycle_type;
-								});
-							   
-						   
-						     window.localStorage.setItem("currentForm", JSON.stringify(new_froms));
-							 window.location.href="maint_from.html";
-						});
-						$("#sign").click(function (e) {
-							 window.location.href="signature.html";
-						});
-						var fromhash={};
-						
-						for(var i in indexToCatalog){
-
-							refreshFromHash(i);
-							
-						}
-						addFromListEvent();
-						function refreshFromHash(i){
-							fromhash[i]=jQuery.grep(report.froms, function(element, index){
-							  return element.from_type==indexToCatalog[i];
-							});
-							reloadFromList(i);
-						}
-						function reloadFromList(index){
-							$('#'+indexToCatalog[index]+'_list').empty();
-
-							
-							for(var i in fromhash[index]){ 
-							
-						  			addFromInCatalog('#'+indexToCatalog[index]+'_list',fromhash[index][i],i,fromhash[index].length);
-							}
-							
-							$('#'+indexToCatalog[index]+'_list').listview('refresh');
-						}	
-						function addFromListEvent(){	
-							$(".edit_btn").click(function(event, ui) {
-								
-								var res =this.id.split("_");
-								var index =res[res.length-1];
-								
-								var current_froms=fromhash[current_catalog_index][index];
-								window.localStorage.setItem("currentForm", JSON.stringify(current_froms));
-								window.location.href="maint_from.html";
-								
-
-							});
-							$(".from-item").click(function(event, ui) {
-								$(".from-item").removeClass("ui-btn-active");
-								var res =this.id.split("_");
-								var index =res[res.length-1];
-								current_from_index=index;
-								$(this).addClass("ui-btn-active");
-								$('#copy_btn').removeClass("ui-state-disabled");
-			                	$('#delete_pop_btn').removeClass("ui-state-disabled");
-							});
-						}
+	});
+	$(".from-item").click(function(event, ui) {
+		$(".from-item").removeClass("ui-btn-active");
+		var res =this.id.split("_");
+		var index =res[res.length-1];
+		current_from_index=index;
+		$(this).addClass("ui-btn-active");
+		$('#copy_btn').removeClass("ui-state-disabled");
+		$('#delete_pop_btn').removeClass("ui-state-disabled");
+	});
+}
 
 
-						$("#delete_btn").click(function(event, ui) {
+$("#delete_btn").click(function(event, ui) {
 
-							for(var index in report.froms){
-								if(report.froms[index].id==fromhash[current_catalog_index][current_from_index].id){
-									report.froms.splice(index,1);
-									break;
-								}
-							}
-							
-							 window.localStorage.setItem("report", JSON.stringify(report));
-							refreshFromHash(current_catalog_index);
-							addFromListEvent();
-							clearCurrentFromIndex();
-							
-						});
-						$("#copy_btn").click(function(event, ui) {
-							
-						
-							
-							var new_froms = jQuery.extend(true, {}, fromhash[current_catalog_index][current_from_index]);
-						   	new_froms.id=report.id+"_"+current_catalog_index+"_"+(report.froms.length+1)+getTimeStr();
-						   	new_froms.name_en=new_froms.name_en+" 2";
-						   	new_froms.name_cn=new_froms.name_cn+" 2";
-						   	report.froms.push(new_froms);
-							window.localStorage.setItem("report", JSON.stringify(report));
-							refreshFromHash(current_catalog_index);
-							addFromListEvent();
-							clearCurrentFromIndex();
-						});
-						
-					
-					
+	for(var index in report.froms){
+		if(report.froms[index].id==fromhash[current_catalog_index][current_from_index].id){
+			report.froms.splice(index,1);
+			break;
+		}
+	}
+	
+	window.localStorage.setItem("currentMReport", JSON.stringify(report));
+	refreshFromHash(current_catalog_index);
+	addFromListEvent();
+	clearCurrentFromIndex();
+	
+});
+$("#copy_btn").click(function(event, ui) {
+	
+	
+	
+	var new_froms = jQuery.extend(true, {}, fromhash[current_catalog_index][current_from_index]);
+	new_froms.id=report.id+"_"+current_catalog_index+"_"+(report.froms.length+1)+getTimeStr();
+	new_froms.name_en=new_froms.name_en+" 2";
+	new_froms.name_cn=new_froms.name_cn+" 2";
+	report.froms.push(new_froms);
+	window.localStorage.setItem("currentMReport", JSON.stringify(report));
+	refreshFromHash(current_catalog_index);
+	addFromListEvent();
+	clearCurrentFromIndex();
+});
 
-						$('#froms_tab').tabs({
-							active: current_catalog_index,
-		                    activate: function(event ,ui){
-		                    	$(".from-item").removeClass("ui-btn-active");
-		                       current_catalog_index=ui.newTab.index();
-		                        window.localStorage.setItem("current_catalog_index", current_catalog_index);
-		                     clearCurrentFromIndex();
-		                  }
-						});
 
-						$('#copy_btn').addClass("ui-state-disabled");
-		                $('#delete_pop_btn').addClass("ui-state-disabled");
-		                $('#upload').click(function() {
-						  var reprot_str = JSON.stringify(report);
+
+
+$('#froms_tab').tabs({
+	active: current_catalog_index,
+	activate: function(event ,ui){
+		$(".from-item").removeClass("ui-btn-active");
+		current_catalog_index=ui.newTab.index();
+		window.localStorage.setItem("current_catalog_index", current_catalog_index);
+		clearCurrentFromIndex();
+	}
+});
+
+$('#copy_btn').addClass("ui-state-disabled");
+$('#delete_pop_btn').addClass("ui-state-disabled");
+$('#upload').click(function() {
+	var reprot_str = JSON.stringify(report);
 						  // tmp value: [{"id":21,"children":[{"id":196},{"id":195},{"id":49},{"id":194}]},{"id":29,"children":[{"id":184},{"id":152}]},...]
 						  $.ajax({
-						    type: 'POST',
-						    url: 'http://uniquecode.net/job/ms/submit_maint_report.php',
+						  	type: 'POST',
+						  	url: 'http://uniquecode.net/job/ms/submit_maint_report.php',
 						    //url: 'http://localhost/ies_report_sys/submit_maint_report.php',
 						    data: {'report': reprot_str},
 						    success: function(msg) {
-						      alert(msg);
-						       
+						    	alert(msg);
+						    	
 						    },
-						     error: function(XMLHttpRequest, textStatus, errorThrown) {
-			                   alert(textStatus);
-			                }
-						  });
+						    error: function(XMLHttpRequest, textStatus, errorThrown) {
+						    	alert(textStatus);
+						    }
+						});
 						});	
-						
+$('#save').click(function() {
+	var mReportQueue=[];
+
+	var mReportQueueStr=window.localStorage.getItem("mReportQueue");
+	if(mReportQueueStr!=null){
+		mReportQueue =JSON.parse(mReportQueueStr); 
+	}
+	if(report.index>=0){
+		
+		mReportQueue[report.index]=report;
+		
+	}else{
+		report.index=0;
+		mReportQueue.push(report);
+		if(mReportQueue.length>3){
+			mReportQueue.shift();
+		}
+
+	}
+	window.localStorage.setItem("mReportQueue", JSON.stringify(mReportQueue));
+	window.localStorage.setItem("currentMReport", JSON.stringify(report));	
 });
 
-			function clearCurrentFromIndex(){
-					current_from_index=-1;	
-                 	$('#copy_btn').addClass("ui-state-disabled");
-           			$('#delete_pop_btn').addClass("ui-state-disabled");
-			}
-			function getTimeStr(){
-				var now =new Date();
-				return ""+now.getDate()+now.getHours()+now.getMinutes()+now.getSeconds();
-			}
-			function addFromInCatalog(parent,from,index,max){
-					$(parent).append('<li class="ui-li-has-alt ui-li-has-thumb '+(index==0?'ui-first-child':'')+(index==max-1?'ui-last-child':'')+' "><a id="item_'+from.from_type+'_'+index+'" href="#" class="ui-btn from-item">\
-					<img src="images/report.png">\
-				<h3>'+from.name_en+'</h3>\
-				<p>14/25 last updated: 2014/8/17 12:33</p></a>\
-					<a id="edit_'+from.from_type+'_'+index+'"  rel="external"\
-					data-transition="pop" \
-					class="edit_btn ui-btn ui-btn-icon-notext ui-icon-edit ui-btn-a"></a>\
-				</li>');
-					
-			}
 
-    </script>
+});
+
+function clearCurrentFromIndex(){
+	current_from_index=-1;	
+	$('#copy_btn').addClass("ui-state-disabled");
+	$('#delete_pop_btn').addClass("ui-state-disabled");
+}
+function getTimeStr(){
+	var now =new Date();
+	return ""+now.getDate()+now.getHours()+now.getMinutes()+now.getSeconds();
+}
+function addFromInCatalog(parent,from,index,max){
+	$(parent).append('<li class="ui-li-has-alt ui-li-has-thumb '+(index==0?'ui-first-child':'')+(index==max-1?'ui-last-child':'')+' "><a id="item_'+from.from_type+'_'+index+'" href="#" class="ui-btn from-item">\
+		<img src="images/report.png">\
+		<h3>'+from.name_en+'</h3>\
+		<p>14/25 last updated: 2014/8/17 12:33</p></a>\
+		<a id="edit_'+from.from_type+'_'+index+'"  rel="external"\
+		data-transition="pop" \
+		class="edit_btn ui-btn ui-btn-icon-notext ui-icon-edit ui-btn-a"></a>\
+	</li>');
+	
+}
+
+</script>
 </head>
 <body>
 
 	
-		<div data-role="page" id="report" >
-			 <div data-role="header" data-position="fixed"  >
-			 <a href="index.html" rel="external" class="ui-btn  ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-left ui-icon-carat-l">Back</a>
-	      
-					  <h1 style="text-align:left; margin-left:120px;">Maintainance Report</h1>
-					<div data-role="controlgroup" data-type="horizontal" class="ui-mini ui-btn-right">
-						<select data-native-menu="false" id="customers" name="select-choice-1" id="select-choice-1" >
-							
-						</select>
-						<select data-native-menu="false" id="cycle" name="select-choice-1" id="select-choice-1" >
-							
-						</select>
+	<div data-role="page" id="report" >
+		<div data-role="header" data-position="fixed"  >
+			<a href="index.html" rel="external" class="ui-btn  ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-left ui-icon-carat-l">Back</a>
 			
-					</div>
-			</div><!-- /header -->
-	
-		
-		    <div id="froms_tab" data-role="tabs" >
-		      	<ul data-role="listview" data-inset="true"  class="tablist-left">
-			      <li><a id="tab_0" href="#heat_tab" data-ajax="false" data-transition="turn">Heat Transfer<br/> Compact Unit</a></li>
-			      <li><a id="tab_1" href="#boiler_tab" data-ajax="false" data-transition="turn">Hot Water <br/>Boiler </a></li>
-			      <li><a id="tab_2" href="#chimney_tab" data-ajax="false" data-transition="turn">Chimney<br/>system </a></li>
-			    </ul>
-		<div id="heat_tab" class="tablist-content" class="ui-content" >
-			<ul id="heat_list" data-role="listview" data-split-icon="edit" data-split-theme="a" data-inset="true">
+			<h1 style="text-align:left; margin-left:120px;">Maintainance Report</h1>
+			<div data-role="controlgroup" data-type="horizontal" class="ui-mini ui-btn-right">
+				<select data-native-menu="false" id="customers" name="select-choice-1" id="select-choice-1" >
+					
+				</select>
+				<select data-native-menu="false" id="cycle" name="select-choice-1" id="select-choice-1" >
+					
+				</select>
 				
-			</ul>
-		</div>	    
-		<div id="boiler_tab" class="tablist-content" class="ui-content" >
-			<ul id="boiler_list" data-role="listview" data-split-icon="edit" data-split-theme="a" data-inset="true">
-		
-			</ul>
-		</div>
-			
-		
-		<div id="chimney_tab" class="tablist-content" class="ui-content" >
-		
-			<ul id="chimney_list" data-role="listview"  data-split-icon="edit" data-split-theme="a" data-inset="true" >
-				
-			</ul>
-		</div>
-
-			</div>	
-			
-			<div data-role="popup" id="popupConfrimDelete" data-overlay-theme="b" data-theme="b" data-dismissible="false" style="max-width:400px;">
-			    <div data-role="header" data-theme="a">
-			    <h1>Delete From?</h1>
-			    </div>
-			    <div role="main" class="ui-content">
-			        <h3 class="ui-title">Are you sure you want to delete this from?</h3>
-			    <p>This action cannot be undone.</p>
-			        <div class="center-wrapper">
-  
-			        <a id="delete_btn" href="#" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b" data-rel="back" data-transition="flow">Delete</a>
-			        <a href="#" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b" data-rel="back">Cancel</a>
-			        </div>
-			    </div>
 			</div>
-				<div data-role="popup" id="popupCopySuccess" data-theme="b" class="ui-content" style="max-width:280px">
-				    <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-b ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
-					<p>Copy successfully!!</p>
+		</div><!-- /header -->
+		
+		
+		<div id="froms_tab" data-role="tabs" >
+			<ul data-role="listview" data-inset="true"  class="tablist-left">
+				<li><a id="tab_0" href="#heat_tab" data-ajax="false" data-transition="turn">Heat Transfer<br/> Compact Unit</a></li>
+				<li><a id="tab_1" href="#boiler_tab" data-ajax="false" data-transition="turn">Hot Water <br/>Boiler </a></li>
+				<li><a id="tab_2" href="#chimney_tab" data-ajax="false" data-transition="turn">Chimney<br/>system </a></li>
+			</ul>
+			<div id="heat_tab" class="tablist-content" class="ui-content" >
+				<ul id="heat_list" data-role="listview" data-split-icon="edit" data-split-theme="a" data-inset="true">
+					
+				</ul>
+			</div>	    
+			<div id="boiler_tab" class="tablist-content" class="ui-content" >
+				<ul id="boiler_list" data-role="listview" data-split-icon="edit" data-split-theme="a" data-inset="true">
+					
+				</ul>
+			</div>
+			
+			
+			<div id="chimney_tab" class="tablist-content" class="ui-content" >
+				
+				<ul id="chimney_list" data-role="listview"  data-split-icon="edit" data-split-theme="a" data-inset="true" >
+					
+				</ul>
+			</div>
+
+		</div>	
+		
+		<div data-role="popup" id="popupConfrimDelete" data-overlay-theme="b" data-theme="b" data-dismissible="false" style="max-width:400px;">
+			<div data-role="header" data-theme="a">
+				<h1>Delete From?</h1>
+			</div>
+			<div role="main" class="ui-content">
+				<h3 class="ui-title">Are you sure you want to delete this from?</h3>
+				<p>This action cannot be undone.</p>
+				<div class="center-wrapper">
+					
+					<a id="delete_btn" href="#" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b" data-rel="back" data-transition="flow">Delete</a>
+					<a href="#" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b" data-rel="back">Cancel</a>
 				</div>
-				<div data-role="popup" data-theme="b" id="popupSaveSuccessInfo"  class="ui-content" style="max-width:280px">
-				    <a  href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-b ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
-					<p>Save successfully!!</p>
-				</div>
-				<div data-role="popup" id="popupSignature" data-overlay-theme="b" data-theme="a" data-corners="false">
-				    <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-a ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a><img src="" id="popSignatureImg" class="popphoto"  style="max-height:250px;" alt="Paris, France">
-				</div>
+			</div>
+		</div>
+		<div data-role="popup" id="popupCopySuccess" data-theme="b" class="ui-content" style="max-width:280px">
+			<a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-b ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
+			<p>Copy successfully!!</p>
+		</div>
+		<div data-role="popup" data-theme="b" id="popupSaveSuccessInfo"  class="ui-content" style="max-width:280px">
+			<a  href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-b ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
+			<p>Save successfully!!</p>
+		</div>
+		<div data-role="popup" id="popupSignature" data-overlay-theme="b" data-theme="a" data-corners="false">
+			<a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-a ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a><img src="" id="popSignatureImg" class="popphoto"  style="max-height:250px;" alt="Paris, France">
+		</div>
 		<div data-role="footer" data-theme="b" data-position="fixed">
 			
-				<div class="ui-bar">
-					
-				 	
-				</div>
-				<div data-role="controlgroup" data-type="horizontal" class="ui-mini ui-btn-left">
-					<a id="add_btn" href="#" rel="external" class="ui-btn ui-btn-icon-right ui-icon-plus">Add</a>
-					<a id="copy_btn" href="#popupCopySuccess" data-rel="popup" data-position-to="window" data-transition="pop"  class="ui-btn ui-btn-icon-right ui-icon-bullets">Copy</a>
-					<a id="delete_pop_btn" href="#popupConfrimDelete" data-rel="popup" data-position-to="window" data-transition="pop"  class="ui-btn ui-btn-icon-right ui-icon-delete">Delete</a>
+			<div class="ui-bar">
 				
-				</div>	
-					
-			   <h1></h1>
-			   <div data-role="controlgroup" data-type="horizontal" class="ui-mini ui-btn-right">
-			      <a href="#popupSignature" class=" ui-btn ui-btn-a ui-mini" data-rel="popup" data-mini="true" style="height:18px !important;" data-position-to="window" data-transition="fade"><img  id="signature" class=" ui-btn ui-btn-a ui-mini"  height="18"  ></a>
-			   <a id="sign" href="#" class=" ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-edit">Sign</a>
-			<a id="save" href="#popupSaveSuccessInfo" data-rel="popup" data-position-to="window" data-transition="pop" href="#" class=" ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-check">Save</a>
+				
+			</div>
+			<div data-role="controlgroup" data-type="horizontal" class="ui-mini ui-btn-left">
+				<a id="add_btn" href="#" rel="external" class="ui-btn ui-btn-icon-right ui-icon-plus">Add</a>
+				<a id="copy_btn" href="#popupCopySuccess" data-rel="popup" data-position-to="window" data-transition="pop"  class="ui-btn ui-btn-icon-right ui-icon-bullets">Copy</a>
+				<a id="delete_pop_btn" href="#popupConfrimDelete" data-rel="popup" data-position-to="window" data-transition="pop"  class="ui-btn ui-btn-icon-right ui-icon-delete">Delete</a>
+				
+			</div>	
+			
+			<h1></h1>
+			<div data-role="controlgroup" data-type="horizontal" class="ui-mini ui-btn-right">
+				<a href="#popupSignature" class=" ui-btn ui-btn-a ui-mini" data-rel="popup" data-mini="true" style="height:18px !important;" data-position-to="window" data-transition="fade"><img  id="signature" class=" ui-btn ui-btn-a ui-mini"  height="18"  ></a>
+				<a id="sign" href="#" class=" ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-edit">Sign</a>
+				<a id="save" href="#popupSaveSuccessInfo" data-rel="popup" data-position-to="window" data-transition="pop" href="#" class=" ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-check">Save</a>
 				<a id="upload" href="#" class=" ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-recycle">Upload</a>
 			</div>
-	    
+			
 		</div>
 	</div>		
 
-			
+	
 </body>
 </html>

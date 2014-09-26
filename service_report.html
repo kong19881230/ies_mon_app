@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html>
-	<head>
+<head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Regular Maintainance Report</title>
 	<link rel="stylesheet" href="css/fb-style.min.css" />
 	<link rel="stylesheet" href="css/jquery.mobile.structure-1.4.3.min.css">
-  	<link rel="stylesheet" href="css/jquery.mobile.icons-1.4.3.min.css">
+	<link rel="stylesheet" href="css/jquery.mobile.icons-1.4.3.min.css">
 	<link rel="stylesheet" href="css/carousel.css">
 	<link rel="stylesheet" href="css/carousel-style.css">
 	<link rel="stylesheet" href="css/listview-grid.css">
@@ -15,292 +15,322 @@
 	<script src="js/jquery.mobile-1.4.3.min.js"></script>
 	<script type="text/javascript" charset="utf-8" src="cordova.js"></script>
 	<style id="inset-tablist">
-	.ui-field-contain>label{
+		.ui-field-contain>label{
 			float: left;
 			width: 55%;
 			margin: .5em 2% 2% 2%;
-	}
-	.ui-field-contain>label~[class*=ui-], .ui-field-contain .right-container 
-	{
-		float: left;
-		width: 40%;
-		-webkit-box-sizing: border-box;
-		-moz-box-sizing: border-box;
-		box-sizing: border-box;
-	}
-	.ui-tabs {
-		position: relative;
-		padding: 0em; 
 		}
-	
+		.ui-field-contain>label~[class*=ui-], .ui-field-contain .right-container 
+		{
+			float: left;
+			width: 40%;
+			-webkit-box-sizing: border-box;
+			-moz-box-sizing: border-box;
+			box-sizing: border-box;
+		}
+		.ui-tabs {
+			position: relative;
+			padding: 0em; 
+		}
+
 		
 		li.ui-tabs-active > a {
-    background-color: rgb(51, 136, 204)!important;
-    border-color: rgb(51, 136, 204) !important;
-    color: rgb(255, 255, 255) !important;
-    text-shadow: 0 1px 0 rgb(0, 85, 153) !important;
-}
+			background-color: rgb(51, 136, 204)!important;
+			border-color: rgb(51, 136, 204) !important;
+			color: rgb(255, 255, 255) !important;
+			text-shadow: 0 1px 0 rgb(0, 85, 153) !important;
+		}
 		#maint_report_btn:after { background:  url("images/report.png") 50% 50% no-repeat;  background-size: 24px 24px; }
 		#emergency_report_btn:after { background:  url("images/repair.png") 50% 50% no-repeat;  background-size: 24px 24px; }
-	
+
 	</style>
 	<script>
-	var empty_remark={
-								"text":"",
-								"photos":[]
-				};
-var currentRemarkCameraID="";
-				$(document).ready(function(){
-						var remarks=[];
+		var empty_remark={
+			"text":"",
+			"photos":[]
+		};
+		var currentRemarkCameraID="";
+		$(document).ready(function(){
+			var report =JSON.parse(window.localStorage.getItem("currentSReport")); 
+			var remarks=[];
 
-						if(remarks.length==0){
+			if(remarks.length==0){
 
 
-							remarks.push(empty_remark);
-						}
+				remarks.push(empty_remark);
+			}
 
-						for(var i in remarks){
-							$("#remark_container").append(createRemark(i,remarks[i].text));
-							$("#remark_container").trigger("create");
-							for(var j in remarks[i].photos){
-								
-								$("#photos_"+i).prepend(createRemarkPhoto(j,i,remarks[i].photos[j]));
-							
-							}
-							
-						}
+			for(var i in remarks){
+				$("#remark_container").append(createRemark(i,remarks[i].text));
+				$("#remark_container").trigger("create");
+				for(var j in remarks[i].photos){
 
-						$("#add_remark_btn").click(function(event, ui){
-							
-							$("#remark_container").append(createRemark(remarks.length,""));
-							$("#remark_container").trigger("create");
+					$("#photos_"+i).prepend(createRemarkPhoto(j,i,remarks[i].photos[j]));
 
-							remarks.push(empty_remark);
-							$('.remark_camera').bind( "click", function(event, ui){
-								currentRemarkCameraID=event.currentTarget.id;
-								captureRemarkImage();
-							});
-						});	
+				}
 
-						$('.remark_camera').bind( "click", function(event, ui){
+			}
+
+			$("#add_remark_btn").click(function(event, ui){
+
+				$("#remark_container").append(createRemark(remarks.length,""));
+				$("#remark_container").trigger("create");
+
+				remarks.push(empty_remark);
+				$('.remark_camera').bind( "click", function(event, ui){
+					currentRemarkCameraID=event.currentTarget.id;
+					captureRemarkImage();
+				});
+			});	
+			$("#savebtn").click(function(event, ui){
+				
+				var sReportQueue=[];
+
+				var sReportQueueStr=window.localStorage.getItem("sReportQueue");
 			
-						currentRemarkCameraID=event.currentTarget.id;
-						captureRemarkImage();
-						});
+				if(sReportQueueStr!=null){
+					sReportQueue =JSON.parse(sReportQueueStr); 
+				}
+				if(report.index>=0){
+					
+					sReportQueue[report.index]=report;
+					
+				}else{
 
-						function onRemarkImageSuccess(imageURI) {
-			
-							var index=getIndex(currentRemarkCameraID);
-							alert(index);
-									$("#photos_"+index).prepend(createRemarkPhoto(remarks[index].photos.length,index,imageURI));
-							
-									remarks[index].photos.push(imageURI);
-									alert(remarks[index].photos.length);
-						}
+					report.index=0;
+					sReportQueue.push(report);
+					if(sReportQueue.length>3){
+						sReportQueue.shift();
+					}
 
-					    function captureRemarkImage() {
+				}
+				
+				window.localStorage.setItem("sReportQueue", JSON.stringify(sReportQueue));
+				window.localStorage.setItem("currentSReport", JSON.stringify(report));	
+			});	
+			$('.remark_camera').bind( "click", function(event, ui){
+
+				currentRemarkCameraID=event.currentTarget.id;
+				captureRemarkImage();
+			});
+
+			function onRemarkImageSuccess(imageURI) {
+
+				var index=getIndex(currentRemarkCameraID);
+				alert(index);
+				$("#photos_"+index).prepend(createRemarkPhoto(remarks[index].photos.length,index,imageURI));
+				$("#photos_"+index).listview('refresh');
+				remarks[index].photos.push(imageURI);
+				alert(remarks[index].photos.length);
+			}
+
+			function captureRemarkImage() {
 					        // Launch device camera application,
 					        // allowing user to capture up to 2 images
-					 	
-					         navigator.camera.getPicture(onRemarkImageSuccess, onFail, { quality: 50,
-							destinationType: Camera.DestinationType.FILE_URI });
+
+					        navigator.camera.getPicture(onRemarkImageSuccess, onFail, { quality: 50,
+					        	destinationType: Camera.DestinationType.FILE_URI });
 					    }
-					    	function getIndex(id){
-					var res =id.split("_");
-					var index =res[res.length-1];
-					return index;
-				}
-				});
-		 function createRemark(index,value){
-		   	 return '<div class=" ui-shadow ui-content">\
-				        <label for="textinput-hide" class="ui-hidden-accessible">Remark</label>\
-						<input id="remark_text_'+index+'" type="text" name="textinput-hide" id="textinput-hide" placeholder="Text input" value="'+value+'">\
-				        <ul id="photos_'+index+'" data-role="listview" data-inset="true">\
-				             <li><a id="camera_remark_'+index+'" href="#" class="remark_camera">\
-				                <img src="images/camera-icon.jpg" class="ui-li-thumb">\
-				            </a></li>\
-				        </ul>\
-				        </div>\
-				    </div>';
-		   }
-		   function createRemarkPhoto(p_index,index,image){
-		   		return '<li><a  href="#">\
-	                <img id="remark_img_'+p_index+'_'+index+'" src="'+image+'" class="ui-li-thumb">\
-	            </li>';
-		   }
-	</script>
+					    function getIndex(id){
+					    	var res =id.split("_");
+					    	var index =res[res.length-1];
+					    	return index;
+					    }
+});
+function createRemark(index,value){
+	return '<div class=" ui-shadow ui-content">\
+	<label for="textinput-hide" class="ui-hidden-accessible">Remark</label>\
+	<input id="remark_text_'+index+'" type="text" name="textinput-hide" id="textinput-hide" placeholder="Text input" value="'+value+'">\
+	<ul id="photos_'+index+'" data-role="listview" data-inset="true">\
+		<li><a id="camera_remark_'+index+'" href="#" class="remark_camera">\
+			<img src="images/camera-icon.jpg" class="ui-li-thumb">\
+		</a></li>\
+	</ul>\
+</div>\
+</div>';
+}
+function createRemarkPhoto(p_index,index,image){
+	return '<li><a  href="#">\
+	<img id="remark_img_'+p_index+'_'+index+'" src="'+image+'" class="ui-li-thumb">\
+</li>';
+}
+</script>
 </head>
 <body>
 
-		<div data-role="page" id="home"  >
-			
-	      
-			<div data-role="header" data-position="fixed" data-theme="a"  >
-				 <a data-rel="back" class="ui-btn  ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-left ui-icon-carat-l">Back</a>
-						  <h1>Service Report</h1>
-						
-			</div>
-			<div data-role="tabs" id="tabs">
-		  <div data-role="navbar">
-		    	<ul>
+	<div data-role="page" id="home"  >
+
+
+		<div data-role="header" data-position="fixed" data-theme="a"  >
+			<a href="index.html" rel="external" class="ui-btn  ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-left ui-icon-carat-l">Back</a>
+			<h1>Service Report</h1>
+			<a href="#popupSaveSuccessInfo" data-rel="popup" data-position-to="window" data-transition="pop" id="savebtn" class=" ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-check">Save</a>			
+		</div>
+		<div data-role="popup" data-theme="b" id="popupSaveSuccessInfo"  class="ui-content" style="max-width:280px">
+			<a  href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-b ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
+			<p>Save successfully!!</p>
+		</div>
+		<div data-role="tabs" id="tabs">
+			<div data-role="navbar">
+				<ul>
 					<li><a href="#problem" data-prefetch="true"  data-ajax="false" id="problem_btn" class="tab-btn ui-btn-active">Problem</a></li>	
 					<li><a href="#actual" data-prefetch="true"  data-ajax="false" id="actual_btn" class="tab-btn">Actual Situation</a></li>
 					<li><a href="#report" data-prefetch="true"  data-ajax="false" id="report_btn" class="tab-btn">Report</a></li>
 					<li><a href="#customer" data-prefetch="true"  data-ajax="false" id="customer_btn" class="tab-btn">Customer</a></li>
-		    	</ul>
-		  </div>
-		  <div id="problem" data-role="tabs" >
-		   <div class="ui-field-contain ui-shadow ">
-				<label for="textarea">Problem Reported</label>
+				</ul>
+			</div>
+			<div id="problem" data-role="tabs" >
+				<div class="ui-field-contain ui-shadow ">
+					<label for="textarea">Problem Reported</label>
 					<div style="width: 98%;margin-left: 1em;margin-right: 1em"  class="right-container">	
-						 <textarea cols="40" rows="16" name="textarea" id="textarea"></textarea>
-					</div>
-			</div>
-			<div class="ui-field-contain ui-shadow ">
-				<label for="textinput-1">System Down</label>
-					<div style="float: left; width: 40%"  class="right-container">	
-						 <div style="margin:1%" data-role="controlgroup" data-type="horizontal" data-mini="true">
-						      <input type="radio" name="radio-choice-b" id="radio-choice-d" value="grid" checked="true">
-						        <label for="radio-choice-d">Yes</label>
-						        <input type="radio" name="radio-choice-b" id="radio-choice-e" value="gallery">
-						        <label for="radio-choice-e">No</label>
-						</div>
-					</div>
-			</div>
-			  <div class="ui-field-contain ui-shadow ">
-				<label for="textinput-1">Call Reported By</label>
-					<div style="float: left; width: 40%"  class="right-container">	
-						<input   class="input-textbox"  type="text" name="textinput-5" id="model"   />
-					</div>
-			</div>
-		    <div class="ui-field-contain ui-shadow ">
-				<label for="textinput-1">Model</label>
-					<div style="float: left; width: 40%"  class="right-container">	
-						 <button style="margin:5px" id="submit-1" data-mini="true" onClick="onScanBarcode()" class=" ui-btn ui-icon-search ui-btn-icon-left ui-shadow ui-corner-all">Scan QRcode</button>
-						<input   class="input-textbox"  type="text" name="textinput-5" id="model"   />
-					</div>
-			</div>
-			<div class="ui-field-contain ui-shadow ">
-				<label for="textinput-1">Serial No</label>
-					<div style="float: left; width: 40%"  class="right-container">
-						<input   class="input-textbox"  type="text" name="textinput-5" id="serialNo"   />
-					</div>
-			</div>
-			<div class="ui-field-contain ui-shadow ">
-				<label for="textinput-1">Power</label>
-					<div style="float: left; width: 40%"  class="right-container">
-						<input   class="input-textbox"  type="text" name="textinput-5" id="power"   />
-					</div>
-			</div>
-			<div class="ui-field-contain ui-shadow ">
-				<label for="textinput-1">Equipment Type</label>
-					<div style="float: left; width: 40%"  class="right-container">
-						<select name="equipmentType" id="equipmentType" data-native-menu="false">
-						    <option>Select a Equipment</option>
-						    <option value="heat">Heat Transfer Component Unit</option>
-						    <option value="boiler">Boiler</option>
-						    <option value="chimney">Chimney</option>
-						</select>
-					</div>
-			</div>
-			<div class="ui-field-contain ui-shadow ">
-				<label for="textinput-1">Location of Installation</label>
-					<div style="float: left; width: 40%"  class="right-container">
-						<input   class="input-textbox"  type="text" name="textinput-5" id="location"   />					
-					</div>
-			</div>
-		  </div>
-		  <div id="actual" class="my-page">
-		   			<div id="remark_container" role="main"   >
-  
-    </div><!-- /content -->
-<div data-role="footer" data-theme="b" data-position="fixed">
-			
-				<div class="ui-bar">
-				</div>
-				<div data-role="controlgroup" data-type="horizontal" class="ui-mini ui-btn-left">
-					<a id="add_remark_btn" href="#" rel="external" class="ui-btn ui-btn-icon-right ui-icon-plus">Add</a>
-				
-				</div>	
-					
-			   <h1></h1>
-			
-	    
-		</div>
-   
-		  </div>
-		  <div id="report">
-		    <ul data-role="listview" data-inset="true">
-		         <div class="ui-field-contain ui-shadow ">
-				<label for="textarea">Defects found on inspection</label>
-					<div style="width: 98%;margin-left: 1em;margin-right: 1em"  class="right-container">	
-						 <textarea cols="40" rows="3" name="textarea" id="defects"></textarea>
+						<textarea cols="40" rows="16" name="textarea" id="textarea"></textarea>
 					</div>
 				</div>
 				<div class="ui-field-contain ui-shadow ">
-					<label for="textinput-1">Status After Service</label>
+					<label for="textinput-1">System Down</label>
+					<div style="float: left; width: 40%"  class="right-container">	
+						<div style="margin:1%" data-role="controlgroup" data-type="horizontal" data-mini="true">
+							<input type="radio" name="radio-choice-b" id="radio-choice-d" value="grid" checked="true">
+							<label for="radio-choice-d">Yes</label>
+							<input type="radio" name="radio-choice-b" id="radio-choice-e" value="gallery">
+							<label for="radio-choice-e">No</label>
+						</div>
+					</div>
+				</div>
+				<div class="ui-field-contain ui-shadow ">
+					<label for="textinput-1">Call Reported By</label>
+					<div style="float: left; width: 40%"  class="right-container">	
+						<input   class="input-textbox"  type="text" name="textinput-5" id="model"   />
+					</div>
+				</div>
+				<div class="ui-field-contain ui-shadow ">
+					<label for="textinput-1">Model</label>
+					<div style="float: left; width: 40%"  class="right-container">	
+						<button style="margin:5px" id="submit-1" data-mini="true" onClick="onScanBarcode()" class=" ui-btn ui-icon-search ui-btn-icon-left ui-shadow ui-corner-all">Scan QRcode</button>
+						<input   class="input-textbox"  type="text" name="textinput-5" id="model"   />
+					</div>
+				</div>
+				<div class="ui-field-contain ui-shadow ">
+					<label for="textinput-1">Serial No</label>
+					<div style="float: left; width: 40%"  class="right-container">
+						<input   class="input-textbox"  type="text" name="textinput-5" id="serialNo"   />
+					</div>
+				</div>
+				<div class="ui-field-contain ui-shadow ">
+					<label for="textinput-1">Power</label>
+					<div style="float: left; width: 40%"  class="right-container">
+						<input   class="input-textbox"  type="text" name="textinput-5" id="power"   />
+					</div>
+				</div>
+				<div class="ui-field-contain ui-shadow ">
+					<label for="textinput-1">Equipment Type</label>
+					<div style="float: left; width: 40%"  class="right-container">
+						<select name="equipmentType" id="equipmentType" data-native-menu="false">
+							<option>Select a Equipment</option>
+							<option value="heat">Heat Transfer Component Unit</option>
+							<option value="boiler">Boiler</option>
+							<option value="chimney">Chimney</option>
+						</select>
+					</div>
+				</div>
+				<div class="ui-field-contain ui-shadow ">
+					<label for="textinput-1">Location of Installation</label>
+					<div style="float: left; width: 40%"  class="right-container">
+						<input   class="input-textbox"  type="text" name="textinput-5" id="location"   />					
+					</div>
+				</div>
+			</div>
+			<div id="actual" class="my-page">
+				<div id="remark_container" role="main"   >
+
+				</div><!-- /content -->
+				<div data-role="footer" data-theme="b" data-position="fixed">
+
+					<div class="ui-bar">
+					</div>
+					<div data-role="controlgroup" data-type="horizontal" class="ui-mini ui-btn-left">
+						<a id="add_remark_btn" href="#" rel="external" class="ui-btn ui-btn-icon-right ui-icon-plus">Add</a>
+
+					</div>	
+					
+					<h1></h1>
+
+
+				</div>
+
+			</div>
+			<div id="report">
+				<ul data-role="listview" data-inset="true">
+					<div class="ui-field-contain ui-shadow ">
+						<label for="textarea">Defects found on inspection</label>
 						<div style="width: 98%;margin-left: 1em;margin-right: 1em"  class="right-container">	
-							 <div style="margin:1%" data-role="controlgroup" data-type="horizontal" data-mini="true">
-							      <input type="radio" name="status" id="status_a" value="grid" checked="true">
-							        <label for="status_a">Complete</label>
-							        <input type="radio" name="status" id="status_b" value="incomplete">
-							        <label for="status_b">Incomplete</label>
-							        <input type="radio" name="status" id="status_c" value="pending">
-							        <label for="status_c">Pending for spares</label>
-							        <input type="radio" name="status" id="status_d" value="observation">
-							        <label for="status_d">User Observation</label>
-							        <input type="radio" name="status" id="status_e" value="working">
-							        <label for="status_e">Working solution provided</label>
+							<textarea cols="40" rows="3" name="textarea" id="defects"></textarea>
+						</div>
+					</div>
+					<div class="ui-field-contain ui-shadow ">
+						<label for="textinput-1">Status After Service</label>
+						<div style="width: 98%;margin-left: 1em;margin-right: 1em"  class="right-container">	
+							<div style="margin:1%" data-role="controlgroup" data-type="horizontal" data-mini="true">
+								<input type="radio" name="status" id="status_a" value="grid" checked="true">
+								<label for="status_a">Complete</label>
+								<input type="radio" name="status" id="status_b" value="incomplete">
+								<label for="status_b">Incomplete</label>
+								<input type="radio" name="status" id="status_c" value="pending">
+								<label for="status_c">Pending for spares</label>
+								<input type="radio" name="status" id="status_d" value="observation">
+								<label for="status_d">User Observation</label>
+								<input type="radio" name="status" id="status_e" value="working">
+								<label for="status_e">Working solution provided</label>
 							</div>
 							
 						</div>
-					<label></label>
+						<label></label>
 					</div>
 
-		    </ul>
-		  </div>
-		  <div id="customer">
-		    <div class="ui-field-contain ui-shadow ">
-				<label for="textarea">Remarks</label>
-					<div style="width: 98%;margin-left: 1em;margin-right: 1em"  class="right-container">	
-						 <textarea cols="40" rows="3" name="textarea" id="remarks"></textarea>
-					</div>
+				</ul>
 			</div>
-			<div class="ui-field-contain ui-shadow ">
-				<label for="textinput-1">Name</label>
+			<div id="customer">
+				<div class="ui-field-contain ui-shadow ">
+					<label for="textarea">Remarks</label>
+					<div style="width: 98%;margin-left: 1em;margin-right: 1em"  class="right-container">	
+						<textarea cols="40" rows="3" name="textarea" id="remarks"></textarea>
+					</div>
+				</div>
+				<div class="ui-field-contain ui-shadow ">
+					<label for="textinput-1">Name</label>
 					<div style="float: left; width: 40%"  class="right-container">
 						<input   class="input-textbox"  type="text" name="textinput-5" id="customer_name"   />
 					</div>
-			</div>
-			<div class="ui-field-contain ui-shadow ">
-				<label for="textinput-1">Designation</label>
+				</div>
+				<div class="ui-field-contain ui-shadow ">
+					<label for="textinput-1">Designation</label>
 					<div style="float: left; width: 40%"  class="right-container">
 						<input   class="input-textbox"  type="text" name="textinput-5" id="designation"   />
 					</div>
-			</div>
-			<div class="ui-field-contain ui-shadow ">
-				<label for="textinput-1">Phone</label>
+				</div>
+				<div class="ui-field-contain ui-shadow ">
+					<label for="textinput-1">Phone</label>
 					<div style="float: left; width: 40%"  class="right-container">
 						<input   class="input-textbox"  type="text" name="textinput-5" id="phone"   />
 					</div>
-			</div>
-			<div class="ui-field-contain ui-shadow ">
-				<label for="textinput-1">Fax</label>
+				</div>
+				<div class="ui-field-contain ui-shadow ">
+					<label for="textinput-1">Fax</label>
 					<div style="float: left; width: 40%"  class="right-container">
 						<input   class="input-textbox"  type="text" name="textinput-5" id="fax"   />
 					</div>
-			</div>
-			<div class="ui-field-contain ui-shadow ">
-				<label for="textinput-1">Email</label>
+				</div>
+				<div class="ui-field-contain ui-shadow ">
+					<label for="textinput-1">Email</label>
 					<div style="float: left; width: 40%"  class="right-container">
 						<input   class="input-textbox"  type="text" name="textinput-5" id="email"   />
 					</div>
+				</div>
 			</div>
-		  </div>
 		</div>
-		</div>		
-		
+	</div>		
 
-			
+
+
 </body>
 </html>

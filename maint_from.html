@@ -61,7 +61,7 @@
 				};
 			$(document).ready(function(){
 
-				var reportStr=	window.localStorage.getItem("report");
+				var reportStr=	window.localStorage.getItem("currentMReport");
 				var report=JSON.parse(reportStr);
 				var  froms=JSON.parse(window.localStorage.getItem("currentForm")); 
 				 var custom_tab_list=froms.catalogs;
@@ -161,8 +161,27 @@ alert( JSON.stringify(froms.remark));
 					}else{
 						report.froms[editFromIndex]	=froms;
 					}
-					
-					window.localStorage.setItem("report", JSON.stringify(report));
+					var mReportQueue=[];
+
+					var mReportQueueStr=window.localStorage.getItem("mReportQueue");
+					if(mReportQueueStr!=null){
+						mReportQueue =JSON.parse(mReportQueueStr); 
+					}
+					if(report.index>=0){
+						
+						mReportQueue[report.index]=report;
+						
+					}else{
+						report.index=0;
+						mReportQueue.push(report);
+						if(mReportQueue.length>3){
+							mReportQueue.shift();
+						}
+
+					}
+					window.localStorage.setItem("mReportQueue", JSON.stringify(mReportQueue));
+					window.localStorage.setItem("currentMReport", JSON.stringify(report));
+
 				});
 				$(".tab-btn").click(function(event, ui){
 						$(event.currentTarget.id).addClass("ui-btn-active");
@@ -251,6 +270,7 @@ alert( JSON.stringify(froms.remark));
 			
 					var index=getIndex(currentRemarkCameraID);
 							$("#photos_"+index).prepend(createRemarkPhoto(remarks[index].photos.length,index,imageURI));
+							$("#photos_"+index).listview('refresh');
 							remarks[index].photos.push(imageURI);
 				}
 			    function captureRemarkImage() {
