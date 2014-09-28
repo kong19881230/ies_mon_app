@@ -22,11 +22,11 @@
 			vertical-align: top;
 			margin-left: 20%;
 			margin-right: 20%;
-			margin-top: 4%;
+			margin-top: 8%;
 		}
 		#menu{
 			
-			margin-top: 6%;
+			margin-top: 8%;
 			
 		}
 		#menu .ui-controlgroup-controls {
@@ -100,8 +100,8 @@
 					sReportQueue =JSON.parse(sReportQueueStr); 
 				}
 				
-				alert(JSON.stringify(mReportQueue));
-				alert(JSON.stringify(sReportQueue));
+				// alert(JSON.stringify(mReportQueue));
+				// alert(JSON.stringify(sReportQueue));
 				for(var index in mReportQueue){
 					$("#m_report_list").append(createReportItem(index,mReportQueue[index]));
 				}
@@ -242,7 +242,7 @@ function createReportItem(index,report){
 			<a id="emergency_report_btn"   href="#popupSelectServiceReport" data-rel="popup" data-position-to="window" data-transition="pop"  data-icon="custom"  class="ui-btn ui-alt-icon ui-btn-icon-top ui-corner-all ui-shadow ">Emergency Report</a>
 
 		</div>
-		<div data-role="popup" id="popupSelectMaintReport" data-overlay-theme="b" data-theme="a" data-dismissible="false" style="width:660px;height:260px;" >
+		<div data-role="popup" id="popupSelectMaintReport" data-overlay-theme="b" data-theme="a" data-dismissible="false" style="width:800px;height:260px;" >
 			<a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-b ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
 			<div data-role="header" data-theme="b">
 				<h1>Select a action</h1>
@@ -261,7 +261,7 @@ function createReportItem(index,report){
 
 			</div><!-- /content -->
 		</div>
-		<div data-role="popup" id="popupSelectServiceReport" data-overlay-theme="b" data-theme="a" data-dismissible="false" style="width:660px;height:260px;" >
+		<div data-role="popup" id="popupSelectServiceReport" data-overlay-theme="b" data-theme="a" data-dismissible="false" style="width:800px;height:260px;" >
 			<a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-b ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
 			<div data-role="header" data-theme="b">
 				<h1>Select a action</h1>
