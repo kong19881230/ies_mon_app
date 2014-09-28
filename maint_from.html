@@ -67,7 +67,6 @@
 				 var custom_tab_list=froms.catalogs;
 				var from_default_name={};
 				var remarks=froms.remark;
-				alert( JSON.stringify(froms.remark));
 				if(remarks.length==0){
 
 
@@ -296,7 +295,7 @@
 				
 					$("#"+parent).append('<div id="item_'+item.index+'" class="ui-field-contain ui-shadow "> \
 				<label for="textinput-1">'+i+'. '+item.item_name_en +'</label> \
-					<input class="input-textbox"  type="text" name="textinput-5" id="textinput_'+item.index+'" placeholder="'+(item.result.unit?item.result.unit:'')+'" value="'+item.result.value+'" data-mini="true"/>' 
+					<input class="input-textbox"  type="text" name="textinput-5" id="textinput_'+item.index+'" placeholder="'+(item.result.unit?(item.result.hint+' '+item.result.unit):'')+'" value="'+item.result.value+'" data-mini="true"/>' 
 					+'</div>');
 				
 					$('#textinput_'+item.index).textinput();
@@ -307,8 +306,8 @@
 					$("#"+parent).append('<div id="item_'+item.index+'" class="ui-field-contain ui-shadow  "> \
 				<label for="textinput-1">'+i+'. '+item.item_name_en +'</label> \
 					<div class="mycontrolgroup" id="controlgroup_'+item.index+'" data-role="controlgroup" data-type="horizontal" >\
-					<input class="input-textbox" data-wrapper-class="controlgroup-textinput ui-btn"  type="text" name="textinput-5" id="textinput_0_'+item.index+'" placeholder="'+(item.result.unit?item.result.unit[0]:'')+'" value="'+item.result.value[0]+'" data-mini="true"/>\
-					<input class="input-textbox" data-wrapper-class="controlgroup-textinput ui-btn"   type="text" name="textinput-5" id="textinput_1_'+item.index+'" placeholder="'+(item.result.unit?item.result.unit[1]:'')+'" value="'+item.result.value[1]+'" data-mini="true"/>' 
+					<input class="input-textbox" data-wrapper-class="controlgroup-textinput ui-btn"  type="text" name="textinput-5" id="textinput_0_'+item.index+'" placeholder="'+(item.result.unit?(item.result.hint[0]+' '+item.result.unit[0]):'')+'" value="'+item.result.value[0]+'" data-mini="true"/>\
+					<input class="input-textbox" data-wrapper-class="controlgroup-textinput ui-btn"   type="text" name="textinput-5" id="textinput_1_'+item.index+'" placeholder="'+(item.result.unit?(item.result.hint[1]+' '+item.result.unit[1]):'')+'" value="'+item.result.value[1]+'" data-mini="true"/>' 
 					+'</div></div>');
 
 					$('#textinput_0_'+item.index).textinput();
@@ -433,7 +432,7 @@
 	    	<div id="navbar_container">
 	    		<div id="tab_navbar" data-role="navbar" data-grid="c" >
 				<ul>
-				<li><a  data-prefetch="true"  data-ajax="false" id="info_btn" class="tab-btn ui-btn-active">Info<span  class="info_count ui-li-count">2</span></a></li>
+				<li><a  data-prefetch="true"  data-ajax="false" id="info_btn" class="tab-btn ui-btn-active">Info<span  class="info_count ui-li-count">3</span></a></li>
 					
 				
 				</ul>

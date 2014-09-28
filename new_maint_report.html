@@ -81,7 +81,8 @@
 				
 				
 				var current_catalog_index=-1;
-				
+				var currentCycles=[];
+				var currentCatalogs=[];
 				var catalogToIndex={};
 				catalogToIndex["heat"]=0;
 				catalogToIndex["boiler"]=1;
@@ -94,16 +95,7 @@
 						value: customers[index].id,
 						text: customers[index].name_en}));
 				}
-				for(var index in cycles){ 
-					$("#cycle").append($('<option>', {
-						value: cycles[index].value,
-						text: cycles[index].name_en}));
-				}
-				for(var index in indexToCatalog){ 
-					$("#deviceType").append($('<option>', {
-						value: index,
-						text: indexToCatalog[index]}));
-				}
+
 				
 			
 				$('#add_btn').addClass("ui-state-disabled");
@@ -113,9 +105,9 @@
 
 					report.customer_id=$("#customers").val();
 					window.localStorage.setItem("currentMReport", JSON.stringify(report));
+					
+					refreshSelect(report.customer_id);
 					checkFillRequired();
-
-
 				});
 				
 				$("#cycle").bind( "change", function(event, ui) {
@@ -133,16 +125,21 @@
 				});
 				$("#add_btn").click(function (e) {
 					current_catalog_index=$("#deviceType").val();
+					report.customer_id=$("#customers").val();
+					report.cycle_type=$("#cycle").val();
 					var new_froms={};
 					var new_froms = jQuery.extend(true, {}, empty_froms[current_catalog_index]);
 					new_froms.id=report.id+"_"+current_catalog_index+"_"+(report.froms.length+1)+getTimeStr();
 					new_froms.items=jQuery.grep(new_froms.items, function(element, index){
-						return element.cycle<=report.cycle_type;
+						var customer=element.customers[report.customer_id];
+						if(customer!=null){
+							return customer.cycle<=report.cycle_type;
+						}
+							return false;
 					});
 					new_froms.device_id=$("#deviceID").val();
 					new_froms.device_model=$("#deviceModel").val();
-					report.customer_id=$("#customers").val();
-					report.cycle_type=$("#cycle").val();
+					
 
 					var cycle=jQuery.grep(cycles, function(element, index){
 							
@@ -180,13 +177,43 @@
 					saveMReport(report);
 
 				});
-
+				function refreshSelect(customer_id){
+					
+					var customer=jQuery.grep(customers, function(element, index){
+									  return element.id==customer_id;
+									});
+				
+					currentCycles=customer[0].cycles;
+					currentCatalogs=customer[0].catalogs;
+					
+					$("#cycle").empty();
+					$("#cycle").append($('<option>', {
+							value: -1,
+							text: "Choose ..."}));
+					for(var index in currentCycles){ 
+						$("#cycle").append($('<option>', {
+							value: currentCycles[index].value,
+							text: currentCycles[index].name_en}));
+					}
+					$("#deviceType").empty();
+					$("#deviceType").append($('<option>', {
+							value: -1,
+							text: "Choose ..."}));
+					for(var index in currentCatalogs){ 
+						$("#deviceType").append($('<option>', {
+							value: index,
+							text: currentCatalogs[index]}));
+					}
+					$('select').selectmenu('refresh', true);
+				}
 
 			});
 function checkFillRequired(){
 	if($("#customers").val()!=-1 &&  $("#cycle").val()!=-1  &&  $("#deviceType").val()!=-1){
 
 		$('#add_btn').removeClass("ui-state-disabled");
+	}else{
+		$('#add_btn').addClass("ui-state-disabled");
 	}
 }
 

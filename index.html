@@ -148,11 +148,11 @@
 					window.location.href="service_report.html";
 				});	
 				$(".report_item").click(function(event, ui) {
-					alert(this.id);
+			
 					var res =this.id.split("_");
 					var index =res[res.length-1];
 					var type=res[res.length-2];
-					alert(this.id);
+				
 					if(type==0){
 						currentMReport=mReportQueue[index];
 						currentMReport.index=index;
