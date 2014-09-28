@@ -79,81 +79,10 @@
         box-shadow:  0 0 3px 1px #888;
       }
     </style>
+    <script src="js/from_data.js"></script>
+    <script src="js/report_app.js"></script>
 	<script type="text/javascript">
-var customers= [
-								{ 	"id" : "1",
-									"name_cn" : "十六浦",
-									"name_en" : "Ponte 16 Resort Macau",
-									"seq" :"MM-0608020-10",
-									"created_at" :"2014-06-09 23:27:35"
-								},
-								{ 	"id": "2",
-									"name_cn": "蘭桂坊",
-									"name_en": "Lan Kwai Fong",
-									"seq":"MM-LM-10007-11",
-									"created_at": "2014-06-09 23:27:35"
-								},
-								{ 	"id": "3",
-									"name_cn": "凱旋門",
-									"name_en": "L'Arc Macau",
-									"seq": "MM-0606014-05",
-									"created_at": "2014-06-09 23:27:35"
-								},
-								{ 	"id": "4",
-									"name_cn": "新葡京",
-									"name_en": "Grand Lisboa",
-									"seq":"MM-0406012-04",
-									"created_at":"2014-06-09 23:27:35"
-								},
-								{ 	"id": "5",
-									"name_cn": "金沙",
-									"name_en": "Sands Macau",
-									"seq":"MM-0603005-02",
-									"created_at":"2014-06-09 23:27:35"
-								},
-								{ 	"id": "6",
-									"name_cn": "星際",
-									"name_en": "Star World",
-									"seq":"MM_LM-100903-12",
-									"created_at":"2014-06-09 23:27:35"
-								},
-								{ 	"id": "7",
-									"name_cn": "四季",
-									"name_en": "Four Season Hotel",
-									"seq":"MM_LM-100903-12",
-									"created_at":"2014-06-09 23:27:35"
-								},
-								{ 	"id": "8",
-									"name_cn": "威尼斯人一期",
-									"name_en": "Venetian Cotai",
-									"seq": "MM-0505001-15",
-									"created_at": "2014-06-09 23:27:35"
-								},
-								{ 	"id": "9",
-									"name_cn": "威尼斯人5,6期",
-									"name_en": "Sands Cotai",
-									"seq": "MM-0601006-17",
-									"created_at": "2014-06-09 23:27:35"
-								}
-								];
-							
-						var cycles=[{ 	"value": "1",
-									"name_cn": "月檢",
-									"name_en": "Monthly"
-								
-								},{ 	"value": "2",
-									"name_cn": "雙月檢",
-									"name_en": "Even Monthly"
-								
-								},{ 	"value": "6",
-									"name_cn": "半年檢",
-									"name_en": "Semi-Annually"
-								
-								},{ 	"value": "12",
-									"name_cn": "年檢",
-									"name_en": "Annually"
-								
-								}];
+
 // Cordova is loaded and it is now safe to make calls Cordova methods
 function onDeviceReady() {
     navigator.splashscreen.hide();
@@ -169,7 +98,7 @@ $(document).ready(function () {
 	// hide the accelerometer aka etch on/off button
 
 	$("#etch").hide();
-	var reportStr=	window.localStorage.getItem("report");
+	var reportStr=	window.localStorage.getItem("currentMReport");
 	var report=JSON.parse(reportStr);
 	 showReportSummary(report);
 	$("#canvasImg").attr("src",report.signature);
@@ -177,7 +106,7 @@ $(document).ready(function () {
 	document.addEventListener("deviceready", onDeviceReady, false);
 		$("#save").click(function(){
 	      report.signature=$("#canvasImg").attr("src");
-	      window.localStorage.setItem("report", JSON.stringify(report));
+	      saveMReport(report);
 	});
 	// setup a new canvas for drawing
 	
@@ -240,7 +169,7 @@ function showReportSummary(report){
 						  return element.id==report.customer_id;
 						});
 
-	$("#summary").append('<h3>'+customer[0].name_en+' '+ cycle[0].name_en+' Maintance Report</h3>');
+	$("#summary").append('<h3>'+report.name+'</h3>');
 	$("#summary").append('<p>Customer:  '+customer[0].name_en+'</p>');
     $("#summary").append('<p>Type:  '+cycle[0].name_en+'</p>');  
     $("#summary").append('<p>Date:  14/9/2014</p>');   

@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Regular Maintainance Report</title>
+	<link rel="stylesheet" href="css/fb-style.min.css" />
+	<link rel="stylesheet" href="css/jquery.mobile.structure-1.4.3.min.css">
+	<link rel="stylesheet" href="css/jquery.mobile.icons-1.4.3.min.css">
+	<link rel="stylesheet" href="css/carousel.css">
+	<link rel="stylesheet" href="css/carousel-style.css">
+	<script src="js/jquery.js"></script>
+	
+	<script src="js/jquery.mobile-1.4.3.min.js"></script>
+	<script type="text/javascript" charset="utf-8" src="cordova.js"></script>
+	<style id="inset-tablist">
+		.mycontrolgroup .ui-controlgroup-controls
+	{
+		width: 100% !important;
+	}
+	.controlgroup-textinput
+	{
+		width: 42% !important;
+	}
+	.ui-field-contain>label{
+			float: left;
+			width: 55%;
+			margin: .5em 2% 2% 2%;
+	}
+	.ui-field-contain>label~[class*=ui-], .ui-field-contain .right-container 
+	{
+		float: left;
+		width: 40%;
+		-webkit-box-sizing: border-box;
+		-moz-box-sizing: border-box;
+		box-sizing: border-box;
+	}
+	
+		
+		.m-image{
+			width: 80%;
+			
+			display: block;
+			margin: 0 auto;
+			
+		}
+
+		.center-wrapper{
+			text-align: center;
+		}
+		.center-wrapper * {
+			margin: 0 auto;
+		}
+		li.ui-tabs-active > a {
+			background-color: rgb(51, 136, 204)!important;
+			border-color: rgb(51, 136, 204) !important;
+			color: rgb(255, 255, 255) !important;
+			text-shadow: 0 1px 0 rgb(0, 85, 153) !important;
+		}
+		#maint_report_btn:after { background:  url("images/report.png") 50% 50% no-repeat;  background-size: 24px 24px; }
+		#emergency_report_btn:after { background:  url("images/repair.png") 50% 50% no-repeat;  background-size: 24px 24px; }
+		
+	</style>
+	<script src="js/moment.js"></script>
+	<script src="js/from_data.js"></script>
+	<script src="js/report_app.js"></script>
+	<script type="text/javascript" charset="utf-8">
+
+			// Wait for device API libraries to load
+			//
+
+			
+			// device APIs are available
+			//
+			
+			
+			$(document).ready(function(){
+				
+				var report =JSON.parse(window.localStorage.getItem("currentMReport")); 
+				
+				
+				
+				var current_catalog_index=-1;
+				
+				var catalogToIndex={};
+				catalogToIndex["heat"]=0;
+				catalogToIndex["boiler"]=1;
+				catalogToIndex["chimney"]=2;
+				var indexToCatalog=["heat","boiler","chimney"];
+
+
+				for(var index in customers){ 
+					$("#customers").append($('<option>', {
+						value: customers[index].id,
+						text: customers[index].name_en}));
+				}
+				for(var index in cycles){ 
+					$("#cycle").append($('<option>', {
+						value: cycles[index].value,
+						text: cycles[index].name_en}));
+				}
+				for(var index in indexToCatalog){ 
+					$("#deviceType").append($('<option>', {
+						value: index,
+						text: indexToCatalog[index]}));
+				}
+				
+			
+				$('#add_btn').addClass("ui-state-disabled");
+				$('select').selectmenu('refresh', true);
+
+				$("#customers").bind( "change", function(event, ui) {
+
+					report.customer_id=$("#customers").val();
+					window.localStorage.setItem("currentMReport", JSON.stringify(report));
+					checkFillRequired();
+
+
+				});
+				
+				$("#cycle").bind( "change", function(event, ui) {
+				
+					report.cycle_type=$("#cycle").val();
+					window.localStorage.setItem("currentMReport", JSON.stringify(report));
+					checkFillRequired();
+
+				});
+				$("#deviceType").bind( "change", function(event, ui) {
+				
+					current_catalog_index=$("#deviceType").val();
+					checkFillRequired();
+
+				});
+				$("#add_btn").click(function (e) {
+					current_catalog_index=$("#deviceType").val();
+					var new_froms={};
+					var new_froms = jQuery.extend(true, {}, empty_froms[current_catalog_index]);
+					new_froms.id=report.id+"_"+current_catalog_index+"_"+(report.froms.length+1)+getTimeStr();
+					new_froms.items=jQuery.grep(new_froms.items, function(element, index){
+						return element.cycle<=report.cycle_type;
+					});
+					new_froms.device_id=$("#deviceID").val();
+					new_froms.device_model=$("#deviceModel").val();
+					report.customer_id=$("#customers").val();
+					report.cycle_type=$("#cycle").val();
+
+					var cycle=jQuery.grep(cycles, function(element, index){
+							
+						  return element.value==report.cycle_type;
+
+						});
+	
+					var customer=jQuery.grep(customers, function(element, index){
+										  return element.id==report.customer_id;
+										});
+					
+
+	
+					report.name=customer[0].name_en+' '+ cycle[0].name_en+' Maintance Report '+moment().format("YYYYMM"); 
+					window.localStorage.setItem("currentMReport", JSON.stringify(report));
+					window.localStorage.setItem("currentForm", JSON.stringify(new_froms));
+					window.location.href="maint_from.html";
+				});
+				
+
+
+
+
+
+
+
+
+
+
+				
+
+				
+				
+				$('#save').click(function() {
+					saveMReport(report);
+
+				});
+
+
+			});
+function checkFillRequired(){
+	if($("#customers").val()!=-1 &&  $("#cycle").val()!=-1  &&  $("#deviceType").val()!=-1){
+
+		$('#add_btn').removeClass("ui-state-disabled");
+	}
+}
+
+function getTimeStr(){
+	var now =new Date();
+	return ""+now.getDate()+now.getHours()+now.getMinutes()+now.getSeconds();
+}
+
+function onScanBarcode(){
+
+	cordova.plugins.barcodeScanner.scan(
+		function (result) {
+					  // alert("We got a barcode\n" +
+							// "Result: " + result.text + "\n" +
+							// "Format: " + result.format + "\n" +
+							// "Cancelled: " + result.cancelled);
+
+	$("#deviceID").val(result.text);
+}, 
+function (error) {
+	alert("Scanning failed: " + error);
+}
+);
+}	
+</script>
+</head>
+<body>
+
+	
+	<div data-role="page" id="report" >
+		<div data-role="header" data-position="fixed"  >
+			<a href="index.html" rel="external" class="ui-btn  ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-left ui-icon-carat-l">Back</a>
+			
+			<h1 style="text-align:left; margin-left:120px;">New Maintainance Report</h1>
+			<div data-role="controlgroup" data-type="horizontal" class="ui-mini ui-btn-right">
+				
+			
+				
+			</div>
+		</div><!-- /header -->
+		<div class="ui-field-contain ui-shadow ">
+			<label for="textinput-1"></label>
+			<div style="float: left; width: 40%"  class="right-container">
+				<button style="margin:5px" id="submit-1" data-mini="true" onClick="onScanBarcode()" class=" ui-btn ui-icon-search ui-btn-icon-left ui-shadow ui-corner-all">Scan QRcode</button>
+
+
+			
+
+
+			</div>
+		</div>
+		<div class="ui-field-contain ui-shadow ">
+			<label for="textinput-1">Customer *</label>
+				
+			<select data-native-menu="false" id="customers" name="customers"  >
+			<option value="-1">Choose ...</option>	
+			</select>
+				
+			
+		</div>
+		<div class="ui-field-contain ui-shadow ">
+			<label for="textinput-1">Report cycle *</label>
+				
+			<select data-native-menu="false" id="cycle" name="cycle"  >
+			<option value="-1">Choose ...</option>		
+			</select>
+				
+			
+		</div>
+		<div class="ui-field-contain ui-shadow ">
+			<label for="textinput-1">Device Type *</label>
+				
+			<select data-native-menu="false" id="deviceType" name="deviceType"  >
+			<option value="-1">Choose ...</option>		
+			</select>
+				
+			
+		</div>
+		<div class="ui-field-contain ui-shadow ">
+			<label for="textinput-1">Device ID</label>
+				
+				<input   class="input-textbox"  type="text" name="textinput-5" id="deviceID"   />
+				
+			
+		</div>
+		<div class="ui-field-contain ui-shadow ">
+			<label for="textinput-1">Device Model</label>
+				
+				<input   class="input-textbox"  type="text" name="textinput-5" id="deviceModel"   />
+				
+			
+		</div>
+		
+		
+		
+		
+		<div data-role="footer" data-theme="b" data-position="fixed">
+			
+			<div class="ui-bar">
+				
+				
+			</div>
+			<div data-role="controlgroup" data-type="horizontal" class="ui-mini ui-btn-left">
+				<a id="add_btn" href="#" rel="external" class="ui-btn ui-btn-icon-right ui-icon-plus">Add</a>
+
+				
+			</div>	
+			
+			<h1></h1>
+
+			
+			
+		</div>
+	</div>		
+
+	
+</body>
+</html>

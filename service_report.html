@@ -44,6 +44,7 @@
 		#emergency_report_btn:after { background:  url("images/repair.png") 50% 50% no-repeat;  background-size: 24px 24px; }
 
 	</style>
+	<script src="js/report_app.js"></script>
 	<script>
 		var empty_remark={
 			"text":"",
@@ -84,29 +85,7 @@
 			});	
 			$("#savebtn").click(function(event, ui){
 				
-				var sReportQueue=[];
-
-				var sReportQueueStr=window.localStorage.getItem("sReportQueue");
-			
-				if(sReportQueueStr!=null){
-					sReportQueue =JSON.parse(sReportQueueStr); 
-				}
-				if(report.index>=0){
-					
-					sReportQueue[report.index]=report;
-					
-				}else{
-
-					report.index=0;
-					sReportQueue.push(report);
-					if(sReportQueue.length>3){
-						sReportQueue.shift();
-					}
-
-				}
-				
-				window.localStorage.setItem("sReportQueue", JSON.stringify(sReportQueue));
-				window.localStorage.setItem("currentSReport", JSON.stringify(report));	
+				saveSReport(report);
 			});	
 			$('.remark_camera').bind( "click", function(event, ui){
 

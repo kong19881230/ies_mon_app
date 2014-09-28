@@ -50,7 +50,7 @@
     filter: alpha(opacity=40); /* For IE8 and earlier */
 	}
 	</style>
-	
+	<script src="js/report_app.js"></script>
 	<script>
 			
 			var currentCameraID="";
@@ -67,7 +67,7 @@
 				 var custom_tab_list=froms.catalogs;
 				var from_default_name={};
 				var remarks=froms.remark;
-alert( JSON.stringify(froms.remark));
+				alert( JSON.stringify(froms.remark));
 				if(remarks.length==0){
 
 
@@ -161,27 +161,8 @@ alert( JSON.stringify(froms.remark));
 					}else{
 						report.froms[editFromIndex]	=froms;
 					}
-					var mReportQueue=[];
-
-					var mReportQueueStr=window.localStorage.getItem("mReportQueue");
-					if(mReportQueueStr!=null){
-						mReportQueue =JSON.parse(mReportQueueStr); 
-					}
-					if(report.index>=0){
-						
-						mReportQueue[report.index]=report;
-						
-					}else{
-						report.index=0;
-						mReportQueue.push(report);
-						if(mReportQueue.length>3){
-							mReportQueue.shift();
-						}
-
-					}
-					window.localStorage.setItem("mReportQueue", JSON.stringify(mReportQueue));
-					window.localStorage.setItem("currentMReport", JSON.stringify(report));
-
+					saveMReport(report);	
+				
 				});
 				$(".tab-btn").click(function(event, ui){
 						$(event.currentTarget.id).addClass("ui-btn-active");

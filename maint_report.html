@@ -64,35 +64,16 @@
 		
 	</style>
 	<script src="js/from_data.js"></script>
+	<script src="js/report_app.js"></script>
 	<script type="text/javascript" charset="utf-8">
 
 			// Wait for device API libraries to load
 			//
-			document.addEventListener("deviceready", onDeviceReady, false);
+
 			
 			// device APIs are available
 			//
-			function onDeviceReady() {
-				
-				window.localStorage.setItem("key", "{sss}");
-				
-				// keyname is now equal to "key"
-				var value = window.localStorage.getItem("key");
-				// value is now equal to "value"
-				
-				window.localStorage.setItem("key2", "value2");
-				
-				
-				
-				
-				
-				$("#testDiv").html("<span>"+value+"</span>");
-				
-				
-				
-				
-				
-			}
+			
 			
 			$(document).ready(function(){
 				
@@ -103,244 +84,186 @@
 				if(isNaN(current_catalog_index)){
 					current_catalog_index=0;	
 				}
-				if(report.signature==""|| report.signature== undefined){
-					$("#signature").hide();
+
+				if(report.signature==undefined || report.signature==""){
+					
+					$("#signatureLink").hide();
+					
 				}else{
+
 					$("#signature").attr("src",report.signature);
 					$("#popSignatureImg").attr("src",report.signature);
+
 				}
 				var current_from_index=-1;
 				
 
-				var customers= [
-				{ 	"id" : "1",
-				"name_cn" : "十六浦",
-				"name_en" : "Ponte 16 Resort Macau",
-				"seq" :"MM-0608020-10",
-				"created_at" :"2014-06-09 23:27:35"
-			},
-			{ 	"id": "2",
-			"name_cn": "蘭桂坊",
-			"name_en": "Lan Kwai Fong",
-			"seq":"MM-LM-10007-11",
-			"created_at": "2014-06-09 23:27:35"
-		},
-		{ 	"id": "3",
-		"name_cn": "凱旋門",
-		"name_en": "L'Arc Macau",
-		"seq": "MM-0606014-05",
-		"created_at": "2014-06-09 23:27:35"
-	},
-	{ 	"id": "4",
-	"name_cn": "新葡京",
-	"name_en": "Grand Lisboa",
-	"seq":"MM-0406012-04",
-	"created_at":"2014-06-09 23:27:35"
-},
-{ 	"id": "5",
-"name_cn": "金沙",
-"name_en": "Sands Macau",
-"seq":"MM-0603005-02",
-"created_at":"2014-06-09 23:27:35"
-},
-{ 	"id": "6",
-"name_cn": "星際",
-"name_en": "Star World",
-"seq":"MM_LM-100903-12",
-"created_at":"2014-06-09 23:27:35"
-},
-{ 	"id": "7",
-"name_cn": "四季",
-"name_en": "Four Season Hotel",
-"seq":"MM_LM-100903-12",
-"created_at":"2014-06-09 23:27:35"
-},
-{ 	"id": "8",
-"name_cn": "威尼斯人一期",
-"name_en": "Venetian Cotai",
-"seq": "MM-0505001-15",
-"created_at": "2014-06-09 23:27:35"
-},
-{ 	"id": "9",
-"name_cn": "威尼斯人5,6期",
-"name_en": "Sands Cotai",
-"seq": "MM-0601006-17",
-"created_at": "2014-06-09 23:27:35"
-}
-];
+				
+				var catalogToIndex={};
+				catalogToIndex["heat"]=0;
+				catalogToIndex["boiler"]=1;
+				catalogToIndex["chimney"]=2;
+				var indexToCatalog=["heat","boiler","chimney"];
 
-var cycles=[{ 	"value": "1",
-"name_cn": "月檢",
-"name_en": "Monthly"
+				var fromhash={};
 
-},{ 	"value": "2",
-"name_cn": "雙月檢",
-"name_en": "Even Monthly"
+				for(var i in indexToCatalog){
 
-},{ 	"value": "6",
-"name_cn": "半年檢",
-"name_en": "Semi-Annually"
+					fromhash[i]=jQuery.grep(report.froms, function(element, index){
+						return element.from_type==indexToCatalog[i];
+					});
+					reloadFromList(index);
 
-},{ 	"value": "12",
-"name_cn": "年檢",
-"name_en": "Annually"
-
-}];
-var catalogToIndex={};
-catalogToIndex["heat"]=0;
-catalogToIndex["boiler"]=1;
-catalogToIndex["chimney"]=2;
-var indexToCatalog=["heat","boiler","chimney"];
-
-var fromhash={};
-
-for(var i in indexToCatalog){
-
-	fromhash[i]=jQuery.grep(report.froms, function(element, index){
-		return element.from_type==indexToCatalog[i];
-	});
-	reloadFromList(index);
-	
-}
+				}
 
 
-for(var index in customers){ 
-	$("#customers").append($('<option>', {
-		value: customers[index].id,
-		text: customers[index].name_en}));
-}
+				for(var index in customers){ 
+					$("#customers").append($('<option>', {
+						value: customers[index].id,
+						text: customers[index].name_en}));
+				}
+				
+				for(var index in cycles){ 
+					$("#cycle").append($('<option>', {
+						value: cycles[index].value,
+						text: cycles[index].name_en}));
+				}
+				
+				
+				if(report.customer_id!=""){
+					$('#customers option[value='+report.customer_id+']').attr('selected', 'selected');
+					$("#customers").selectmenu('disable');	
+				}
+				if(report.cycle_type>0){
+					$('#cycle option[value='+report.cycle_type+']').attr('selected', 'selected');
+					$("#cycle").selectmenu('disable');	
+				}
+				
 
-for(var index in cycles){ 
-	$("#cycle").append($('<option>', {
-		value: cycles[index].value,
-		text: cycles[index].name_en}));
-}
-$('select').selectmenu('refresh', true);
+				$('select').selectmenu('refresh', true);
+				$("#customers").bind( "change", function(event, ui) {
 
+					report.customer_id=$("#customers").val();
+					window.localStorage.setItem("currentMReport", JSON.stringify(report));
 
-$("#customers").bind( "change", function(event, ui) {
-	
-	report.customers_id=$("#customers").val();
-	window.localStorage.setItem("report", JSON.stringify(report));
-	
-});
+				});
 
-$("#cycle").bind( "change", function(event, ui) {
-	
-	report.cycle_type=$("#cycle").val();
-	window.localStorage.setItem("report", JSON.stringify(report));
-});
-$("#add_btn").click(function (e) {
-	var new_froms={};
-	var new_froms = jQuery.extend(true, {}, empty_froms[current_catalog_index]);
-	new_froms.id=report.id+"_"+current_catalog_index+"_"+(report.froms.length+1)+getTimeStr();
-	new_froms.items=jQuery.grep(new_froms.items, function(element, index){
-		return element.cycle<=report.cycle_type;
-	});
-	
-	
-	window.localStorage.setItem("currentForm", JSON.stringify(new_froms));
-	window.location.href="maint_from.html";
-});
-$("#sign").click(function (e) {
-	window.location.href="signature.html";
-});
-var fromhash={};
+				$("#cycle").bind( "change", function(event, ui) {
 
-for(var i in indexToCatalog){
-
-	refreshFromHash(i);
-	
-}
-addFromListEvent();
-function refreshFromHash(i){
-	fromhash[i]=jQuery.grep(report.froms, function(element, index){
-		return element.from_type==indexToCatalog[i];
-	});
-	reloadFromList(i);
-}
-function reloadFromList(index){
-	$('#'+indexToCatalog[index]+'_list').empty();
-
-	
-	for(var i in fromhash[index]){ 
-		
-		addFromInCatalog('#'+indexToCatalog[index]+'_list',fromhash[index][i],i,fromhash[index].length);
-	}
-	
-	$('#'+indexToCatalog[index]+'_list').listview('refresh');
-}	
-function addFromListEvent(){	
-	$(".edit_btn").click(function(event, ui) {
-		
-		var res =this.id.split("_");
-		var index =res[res.length-1];
-		
-		var current_froms=fromhash[current_catalog_index][index];
-		window.localStorage.setItem("currentForm", JSON.stringify(current_froms));
-		window.location.href="maint_from.html";
-		
-
-	});
-	$(".from-item").click(function(event, ui) {
-		$(".from-item").removeClass("ui-btn-active");
-		var res =this.id.split("_");
-		var index =res[res.length-1];
-		current_from_index=index;
-		$(this).addClass("ui-btn-active");
-		$('#copy_btn').removeClass("ui-state-disabled");
-		$('#delete_pop_btn').removeClass("ui-state-disabled");
-	});
-}
+					report.cycle_type=$("#cycle").val();
+					window.localStorage.setItem("currentMReport", JSON.stringify(report));
+				});
+				$("#add_btn").click(function (e) {
+					var new_froms={};
+					var new_froms = jQuery.extend(true, {}, empty_froms[current_catalog_index]);
+					new_froms.id=report.id+"_"+current_catalog_index+"_"+(report.froms.length+1)+getTimeStr();
+					new_froms.items=jQuery.grep(new_froms.items, function(element, index){
+						return element.cycle<=report.cycle_type;
+					});
 
 
-$("#delete_btn").click(function(event, ui) {
+					window.localStorage.setItem("currentForm", JSON.stringify(new_froms));
+					window.location.href="maint_from.html";
+				});
+				$("#sign").click(function (e) {
+					window.location.href="signature.html";
+				});
+				var fromhash={};
 
-	for(var index in report.froms){
-		if(report.froms[index].id==fromhash[current_catalog_index][current_from_index].id){
-			report.froms.splice(index,1);
-			break;
-		}
-	}
-	
-	window.localStorage.setItem("currentMReport", JSON.stringify(report));
-	refreshFromHash(current_catalog_index);
-	addFromListEvent();
-	clearCurrentFromIndex();
-	
-});
-$("#copy_btn").click(function(event, ui) {
-	
-	
-	
-	var new_froms = jQuery.extend(true, {}, fromhash[current_catalog_index][current_from_index]);
-	new_froms.id=report.id+"_"+current_catalog_index+"_"+(report.froms.length+1)+getTimeStr();
-	new_froms.name_en=new_froms.name_en+" 2";
-	new_froms.name_cn=new_froms.name_cn+" 2";
-	report.froms.push(new_froms);
-	window.localStorage.setItem("currentMReport", JSON.stringify(report));
-	refreshFromHash(current_catalog_index);
-	addFromListEvent();
-	clearCurrentFromIndex();
-});
+				for(var i in indexToCatalog){
+
+					refreshFromHash(i);
+
+				}
+				addFromListEvent();
+				function refreshFromHash(i){
+					fromhash[i]=jQuery.grep(report.froms, function(element, index){
+						return element.from_type==indexToCatalog[i];
+					});
+					reloadFromList(i);
+				}
+				function reloadFromList(index){
+					$('#'+indexToCatalog[index]+'_list').empty();
+
+
+					for(var i in fromhash[index]){ 
+
+						addFromInCatalog('#'+indexToCatalog[index]+'_list',fromhash[index][i],i,fromhash[index].length);
+					}
+
+					$('#'+indexToCatalog[index]+'_list').listview('refresh');
+				}	
+				function addFromListEvent(){	
+					$(".edit_btn").click(function(event, ui) {
+
+						var res =this.id.split("_");
+						var index =res[res.length-1];
+
+						var current_froms=fromhash[current_catalog_index][index];
+						window.localStorage.setItem("currentForm", JSON.stringify(current_froms));
+						window.location.href="maint_from.html";
+
+
+					});
+					$(".from-item").click(function(event, ui) {
+						$(".from-item").removeClass("ui-btn-active");
+						var res =this.id.split("_");
+						var index =res[res.length-1];
+						current_from_index=index;
+						$(this).addClass("ui-btn-active");
+						$('#copy_btn').removeClass("ui-state-disabled");
+						$('#delete_pop_btn').removeClass("ui-state-disabled");
+					});
+				}
+
+
+				$("#delete_btn").click(function(event, ui) {
+
+					for(var index in report.froms){
+						if(report.froms[index].id==fromhash[current_catalog_index][current_from_index].id){
+							report.froms.splice(index,1);
+							break;
+						}
+					}
+
+					window.localStorage.setItem("currentMReport", JSON.stringify(report));
+					refreshFromHash(current_catalog_index);
+					addFromListEvent();
+					clearCurrentFromIndex();
+
+				});
+				$("#copy_btn").click(function(event, ui) {
+
+
+
+					var new_froms = jQuery.extend(true, {}, fromhash[current_catalog_index][current_from_index]);
+					new_froms.id=report.id+"_"+current_catalog_index+"_"+(report.froms.length+1)+getTimeStr();
+					new_froms.name_en=new_froms.name_en+" 2";
+					new_froms.name_cn=new_froms.name_cn+" 2";
+					report.froms.push(new_froms);
+					window.localStorage.setItem("currentMReport", JSON.stringify(report));
+					refreshFromHash(current_catalog_index);
+					addFromListEvent();
+					clearCurrentFromIndex();
+				});
 
 
 
 
-$('#froms_tab').tabs({
-	active: current_catalog_index,
-	activate: function(event ,ui){
-		$(".from-item").removeClass("ui-btn-active");
-		current_catalog_index=ui.newTab.index();
-		window.localStorage.setItem("current_catalog_index", current_catalog_index);
-		clearCurrentFromIndex();
-	}
-});
+				$('#froms_tab').tabs({
+					active: current_catalog_index,
+					activate: function(event ,ui){
+						$(".from-item").removeClass("ui-btn-active");
+						current_catalog_index=ui.newTab.index();
+						window.localStorage.setItem("current_catalog_index", current_catalog_index);
+						clearCurrentFromIndex();
+					}
+				});
 
-$('#copy_btn').addClass("ui-state-disabled");
-$('#delete_pop_btn').addClass("ui-state-disabled");
-$('#upload').click(function() {
-	var reprot_str = JSON.stringify(report);
+				$('#copy_btn').addClass("ui-state-disabled");
+				$('#delete_pop_btn').addClass("ui-state-disabled");
+				$('#upload').click(function() {
+					var reprot_str = JSON.stringify(report);
 						  // tmp value: [{"id":21,"children":[{"id":196},{"id":195},{"id":49},{"id":194}]},{"id":29,"children":[{"id":184},{"id":152}]},...]
 						  $.ajax({
 						  	type: 'POST',
@@ -356,31 +279,13 @@ $('#upload').click(function() {
 						    }
 						});
 						});	
-$('#save').click(function() {
-	var mReportQueue=[];
+				$('#save').click(function() {
+					saveMReport(report);
 
-	var mReportQueueStr=window.localStorage.getItem("mReportQueue");
-	if(mReportQueueStr!=null){
-		mReportQueue =JSON.parse(mReportQueueStr); 
-	}
-	if(report.index>=0){
-		
-		mReportQueue[report.index]=report;
-		
-	}else{
-		report.index=0;
-		mReportQueue.push(report);
-		if(mReportQueue.length>3){
-			mReportQueue.shift();
-		}
-
-	}
-	window.localStorage.setItem("mReportQueue", JSON.stringify(mReportQueue));
-	window.localStorage.setItem("currentMReport", JSON.stringify(report));	
-});
+				});
 
 
-});
+			});
 
 function clearCurrentFromIndex(){
 	current_from_index=-1;	
@@ -414,13 +319,10 @@ function addFromInCatalog(parent,from,index,max){
 			
 			<h1 style="text-align:left; margin-left:120px;">Maintainance Report</h1>
 			<div data-role="controlgroup" data-type="horizontal" class="ui-mini ui-btn-right">
-				<select data-native-menu="false" id="customers" name="select-choice-1" id="select-choice-1" >
-					
-				</select>
-				<select data-native-menu="false" id="cycle" name="select-choice-1" id="select-choice-1" >
-					
-				</select>
-				
+				<a id="signatureLink"  href="#popupSignature" class=" ui-btn ui-btn-a ui-mini" data-rel="popup" data-mini="true" style="height:18px !important;" data-position-to="window" data-transition="fade"><img  id="signature" class=" ui-btn ui-btn-a ui-mini"  height="18"  ></a>
+				<a id="sign" href="#" class=" ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-edit">Sign</a>
+				<a id="save" href="#popupSaveSuccessInfo" data-rel="popup" data-position-to="window" data-transition="pop" href="#" class=" ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-check">Save</a>
+				<a id="upload" href="#" class=" ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-recycle">Upload</a>
 			</div>
 		</div><!-- /header -->
 		
@@ -492,11 +394,15 @@ function addFromInCatalog(parent,from,index,max){
 			
 			<h1></h1>
 			<div data-role="controlgroup" data-type="horizontal" class="ui-mini ui-btn-right">
-				<a href="#popupSignature" class=" ui-btn ui-btn-a ui-mini" data-rel="popup" data-mini="true" style="height:18px !important;" data-position-to="window" data-transition="fade"><img  id="signature" class=" ui-btn ui-btn-a ui-mini"  height="18"  ></a>
-				<a id="sign" href="#" class=" ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-edit">Sign</a>
-				<a id="save" href="#popupSaveSuccessInfo" data-rel="popup" data-position-to="window" data-transition="pop" href="#" class=" ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-check">Save</a>
-				<a id="upload" href="#" class=" ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-recycle">Upload</a>
+				<select data-native-menu="false" id="customers" name="select-choice-1"  >
+					
+				</select>
+				<select data-native-menu="false" id="cycle" name="select-choice-1"  >
+					
+				</select>
+				
 			</div>
+			
 			
 		</div>
 	</div>		
