@@ -123,6 +123,10 @@
 					checkFillRequired();
 
 				});
+
+		
+
+
 				$("#add_btn").click(function (e) {
 					current_catalog_index=$("#deviceType").val();
 					report.customer_id=$("#customers").val();
@@ -156,6 +160,7 @@
 					report.name=customer[0].name_en+' '+ cycle[0].name_en+' Maintance Report '+moment().format("YYYYMM"); 
 					window.localStorage.setItem("currentMReport", JSON.stringify(report));
 					window.localStorage.setItem("currentForm", JSON.stringify(new_froms));
+					window.localStorage.setItem("current_catalog_index", current_catalog_index);
 					window.location.href="maint_from.html";
 				});
 				
@@ -231,7 +236,12 @@ function onScanBarcode(){
 							// "Format: " + result.format + "\n" +
 							// "Cancelled: " + result.cancelled);
 
-	$("#deviceID").val(result.text);
+	$('#customers option[value='+3+']').attr('selected', 'selected');
+	refreshSelect(3);
+	$('#deviceType option[value='+1+']').attr('selected', 'selected');			
+	$("#deviceID").val("Boiler#1");
+	$("#deviceModel").val("Viessmann - Vitoplex 1400KW");
+	$('select').selectmenu('refresh', true);
 }, 
 function (error) {
 	alert("Scanning failed: " + error);

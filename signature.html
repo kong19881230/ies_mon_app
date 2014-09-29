@@ -81,6 +81,7 @@
     </style>
     <script src="js/from_data.js"></script>
     <script src="js/report_app.js"></script>
+    <script src="js/moment.js"></script>
 	<script type="text/javascript">
 
 // Cordova is loaded and it is now safe to make calls Cordova methods
@@ -172,7 +173,7 @@ function showReportSummary(report){
 	$("#summary").append('<h3>'+report.name+'</h3>');
 	$("#summary").append('<p>Customer:  '+customer[0].name_en+'</p>');
     $("#summary").append('<p>Type:  '+cycle[0].name_en+'</p>');  
-    $("#summary").append('<p>Date:  14/9/2014</p>');   
+    $("#summary").append('<p>Date and Time:  '+moment().format("YYYY/MM/DD HH:mm")+ '</p>');   
  	$("#summary").append('<p>Total Deivce:  '+report.froms.length+'</p>');  
  	  
     var content = '<table data-role="table" id="from_table" data-mode="reflow" class="ui-responsive table-stroke"><thead>\

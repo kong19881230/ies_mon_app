@@ -648,7 +648,7 @@ empty_froms[1]={
 	"value" : "false",
 	"min_photos": 9,
 	"photos" : [],
-	"exm_photos" : ["eximages/1_16_1.png","eximages/1_16_2.png","eximages/1_16_3.png,eximages/1_16_4.png","eximages/1_16_5.png","eximages/1_16_6.png,eximages/1_16_7.png","eximages/1_16_8.png","eximages/1_16_9.png"]
+	"exm_photos" : ["eximages/1_16_1.png","eximages/1_16_2.png","eximages/1_16_3.png","eximages/1_16_4.png","eximages/1_16_5.png","eximages/1_16_6.png","eximages/1_16_7.png","eximages/1_16_8.png","eximages/1_16_9.png"]
 },
 	"customers":{
 					"1":{"cycle": 1},

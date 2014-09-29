@@ -131,16 +131,21 @@
 					  }
 					
 					}
+					var validRemarks=[];
 					for(var i in remarks){
 						remarks[i].text=$("#remark_text_"+i).val();
 						for(var j in remarks[i].photos){
 							var imgsrc =$('#remark_img_'+j+'_'+i).attr("src");
 							remarks[i].photos[j]=imgsrc;
 						}
+						if(remarks[i].text!=""){
+							validRemarks.push(remarks[i]);
+						}
 					}
+					
 					froms.device_id=$('#deviceID').val();
 					froms.device_model=$('#deviceModel').val();
-					froms.remark=remarks;
+					froms.remark=validRemarks;
 					alert( JSON.stringify(froms.remark));
 					froms.name_en=from_default_name[froms.from_type]["en"]+" "+froms.device_id;
 					froms.name_cn=from_default_name[froms.from_type]["cn"]+" "+froms.device_id;
@@ -207,9 +212,14 @@
 						captureRemarkImage();
 				});
 				$('.camera-btn').bind( "click", function(event, ui){
-					
-						currentCameraID=event.currentTarget.id;
+						
+						
 						captureImage();
+				});
+				$('.small_photo').bind("click", function(event, ui){
+				
+						currentCameraID=event.currentTarget.id;
+						$('#bigPhoto').attr("src",$('#photo_'+event.currentTarget.id).attr('src'));
 				});
 				$('.ui-slider-switch').on('change', function(event, ui) {
 				
@@ -324,13 +334,16 @@
 
 				if(item.result.min_photos){
 
-					$('#item_'+item.index).append('<div style="float: right; width: 40%;margin-right:1.5%;"  class="right-container">  <button id="camera_'+item.index+'" style="margin:5px" id="submit-1" data-mini="true"    class="camera-btn ui-btn ui-icon-camera ui-btn-icon-left ui-shadow ui-corner-all">Camera</button>\
-					<div  style="float: right;" ><a href="#popupParis'+item.index+'" data-rel="popup" data-position-to="window" data-transition="fade"><img id="photo_camera_'+item.index+'" alt="Smiley face" '+(item.result.photos.length==0?'class="transparent_img"':'') +' src="'+(item.result.photos.length>0?item.result.photos[0]:item.result.exm_photos[0])+'" width="100" height="70" style="margin:5px"/></a></div>\
-					 </div><div data-role="popup" id="popupParis'+item.index+'" data-overlay-theme="b" data-theme="b" data-corners="false">\
-					    <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-a ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a><img src="'+(item.result.photos.length>0?item.result.photos[0]:item.result.exm_photos[0])+'" id="popphoto_camera_'+item.index+'" class="popphoto"  style="max-height:250px;" alt="Paris, France"></div>');
+					var photo_album='<div style="float: right; width: 40%;margin-right:1.5%;"  class="right-container"><div  style="float: right;" >';
+					for(var i in item.result.exm_photos){
+						photo_album+='<a id="item_'+i+'_'+item.index+'" style="float: right;" href="#popupBigPhotoPanel" data-rel="popup" class="small_photo" data-position-to="window" data-transition="fade"><img id="photo_item_'+i+'_'+item.index+'" alt="Smiley face" '+(item.result.photos.length==0?'class="transparent_img"':'') +' src="'+(item.result.photos.length>i?item.result.photos[i]:item.result.exm_photos[i])+'" width="100" height="70" style="margin:5px"/></a>';
+					}
+					photo_album+='</div></div>';
+  
 
-					$('#popupParis'+item.index).trigger("create");
-					$('#popupParis'+item.index).popup();
+					$('#item_'+item.index).append(photo_album);
+					//$('#popupParis'+item.index).trigger("create");
+					//$('#popupParis'+item.index).popup();
 				}
 				
 			}
@@ -347,10 +360,8 @@
 
 			function onSuccess(imageURI) {
 				
-				var image = document.getElementById('photo_'+currentCameraID);
-				var image2 = document.getElementById('popphoto_'+currentCameraID);
-				image.src = imageURI;
-				image2.src = imageURI;
+				$('#photo_'+currentCameraID).attr("src",imageURI);
+				$('#bigPhoto').attr("src",imageURI);
 				$('#photo_'+currentCameraID).removeClass('transparent_img');
 			}
 
@@ -440,7 +451,9 @@
 	    	</div>
 			
 			</div><!-- /header -->
-	
+			<div data-role="popup" id="popupBigPhotoPanel" data-overlay-theme="b" data-theme="b" data-corners="false">
+					    <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-a ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a><img src="" id="bigPhoto" class="popphoto"  style="max-height:500px;" >
+					    <button id="itemPhotoCamera"  data-mini="true"    class="camera-btn ui-btn ui-btn-a ui-icon-camera ui-btn-icon-left ui-shadow ui-corner-all">Camera</button></div>
 		
 		  	 <div data-role="popup" data-theme="b" id="popupSaveSuccessInfo"  class="ui-content" style="max-width:280px">
 				    <a  href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-b ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
@@ -469,18 +482,17 @@
 					
 					</div>
 			</div>
+			
 			<div class="ui-field-contain ui-shadow ui-corner-all">
 				<label for="textinput-1">Device Photo</label>
 				<div style="float: left; width: 40%"  class="right-container">
-				 <button id="camera_device" style="margin:5px" id="submit-1" data-mini="true"    class="camera-btn ui-btn ui-icon-camera ui-btn-icon-left ui-shadow ui-corner-all">Camera</button>
+				
 				<div  style="float: right;" >
-				 <a href="#popupParis" data-rel="popup" data-position-to="window" data-transition="fade"><img id="photo_camera_device" alt="Smiley face" class="transparent_img" src="eximages/device.png" width="100" height="70" style="margin:5px"/></a>
+				 <a id="camera_device" class="small_photo" href="#popupBigPhotoPanel" data-rel="popup" data-position-to="window" data-transition="fade"><img id="photo_camera_device" alt="Smiley face" class="transparent_img" src="eximages/device.png" width="100" height="70" style="margin:5px"/></a>
 				 </div>
 				 
 				 </div>
-				<div data-role="popup" id="popupParis" data-overlay-theme="b" data-theme="b" data-corners="false">
-				    <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-a ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a><img src="eximages/device.png" id="popphoto_camera_device" class="popphoto"  style="max-height:250px;" alt="Paris, France">
-				</div>
+				
 			</div>
 		</div>
 	
