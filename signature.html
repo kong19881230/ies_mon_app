@@ -3,9 +3,10 @@
 <head>
     <title>Sketch Pad</title>
     <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; minimum-scale=1.0; user-scalable=0;" />
-    <link rel="stylesheet" href="css/fb-style.min.css" />
+  
 	<link rel="stylesheet" href="css/jquery.mobile.structure-1.4.3.min.css">
   	<link rel="stylesheet" href="css/jquery.mobile.icons-1.4.3.min.css">
+  	  <link rel="stylesheet" href="css/fb-style.min.css" />
 	<script src="js/jquery.min.js"></script>
 	<script src="js/jquery.mobile-1.4.3.min.js"></script>
 	<script src="cordova.js"></script>
@@ -78,6 +79,7 @@
         padding: 6px;
         box-shadow:  0 0 3px 1px #888;
       }
+     
     </style>
     <script src="js/from_data.js"></script>
     <script src="js/report_app.js"></script>
@@ -394,7 +396,7 @@ function buzzDevice(pos){
  
   </div>
 <div data-role="popup" data-theme="b" id="popupSaveSuccessInfo"  class="ui-content" style="max-width:280px">
-				    <a  href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-b ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
+				    <a  href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-b ui-icon-delete ui-btn-icon-notext ui-btn-right close-btn">Close</a>
 					<p>Save successfully!!</p>
 				</div>
 
@@ -415,9 +417,13 @@ function buzzDevice(pos){
 			</div>
 <div data-role="footer" data-theme="c" data-position="fixed">
   
-	
+	<div class="ui-bar">
+				
+				
+			</div>
+			
 	 <a id="sign_pop_btn" href="#popupSignature" data-rel="popup" data-position-to="window" data-transition="pop" data-role="button" data-theme="b" class="ui-btn-right">Sign</a>
-	   <img  id="canvasImg"   width="200" height="50" >
+	   <img  id="canvasImg"    height="50" >
    
 	<!--   -->
 		

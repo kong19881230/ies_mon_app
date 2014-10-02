@@ -13,18 +13,18 @@
 	}
 	.my-page .ui-listview li {
 		float: left;
-		width: 7.5em; /* 33.3333% incl. 2 x 1.2% margin */
-		height: 180px; /* 232p */
-		margin: .5625em 1.2%;
+		width: 46%; /* 33.3333% incl. 2 x 1.2% margin */
+		height: 220px; /* 232p */
+		margin: .5625em 2%;
 	}
 	.my-page .ui-listview li > .ui-btn {
 		-webkit-box-sizing: border-box; /* include padding and border in height so we can set it to 100% */
 		-moz-box-sizing: border-box;
 		box-sizing: border-box;
-		height: 180px;
+		height: 220px;
 	}
 	.my-page .ui-listview li.ui-li-has-thumb .ui-li-thumb {
-		height: 180px; /* To keep aspect ratio. */
+		height: 220px; /* To keep aspect ratio. */
 		max-width: 100%;
 		max-height: none;
 	}
@@ -129,8 +129,8 @@
 	/* Because of the 1000px max-width the width will always be 230px (and margin left/right 10px),
 	but we stick to percentage values for demo purposes. */
 	.my-page .ui-listview li {
-		width: 23%;
-		height: 180px;
+		width: 46%;
+		height: 220px;
 		margin: .625em 1%;
 	}
 }

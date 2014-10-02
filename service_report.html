@@ -4,9 +4,10 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Regular Maintainance Report</title>
-	<link rel="stylesheet" href="css/fb-style.min.css" />
+	
 	<link rel="stylesheet" href="css/jquery.mobile.structure-1.4.3.min.css">
 	<link rel="stylesheet" href="css/jquery.mobile.icons-1.4.3.min.css">
+	<link rel="stylesheet" href="css/fb-style.min.css" />
 	<link rel="stylesheet" href="css/carousel.css">
 	<link rel="stylesheet" href="css/carousel-style.css">
 	<link rel="stylesheet" href="css/listview-grid.css">
@@ -42,7 +43,10 @@
 		}
 		#maint_report_btn:after { background:  url("images/report.png") 50% 50% no-repeat;  background-size: 24px 24px; }
 		#emergency_report_btn:after { background:  url("images/repair.png") 50% 50% no-repeat;  background-size: 24px 24px; }
-
+		#signature {
+      	margin-top: -25px;
+      	 height: 50px;
+      }
 	</style>
 	<script src="js/report_app.js"></script>
 	<script>
@@ -142,16 +146,16 @@ function createRemarkPhoto(p_index,index,image){
 
 		<div data-role="header" data-position="fixed" data-theme="a"  >
 			<a href="index.html" rel="external" class="ui-btn  ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-left ui-icon-carat-l">Back</a>
-			<h1>Service Report</h1>
+			<h1 style="text-align:left; margin-left:140px;">Service Report</h1>
 			<div data-role="controlgroup" data-type="horizontal" class="ui-mini ui-btn-right">
-				<a id="signatureLink"  href="#popupSignature" class=" ui-btn ui-btn-a ui-mini" data-rel="popup" data-mini="true" style="height:18px !important;" data-position-to="window" data-transition="fade"><img  id="signature" class=" ui-btn ui-btn-a ui-mini"  height="18"  ></a>
+				<a id="signatureLink"  href="#popupSignature" class=" ui-btn ui-btn-a ui-mini" data-rel="popup" data-mini="true" style="height:22px !important;" data-position-to="window" data-transition="fade"><img  id="signature" class=" ui-btn ui-btn-a ui-mini" ></a>
 				<a id="sign" href="#" class=" ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-edit">Sign</a>
 				<a id="save" href="#popupSaveSuccessInfo" data-rel="popup" data-position-to="window" data-transition="pop" href="#" class=" ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-check">Save</a>
-				<a id="upload" href="#" class=" ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-recycle">Upload</a>
-			</div>		
+				<a id="upload" href="#" class="show-page-loading-msg ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-recycle" data-theme="b" data-textonly="false" data-textvisible="true" data-msgtext="Loading ..." data-inline="true">Upload</a>
+			</div>	
 		</div>
 		<div data-role="popup" data-theme="b" id="popupSaveSuccessInfo"  class="ui-content" style="max-width:280px">
-			<a  href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-b ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
+			<a  href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-b ui-icon-delete ui-btn-icon-notext ui-btn-right close-btn">Close</a>
 			<p>Save successfully!!</p>
 		</div>
 		<div data-role="tabs" id="tabs">

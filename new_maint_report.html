@@ -4,9 +4,10 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Regular Maintainance Report</title>
-	<link rel="stylesheet" href="css/fb-style.min.css" />
+	
 	<link rel="stylesheet" href="css/jquery.mobile.structure-1.4.3.min.css">
 	<link rel="stylesheet" href="css/jquery.mobile.icons-1.4.3.min.css">
+	<link rel="stylesheet" href="css/fb-style.min.css" />
 	<link rel="stylesheet" href="css/carousel.css">
 	<link rel="stylesheet" href="css/carousel-style.css">
 	<script src="js/jquery.js"></script>
@@ -193,7 +194,6 @@
 					
 					$("#cycle").empty();
 					$("#cycle").append($('<option>', {
-							value: -1,
 							text: "Choose ..."}));
 					for(var index in currentCycles){ 
 						$("#cycle").append($('<option>', {
@@ -202,7 +202,6 @@
 					}
 					$("#deviceType").empty();
 					$("#deviceType").append($('<option>', {
-							value: -1,
 							text: "Choose ..."}));
 					for(var index in currentCatalogs){ 
 						$("#deviceType").append($('<option>', {
@@ -211,10 +210,34 @@
 					}
 					$('select').selectmenu('refresh', true);
 				}
+				$("#scanBarcode").click(function (e) {
+					onScanBarcode();
+				});
+						
+				function onScanBarcode(){
 
+					cordova.plugins.barcodeScanner.scan(
+						function (result) {
+									  // alert("We got a barcode\n" +
+											// "Result: " + result.text + "\n" +
+											// "Format: " + result.format + "\n" +
+											// "Cancelled: " + result.cancelled);
+					$("#customers").val("3");
+					refreshSelect(3);
+					$("#deviceType").val("1");		
+					$("#deviceID").val("Boiler#1");
+					$("#deviceModel").val("Viessmann - Vitoplex 1400KW");
+					$('select').selectmenu('refresh', true);
+
+				}, 
+				function (error) {
+					alert("Scanning failed: " + error);
+				}
+				);
+				}
 			});
 function checkFillRequired(){
-	if($("#customers").val()!=-1 &&  $("#cycle").val()!=-1  &&  $("#deviceType").val()!=-1){
+	if($("#customers").val()!="Choose ..." &&  $("#cycle").val()!="Choose ..."  &&  $("#deviceType").val()!="Choose ..."){
 
 		$('#add_btn').removeClass("ui-state-disabled");
 	}else{
@@ -227,27 +250,7 @@ function getTimeStr(){
 	return ""+now.getDate()+now.getHours()+now.getMinutes()+now.getSeconds();
 }
 
-function onScanBarcode(){
-
-	cordova.plugins.barcodeScanner.scan(
-		function (result) {
-					  // alert("We got a barcode\n" +
-							// "Result: " + result.text + "\n" +
-							// "Format: " + result.format + "\n" +
-							// "Cancelled: " + result.cancelled);
-
-	$('#customers option[value='+3+']').attr('selected', 'selected');
-	refreshSelect(3);
-	$('#deviceType option[value='+1+']').attr('selected', 'selected');			
-	$("#deviceID").val("Boiler#1");
-	$("#deviceModel").val("Viessmann - Vitoplex 1400KW");
-	$('select').selectmenu('refresh', true);
-}, 
-function (error) {
-	alert("Scanning failed: " + error);
-}
-);
-}	
+	
 </script>
 </head>
 <body>
@@ -257,7 +260,7 @@ function (error) {
 		<div data-role="header" data-position="fixed"  >
 			<a href="index.html" rel="external" class="ui-btn  ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-left ui-icon-carat-l">Back</a>
 			
-			<h1 style="text-align:left; margin-left:120px;">New Maintainance Report</h1>
+			<h1 style="text-align:left; margin-left:140px;">New Maintainance Report</h1>
 			<div data-role="controlgroup" data-type="horizontal" class="ui-mini ui-btn-right">
 				
 			
@@ -267,7 +270,7 @@ function (error) {
 		<div class="ui-field-contain ui-shadow ">
 			<label for="textinput-1"></label>
 			<div style="float: left; width: 40%"  class="right-container">
-				<button style="margin:5px" id="submit-1" data-mini="true" onClick="onScanBarcode()" class=" ui-btn ui-icon-search ui-btn-icon-left ui-shadow ui-corner-all">Scan QRcode</button>
+				<button style="margin:5px" id="scanBarcode" data-mini="true"  class=" ui-btn ui-icon-search ui-btn-icon-left ui-shadow ui-corner-all">Scan QRcode</button>
 
 
 			
@@ -279,7 +282,7 @@ function (error) {
 			<label for="textinput-1">Customer *</label>
 				
 			<select data-native-menu="false" id="customers" name="customers"  >
-			<option value="-1">Choose ...</option>	
+			<option >Choose ...</option>	
 			</select>
 				
 			
@@ -288,7 +291,7 @@ function (error) {
 			<label for="textinput-1">Report cycle *</label>
 				
 			<select data-native-menu="false" id="cycle" name="cycle"  >
-			<option value="-1">Choose ...</option>		
+			<option >Choose ...</option>		
 			</select>
 				
 			
@@ -297,7 +300,7 @@ function (error) {
 			<label for="textinput-1">Device Type *</label>
 				
 			<select data-native-menu="false" id="deviceType" name="deviceType"  >
-			<option value="-1">Choose ...</option>		
+			<option >Choose ...</option>		
 			</select>
 				
 			

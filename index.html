@@ -4,14 +4,16 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Regular Maintainance Report</title>
-	<link rel="stylesheet" href="css/fb-style.min.css" />
+	
 	<link rel="stylesheet" href="css/jquery.mobile.structure-1.4.3.min.css">
 	<link rel="stylesheet" href="css/jquery.mobile.icons-1.4.3.min.css">
+	
 	<link rel="stylesheet" href="css/carousel.css">
 	<link rel="stylesheet" href="css/carousel-style.css">
 	<link rel="stylesheet" href="css/listview-grid1.css">
+	<link rel="stylesheet" href="css/fb-style.min.css" />
 	<script src="js/jquery.js"></script>
-	
+	<script src="js/moment.js"></script>
 	<script src="js/jquery.mobile-1.4.3.min.js"></script>
 	<script type="text/javascript" charset="utf-8" src="cordova.js"></script>
 	<style id="inset-tablist">
@@ -26,18 +28,18 @@
 		}
 		#menu{
 			
-			margin-top: 8%;
+			margin-top: 55%;
 			
 		}
 		#menu .ui-controlgroup-controls {
 			
-			width: 80%!important;
+			width: 90%!important;
 			display: block;
 			margin: 0 auto;
 		}
 		#menu a{
 			
-			width: 45%!important; 
+			width: 44%!important; 
 		}
 		.m-image{
 			width: 80%;
@@ -58,7 +60,7 @@
 		}
 		#maint_report_btn:after { background:  url("images/report.png") 50% 50% no-repeat;  background-size: 24px 24px; }
 		#emergency_report_btn:after { background:  url("images/repair.png") 50% 50% no-repeat;  background-size: 24px 24px; }
-
+		
 	</style>
 	<script type="text/javascript" charset="utf-8">
 
@@ -115,14 +117,14 @@
 				
 				$("#new_m_report").click(function(event, ui) {
 					currentMReport=	{
-						"id" : "",
+						"id": moment().format("DDHHmmss"),
 						"name" : "maintain report",
 						"type" : 0,
 						"customer_id": "",
 						"cycle_type" : -1,
 						"created_by" : "Thomas",
-						"created_at" : "2014-06-09 23:27:35",
-						"updated_at" : "2014-06-09 23:27:35",
+						"created_at" : moment().format("YYYY/MM/DD HH:mm:ss"),
+						"updated_at" : moment().format("YYYY/MM/DD HH:mm:ss"),
 						"froms" :[],
 						"status" :"filling",
 						"index":-1
@@ -132,14 +134,14 @@
 				});
 				$("#new_s_report").click(function(event, ui) {
 					currentMReport=	{
-						"id" : "",
+						"id": moment().format("DDHHmmss"),
 						"name" : "service report",
 						"type" : 1,
 						"customer_id": "",
 						"cycle_type" : -1,
 						"created_by" : "Thomas",
-						"created_at" : "2014-06-09 23:27:35",
-						"updated_at" : "2014-06-09 23:27:35",
+						"created_at" : moment().format("YYYY/MM/DD HH:mm:ss"),
+						"updated_at" : moment().format("YYYY/MM/DD HH:mm:ss"),
 						"froms" :[],
 						"status" :"filling",
 						"index":-1
@@ -184,7 +186,7 @@
 function createReportItem(index,report){
 	return '<li><a id="report_item_'+report.type+'_'+index+'" href="#" class="report_item">\
 	<img  src="images/report.png"\ class="ui-li-thumb">\
-	<p>'+report.name+report.cycle_type+'</p>\
+	<p>'+report.name+'</p>\
 	<p class="ui-li-aside">'+report.status+'</p>\
 </a></li>';
 }
@@ -242,8 +244,8 @@ function createReportItem(index,report){
 			<a id="emergency_report_btn"   href="#popupSelectServiceReport" data-rel="popup" data-position-to="window" data-transition="pop"  data-icon="custom"  class="ui-btn ui-alt-icon ui-btn-icon-top ui-corner-all ui-shadow ">Emergency Report</a>
 
 		</div>
-		<div data-role="popup" id="popupSelectMaintReport" data-overlay-theme="b" data-theme="a" data-dismissible="false" style="width:800px;height:260px;" >
-			<a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-b ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
+		<div data-role="popup" id="popupSelectMaintReport" data-overlay-theme="b" data-theme="a" data-dismissible="false" style="width:500px;height:580px;" >
+			<a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-b ui-icon-delete ui-btn-icon-notext ui-btn-right close-btn ">Close</a>
 			<div data-role="header" data-theme="b">
 				<h1>Select a action</h1>
 			</div>
@@ -261,8 +263,8 @@ function createReportItem(index,report){
 
 			</div><!-- /content -->
 		</div>
-		<div data-role="popup" id="popupSelectServiceReport" data-overlay-theme="b" data-theme="a" data-dismissible="false" style="width:800px;height:260px;" >
-			<a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-b ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
+		<div data-role="popup" id="popupSelectServiceReport" data-overlay-theme="b" data-theme="a" data-dismissible="false" style="width:500px;height:580px;" >
+			<a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-b ui-icon-delete ui-btn-icon-notext ui-btn-right close-btn ">Close</a>
 			<div data-role="header" data-theme="b">
 				<h1>Select a action</h1>
 			</div>

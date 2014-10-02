@@ -4,9 +4,10 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Regular Maintainance Report</title>
-	<link rel="stylesheet" href="css/fb-style.min.css" />
+
 	<link rel="stylesheet" href="css/jquery.mobile.structure-1.4.3.min.css">
 	<link rel="stylesheet" href="css/jquery.mobile.icons-1.4.3.min.css">
+		<link rel="stylesheet" href="css/fb-style.min.css" />
 	<link rel="stylesheet" href="css/carousel.css">
 	<link rel="stylesheet" href="css/carousel-style.css">
 	<script src="js/jquery.js"></script>
@@ -14,12 +15,16 @@
 	<script src="js/jquery.mobile-1.4.3.min.js"></script>
 	<script type="text/javascript" charset="utf-8" src="cordova.js"></script>
 	<style id="inset-tablist">
+		.ui-listview>li.ui-li-has-alt>.ui-btn+.ui-btn {
+width: 5em;
+
+}
 		.tablist-left {
-			width: 25%;
+			width: 35%;
 			display: inline-block;
 		}
 		.tablist-content {
-			width: 73%;
+			width: 63%;
 			display: inline-block;
 			vertical-align: top;
 			margin-left: 1%;
@@ -53,6 +58,9 @@
 		.center-wrapper * {
 			margin: 0 auto;
 		}
+		.ui-select{
+			width:370px;
+		}
 		li.ui-tabs-active > a {
 			background-color: rgb(51, 136, 204)!important;
 			border-color: rgb(51, 136, 204) !important;
@@ -61,10 +69,14 @@
 		}
 		#maint_report_btn:after { background:  url("images/report.png") 50% 50% no-repeat;  background-size: 24px 24px; }
 		#emergency_report_btn:after { background:  url("images/repair.png") 50% 50% no-repeat;  background-size: 24px 24px; }
-		
+		 #signature {
+      	margin-top: -25px;
+      	 height: 50px;
+      }
 	</style>
 	<script src="js/from_data.js"></script>
 	<script src="js/report_app.js"></script>
+	<script src="js/moment.js"></script>
 	<script type="text/javascript" charset="utf-8">
 
 			// Wait for device API libraries to load
@@ -267,6 +279,8 @@
 				$('#copy_btn').addClass("ui-state-disabled");
 				$('#delete_pop_btn').addClass("ui-state-disabled");
 				$('#upload').click(function() {
+					$('#upload').addClass("ui-state-disabled");
+					report.updated_at=moment().format("YYYY/MM/DD HH:mm:ss");
 					var reprot_str = JSON.stringify(report);
 						  // tmp value: [{"id":21,"children":[{"id":196},{"id":195},{"id":49},{"id":194}]},{"id":29,"children":[{"id":184},{"id":152}]},...]
 						  $.ajax({
@@ -275,8 +289,11 @@
 						    //url: 'http://localhost/ies_report_sys/submit_maint_report.php',
 						    data: {'report': reprot_str},
 						    success: function(msg) {
-						    	alert(msg);
-						    	
+						    	$.mobile.loading( "hide" );
+						    	alert("upload successlly");
+						    	report.status="uploaded";
+						    	syncMReport(report);
+						    	$('#upload').removeClass("ui-state-disabled");
 						    },
 						    error: function(XMLHttpRequest, textStatus, errorThrown) {
 						    	alert(textStatus);
@@ -311,7 +328,24 @@ function addFromInCatalog(parent,from,index,max){
 	</li>');
 	
 }
-
+$( document ).on( "click", ".show-page-loading-msg", function() {
+    var $this = $( this ),
+        theme = $this.jqmData( "theme" ) || $.mobile.loader.prototype.options.theme,
+        msgText = $this.jqmData( "msgtext" ) || $.mobile.loader.prototype.options.text,
+        textVisible = $this.jqmData( "textvisible" ) || $.mobile.loader.prototype.options.textVisible,
+        textonly = !!$this.jqmData( "textonly" );
+        html = $this.jqmData( "html" ) || "";
+    $.mobile.loading( "show", {
+            text: msgText,
+            textVisible: textVisible,
+            theme: theme,
+            textonly: textonly,
+            html: html
+    });
+})
+.on( "click", ".hide-page-loading-msg", function() {
+    $.mobile.loading( "hide" );
+});
 </script>
 </head>
 <body>
@@ -321,16 +355,28 @@ function addFromInCatalog(parent,from,index,max){
 		<div data-role="header" data-position="fixed"  >
 			<a href="index.html" rel="external" class="ui-btn  ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-left ui-icon-carat-l">Back</a>
 			
-			<h1 style="text-align:left; margin-left:120px;">Maintainance Report</h1>
+			<h1 style="text-align:left; margin-left:140px;">Maintainance Report</h1>
 			<div data-role="controlgroup" data-type="horizontal" class="ui-mini ui-btn-right">
-				<a id="signatureLink"  href="#popupSignature" class=" ui-btn ui-btn-a ui-mini" data-rel="popup" data-mini="true" style="height:18px !important;" data-position-to="window" data-transition="fade"><img  id="signature" class=" ui-btn ui-btn-a ui-mini"  height="18"  ></a>
-				<a id="sign" href="#" class=" ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-edit">Sign</a>
-				<a id="save" href="#popupSaveSuccessInfo" data-rel="popup" data-position-to="window" data-transition="pop" href="#" class=" ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-check">Save</a>
-				<a id="upload" href="#" class=" ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-recycle">Upload</a>
-			</div>
-		</div><!-- /header -->
+				<a id="add_btn" href="#" rel="external" class="ui-btn ui-btn-icon-right ui-icon-plus">Add</a>
+				<a id="copy_btn" href="#popupCopySuccess" data-rel="popup" data-position-to="window" data-transition="pop"  class="ui-btn ui-btn-icon-right ui-icon-bullets">Copy</a>
+				<a id="delete_pop_btn" href="#popupConfrimDelete" data-rel="popup" data-position-to="window" data-transition="pop"  class="ui-btn ui-btn-icon-right ui-icon-delete">Delete</a>
+				
+			</div>	
+			
 		
 		
+    </div>
+		<div class="ui-bar" style="height:45px !important;">
+        <div  data-role="controlgroup" data-type="horizontal" class="ui-btn-left">
+				<select  data-native-menu="false" id="customers" name="select-choice-1"  >
+					
+				</select>
+				<select  data-native-menu="false" id="cycle" name="select-choice-1"  >
+					
+				</select>
+				
+		</div>
+		</div>
 		<div id="froms_tab" data-role="tabs" >
 			<ul data-role="listview" data-inset="true"  class="tablist-left">
 				<li><a id="tab_0" href="#heat_tab" data-ajax="false" data-transition="turn">Heat Transfer<br/> Compact Unit</a></li>
@@ -373,15 +419,15 @@ function addFromInCatalog(parent,from,index,max){
 			</div>
 		</div>
 		<div data-role="popup" id="popupCopySuccess" data-theme="b" class="ui-content" style="max-width:280px">
-			<a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-b ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
+			<a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-b ui-icon-delete ui-btn-icon-notext ui-btn-right close-btn">Close</a>
 			<p>Copy successfully!!</p>
 		</div>
 		<div data-role="popup" data-theme="b" id="popupSaveSuccessInfo"  class="ui-content" style="max-width:280px">
-			<a  href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-b ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
+			<a  href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-b ui-icon-delete ui-btn-icon-notext ui-btn-right close-btn">Close</a>
 			<p>Save successfully!!</p>
 		</div>
 		<div data-role="popup" id="popupSignature" data-overlay-theme="b" data-theme="a" data-corners="false">
-			<a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-a ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a><img src="" id="popSignatureImg" class="popphoto"  style="max-height:250px;" alt="Paris, France">
+			<a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-a ui-icon-delete ui-btn-icon-notext ui-btn-right close-btn" >Close</a><img src="" id="popSignatureImg" class="popphoto"  style="max-height:250px;" alt="Paris, France">
 		</div>
 		<div data-role="footer" data-theme="b" data-position="fixed">
 			
@@ -389,22 +435,14 @@ function addFromInCatalog(parent,from,index,max){
 				
 				
 			</div>
-			<div data-role="controlgroup" data-type="horizontal" class="ui-mini ui-btn-left">
-				<a id="add_btn" href="#" rel="external" class="ui-btn ui-btn-icon-right ui-icon-plus">Add</a>
-				<a id="copy_btn" href="#popupCopySuccess" data-rel="popup" data-position-to="window" data-transition="pop"  class="ui-btn ui-btn-icon-right ui-icon-bullets">Copy</a>
-				<a id="delete_pop_btn" href="#popupConfrimDelete" data-rel="popup" data-position-to="window" data-transition="pop"  class="ui-btn ui-btn-icon-right ui-icon-delete">Delete</a>
-				
-			</div>	
+			
 			
 			<h1></h1>
 			<div data-role="controlgroup" data-type="horizontal" class="ui-mini ui-btn-right">
-				<select data-native-menu="false" id="customers" name="select-choice-1"  >
-					
-				</select>
-				<select data-native-menu="false" id="cycle" name="select-choice-1"  >
-					
-				</select>
-				
+				<a id="signatureLink"  href="#popupSignature" class=" ui-btn ui-btn-a ui-mini" data-rel="popup" data-mini="true" style="height:22px !important;" data-position-to="window" data-transition="fade"><img  id="signature" class=" ui-btn ui-btn-a ui-mini" ></a>
+				<a id="sign" href="#" class=" ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-edit">Sign</a>
+				<a id="save" href="#popupSaveSuccessInfo" data-rel="popup" data-position-to="window" data-transition="pop" href="#" class=" ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-check">Save</a>
+				<a id="upload" href="#" class="show-page-loading-msg ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-recycle" data-theme="b" data-textonly="false" data-textvisible="true" data-msgtext="Loading ..." data-inline="true">Upload</a>
 			</div>
 			
 			
