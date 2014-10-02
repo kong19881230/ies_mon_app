@@ -10,7 +10,7 @@ empty_froms[0]={
 	"inspector":"",
 	"device_photo":"",
 	"remark":[],
-	"exm_photos" : ["eximages/0_device.png"],
+	"exm_photos" : ["eximages/0_device.jpg"],
 	"items": [{
 
 		"item_name_en": "Check the LED lamp by pressing the lamp test switch",
@@ -96,7 +96,7 @@ empty_froms[0]={
 	"value" : "false",
 	"min_photos": 2,
 	"photos" : [],
-	"exm_photos" : ["eximages/0_5_1.png","eximages/0_5_2.png"]
+	"exm_photos" : ["eximages/0_5_1.jpg","eximages/0_5_2.jpg"]
 },
 	"customers":{
 					"1":{"cycle": 1},
@@ -161,7 +161,7 @@ empty_froms[0]={
 	"hint" : ["0~1","1~2"],
 	"min_photos": 1,
 	"photos" : [],
-	"exm_photos" : ["eximages/0_9.png"]
+	"exm_photos" : ["eximages/0_9.jpg"]
 },
 	"customers":{
 					"1":{"cycle": 1},
@@ -181,7 +181,7 @@ empty_froms[0]={
 	"hint" : ["0~1","1~2"],
 	"min_photos": 1,
 	"photos" : [],
-	"exm_photos" : ["eximages/0_10.png"]
+	"exm_photos" : ["eximages/0_10.jpg"]
 },
 	"customers":{
 					"1":{"cycle": 1},
@@ -448,7 +448,7 @@ empty_froms[1]={
 	"inspector":"",
 	"remark":[],
 	"device_photo":"",
-	"exm_photos" : ["eximages/1_device.png"],
+	"exm_photos" : ["eximages/1_device.jpg"],
 	"items": [{
 	"item_name_en": "Record and check the boiler runing time (h)",
 	"item_name_cn": "記錄及檢查鍋爐運行時間（小時)",
@@ -648,7 +648,7 @@ empty_froms[1]={
 	"value" : "false",
 	"min_photos": 9,
 	"photos" : [],
-	"exm_photos" : ["eximages/1_16_1.png","eximages/1_16_2.png","eximages/1_16_3.png","eximages/1_16_4.png","eximages/1_16_5.png","eximages/1_16_6.png","eximages/1_16_7.png","eximages/1_16_8.png","eximages/1_16_9.png"]
+	"exm_photos" : ["eximages/1_16_1.jpg","eximages/1_16_2.jpg","eximages/1_16_3.jpg","eximages/1_16_4.jpg","eximages/1_16_5.jpg","eximages/1_16_6.jpg","eximages/1_16_7.jpg","eximages/1_16_8.jpg","eximages/1_16_9.jpg"]
 },
 	"customers":{
 					"1":{"cycle": 1},
@@ -870,7 +870,7 @@ empty_froms[1]={
 	"value" : "false",
 	"min_photos": 3,
 	"photos" : [],
-	"exm_photos" : ["eximages/1_14_1.png","eximages/1_14_2.png","eximages/1_14_3.png"]
+	"exm_photos" : ["eximages/1_14_1.jpg","eximages/1_14_2.jpg","eximages/1_14_3.jpg"]
 },
 	"customers":{
 					"1":{"cycle": 1},
@@ -1039,7 +1039,7 @@ empty_froms[1]={
 	"value" : "false",
 	"min_photos": 6,
 	"photos" : [],
-	"exm_photos" : ["eximages/1_7_1.png","eximages/1_7_2.png","eximages/1_7_3.png","eximages/1_7_4.png","eximages/1_7_5.png","eximages/1_7_6.png"]
+	"exm_photos" : ["eximages/1_7_1.jpg","eximages/1_7_2.jpg","eximages/1_7_3.jpg","eximages/1_7_4.jpg","eximages/1_7_5.jpg","eximages/1_7_6.jpg"]
 },
 	"customers":{
 					
@@ -1055,7 +1055,7 @@ empty_froms[1]={
 "value" : "false",
 "min_photos": 2,
 "photos" : [],
-"exm_photos" : ["eximages/1_19_1.png","eximages/1_19_2.png"]
+"exm_photos" : ["eximages/1_19_1.jpg","eximages/1_19_2.jpg"]
 },
 	"customers":{
 					"1":{"cycle": 1},
@@ -1072,7 +1072,7 @@ empty_froms[1]={
 	"value" : "false",
 	"min_photos": 1,
 	"photos" : [],
-	"exm_photos" : ["eximages/1_18.png"]
+	"exm_photos" : ["eximages/1_18.jpg"]
 },
 	"customers":{
 					"1":{"cycle": 1},
@@ -1344,7 +1344,7 @@ empty_froms[2]={
 	"remark":[],
 	"inspector":"",
 	"device_photo":"",
-	"exm_photos" : ["eximages/2_device.png"],
+	"exm_photos" : ["eximages/2_device.jpg"],
 	"items": [{
 
 		"item_name_en": "Check the LED lamp by pressing the lamp test switch",
@@ -1461,7 +1461,7 @@ empty_froms[2]={
 	"value" : "false",
 	"min_photos": 1,
 	"photos" : [],
-	"exm_photos" : ["eximages/2_8.png"]
+	"exm_photos" : ["eximages/2_8.jpg"]
 },
 	"customers":{
 					"1":{"cycle": 1},
@@ -1481,7 +1481,7 @@ empty_froms[2]={
 	"hint" : "0~1",
 	"min_photos": 1,
 	"photos" : [],
-	"exm_photos" : ["eximages/2_9.png"]
+	"exm_photos" : ["eximages/2_9.jpg"]
 },
 	"customers":{
 					"1":{"cycle": 1},
@@ -1546,7 +1546,7 @@ empty_froms[2]={
 	"hint" : ["0~1","1~2"],
 	"min_photos": 1,
 	"photos" : [],
-	"exm_photos" : ["eximages/2_13.png"]
+	"exm_photos" : ["eximages/2_13.jpg"]
 },
 	"customers":{
 					"1":{"cycle": 1},
