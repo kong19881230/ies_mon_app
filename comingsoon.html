@@ -13,6 +13,9 @@
 	<script src="js/jquery.js"></script>
 	
 	<script src="js/jquery.mobile-1.4.3.min.js"></script>
+	<script src="js/from_data.js"></script>
+	<script src="js/report_app.js"></script>
+	<script src="js/moment.js"></script>
 	<script type="text/javascript" charset="utf-8" src="cordova.js"></script>
 	<style id="inset-tablist">
 		.tablist-left {
@@ -57,20 +60,77 @@
 		#emergency_report_btn:after { background:  url("images/repair.png") 50% 50% no-repeat;  background-size: 24px 24px; }
 	
 	</style>
-	
+	<script type="text/javascript" charset="utf-8">
+
+			// Wait for device API libraries to load
+			//
+
+			
+			// device APIs are available
+			//
+			$(document).ready(function(){
+				$('#add_maint_item').click(function() {
+					
+					var empty_froms_str = JSON.stringify(empty_froms);
+						  // tmp value: [{"id":21,"children":[{"id":196},{"id":195},{"id":49},{"id":194}]},{"id":29,"children":[{"id":184},{"id":152}]},...]
+						  $.ajax({
+						  	type: 'POST',
+						  	url: 'http://uniquecode.net/job/ms/add_maint_item.php',
+						    //url: 'http://localhost/ies_report_sys/submit_maint_report.php',
+						    data: {'maint_items': empty_froms_str},
+						    success: function(msg) {
+						    	alert(msg);
+						    },
+						    error: function(XMLHttpRequest, textStatus, errorThrown) {
+						    	alert(textStatus);
+						    }
+						});
+						});	
+
+			});
+			
+			$(document).ready(function(){
+				$('#add_project').click(function() {
+					for(var i in projects){
+						projects[i].cycles_str=JSON.stringify(projects[i].cycles);
+						projects[i].machine_str=JSON.stringify(projects[i].catalogs);
+						projects[i].created_at=moment().format("YYYY/MM/DD HH:mm:ss");
+						projects[i].updated_at=moment().format("YYYY/MM/DD HH:mm:ss");
+					}
+					var projectstr = JSON.stringify(projects);
+						  // tmp value: [{"id":21,"children":[{"id":196},{"id":195},{"id":49},{"id":194}]},{"id":29,"children":[{"id":184},{"id":152}]},...]
+						  $.ajax({
+						  	type: 'POST',
+						  	url: 'http://uniquecode.net/job/ms/add_projects.php',
+						    //url: 'http://localhost/ies_report_sys/submit_maint_report.php',
+						    data: {'projects': projectstr},
+						    success: function(msg) {
+						    	alert(msg);
+						    },
+						    error: function(XMLHttpRequest, textStatus, errorThrown) {
+						    	alert(textStatus);
+						    }
+						});
+						});	
+
+			});
+	</script>
 </head>
 <body>
 
-		<div data-role="page" id="home" style="background-image: url('images/bg.png'); background-attachment: fixed; background-repeat: no-repeat; background-size: 100% 100%;" >
+		<div data-role="page" id="home" style="background-image: url('images/bg.jpg'); background-attachment: fixed; background-repeat: no-repeat; background-size: 100% 100%;" >
 			
 	      
 			<div data-role="header" data-position="fixed" data-theme="b"  >
 				 <a data-rel="back" class="ui-btn  ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-left ui-icon-carat-l">Back</a>
 						  <h1>Comming Soon</h1>
-						
+						  <div data-role="controlgroup" data-type="horizontal" class="ui-mini ui-btn-right">
+				<a href="#" id="add_project" class="ui-btn  ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-left ui-icon-carat-l">Add Project</a>
+				<a href="#" id="add_maint_item" class="ui-btn  ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-left ui-icon-carat-l">Add Maint Item</a>
+				</div>
 			</div><!-- /header -->
 				
-		
+			
 		</div>		
 		
 

@@ -21,7 +21,7 @@ empty_froms[0]={
 		"result": {"type" : "bool",
 					"value" : "false"
 				},
-		"customers":{
+		"projects":{
 						"1":{"cycle": 1},
 						"3":{"cycle": 1},
 						"4":{"cycle": 1}
@@ -36,7 +36,7 @@ empty_froms[0]={
 	"result": {"type" : "bool",
 	"value" : "false"
 },
-	"customers":{
+	"projects":{
 					"1":{"cycle": 1},
 					"3":{"cycle": 1},
 					"4":{"cycle": 1}
@@ -51,7 +51,7 @@ empty_froms[0]={
 	"result": {"type" : "bool",
 	"value" : "false"
 },
-	"customers":{
+	"projects":{
 					"1":{"cycle": 1},
 					"3":{"cycle": 1},
 					"4":{"cycle": 1}
@@ -66,7 +66,7 @@ empty_froms[0]={
 	"result": {"type" : "bool",
 	"value" : "false"
 },
-	"customers":{
+	"projects":{
 					"1":{"cycle": 1},
 					"3":{"cycle": 1},
 					"4":{"cycle": 1}
@@ -80,7 +80,7 @@ empty_froms[0]={
 	"result": {"type" : "bool",
 	"value" : "false"
 },
-	"customers":{
+	"projects":{
 					"1":{"cycle": 1},
 					"3":{"cycle": 1},
 					"4":{"cycle": 1}
@@ -98,7 +98,7 @@ empty_froms[0]={
 	"photos" : [],
 	"exm_photos" : ["eximages/0_5_1.jpg","eximages/0_5_2.jpg"]
 },
-	"customers":{
+	"projects":{
 					"1":{"cycle": 1},
 					"3":{"cycle": 1},
 					"4":{"cycle": 1}
@@ -113,7 +113,7 @@ empty_froms[0]={
 	"result": {"type" : "bool",
 	"value" : "false"
 },
-	"customers":{
+	"projects":{
 					"1":{"cycle": 1},
 					"3":{"cycle": 1},
 					"4":{"cycle": 1}
@@ -128,7 +128,7 @@ empty_froms[0]={
 	"result": {"type" : "bool",
 	"value" : "false"
 },
-	"customers":{
+	"projects":{
 					"1":{"cycle": 1},
 					"3":{"cycle": 1},
 					"4":{"cycle": 1}
@@ -143,7 +143,7 @@ empty_froms[0]={
 	"result": {"type" : "bool",
 	"value" : "false"
 },
-	"customers":{
+	"projects":{
 					"1":{"cycle": 1},
 					"3":{"cycle": 2},
 					"4":{"cycle": 1}
@@ -163,7 +163,7 @@ empty_froms[0]={
 	"photos" : [],
 	"exm_photos" : ["eximages/0_9.jpg"]
 },
-	"customers":{
+	"projects":{
 					"1":{"cycle": 1},
 					"3":{"cycle": 1},
 					"4":{"cycle": 1}
@@ -183,7 +183,7 @@ empty_froms[0]={
 	"photos" : [],
 	"exm_photos" : ["eximages/0_10.jpg"]
 },
-	"customers":{
+	"projects":{
 					"1":{"cycle": 1},
 					"3":{"cycle": 2},
 					"4":{"cycle": 1}
@@ -200,7 +200,7 @@ empty_froms[0]={
 	"unit" : ["℃","℃"],
 	"hint" : ["0~1","1~2"]
 },
-	"customers":{
+	"projects":{
 					"1":{"cycle": 1},
 					"3":{"cycle": 1},
 					"4":{"cycle": 1}
@@ -215,7 +215,7 @@ empty_froms[0]={
 	"result": {"type" : "bool",
 	"value" : "false"
 },
-	"customers":{
+	"projects":{
 					"1":{"cycle": 1},
 					"3":{"cycle": 1},
 					"4":{"cycle": 1}
@@ -232,7 +232,7 @@ empty_froms[0]={
 	"unit" : ["℃","℃"],
 	"hint" : ["0~1","1~2"]
 },
-	"customers":{
+	"projects":{
 					"1":{"cycle": 1},
 					"3":{"cycle": 2},
 					"4":{"cycle": 1}
@@ -248,7 +248,7 @@ empty_froms[0]={
 	"unit" : ["℃","℃"],
 	"hint" : ["0~1","1~2"]
 },
-	"customers":{
+	"projects":{
 					"1":{"cycle": 1},
 					"3":{"cycle": 2},
 					"4":{"cycle": 1}
@@ -264,7 +264,7 @@ empty_froms[0]={
 	"unit" : ["Bar","Bar"],
 	"hint" : ["0~1","1~2"]
 },
-	"customers":{
+	"projects":{
 					"1":{"cycle": 1},
 					"3":{"cycle": 2},
 					"4":{"cycle": 1}
@@ -280,7 +280,7 @@ empty_froms[0]={
 	"unit" : ["Bar","Bar"],
 	"hint" : ["0~1","1~2"]
 },
-	"customers":{
+	"projects":{
 					"1":{"cycle": 1},
 					"3":{"cycle": 2},
 					"4":{"cycle": 1}
@@ -296,7 +296,7 @@ empty_froms[0]={
 	"unit" : ["Bar","Bar"],
 	"hint" : ["0~1","1~2"]
 },
-	"customers":{
+	"projects":{
 					"1":{"cycle": 1},
 					"3":{"cycle": 2},
 					"4":{"cycle": 1}
@@ -310,7 +310,7 @@ empty_froms[0]={
 	"result": {"type" : "bool",
 	"value" : "false"
 },
-	"customers":{
+	"projects":{
 					"1":{"cycle": 1},
 					"3":{"cycle": 6},
 					"4":{"cycle": 6}
@@ -324,7 +324,7 @@ empty_froms[0]={
 	"result": {"type" : "bool",
 	"value" : "false"
 },
-	"customers":{
+	"projects":{
 					"1":{"cycle": 6},
 					"3":{"cycle": 6},
 					"4":{"cycle": 6}
@@ -338,7 +338,7 @@ empty_froms[0]={
 	"result": {"type" : "bool",
 	"value" : "false"
 },
-	"customers":{
+	"projects":{
 					"1":{"cycle": 6},
 					"3":{"cycle": 6},
 					"4":{"cycle": 6}
@@ -352,7 +352,7 @@ empty_froms[0]={
 	"result": {"type" : "bool",
 	"value" : "false"
 },
-	"customers":{
+	"projects":{
 					"1":{"cycle": 6},
 					"3":{"cycle": 6},
 					"4":{"cycle": 6}
@@ -366,7 +366,7 @@ empty_froms[0]={
 	"result": {"type" : "bool",
 	"value" : "false"
 },
-	"customers":{
+	"projects":{
 					"1":{"cycle": 6},
 					"3":{"cycle": 6},
 					"4":{"cycle": 6}
@@ -380,7 +380,7 @@ empty_froms[0]={
 	"result": {"type" : "bool",
 	"value" : "false"
 },
-	"customers":{
+	"projects":{
 					"4":{"cycle": 6}
 }
 },{
@@ -392,7 +392,7 @@ empty_froms[0]={
 	"result": {"type" : "bool",
 	"value" : "false"
 },
-	"customers":{
+	"projects":{
 					"1":{"cycle": 6}
 }
 },{
@@ -404,7 +404,7 @@ empty_froms[0]={
 	"result": {"type" : "bool",
 	"value" : "false"
 },
-	"customers":{
+	"projects":{
 					
 					"3":{"cycle": 12},
 					"4":{"cycle": 12}
@@ -418,7 +418,7 @@ empty_froms[0]={
 	"result": {"type" : "bool",
 	"value" : "false"
 },
-	"customers":{
+	"projects":{
 					
 					"1":{"cycle": 12}
 }
@@ -431,7 +431,7 @@ empty_froms[0]={
 	"result": {"type" : "bool",
 	"value" : "false"
 },
-	"customers":{
+	"projects":{
 					
 					"1":{"cycle": 12}
 }
@@ -460,7 +460,7 @@ empty_froms[1]={
 	"unit" : "h",
 	"hint" : "43340"
 },
-	"customers":{
+	"projects":{
 					"1":{"cycle": 1},
 					"3":{"cycle": 1},
 					"4":{"cycle": 1}
@@ -476,7 +476,7 @@ empty_froms[1]={
 		"result": {"type" : "bool",
 		"value" : "false"
 	},
-	"customers":{
+	"projects":{
 					"1":{"cycle": 1},
 					"3":{"cycle": 1},
 					"4":{"cycle": 1}
@@ -493,7 +493,7 @@ empty_froms[1]={
 	"unit" : "%",
 	"hint" : "20~25"
 },
-	"customers":{
+	"projects":{
 					"3":{"cycle": 1}
 }
 },
@@ -508,7 +508,7 @@ empty_froms[1]={
 	"unit" : "ppm",
 	"hint" : "20~25"
 },
-	"customers":{
+	"projects":{
 					"3":{"cycle": 1}
 }
 },{
@@ -521,7 +521,7 @@ empty_froms[1]={
 		"result": {"type" : "bool",
 		"value" : "false"
 	},
-	"customers":{
+	"projects":{
 					"1":{"cycle": 1},
 					"4":{"cycle": 1}
 }
@@ -535,7 +535,7 @@ empty_froms[1]={
 	"result": {"type" : "bool",
 	"value" : "false"
 },
-	"customers":{
+	"projects":{
 					"1":{"cycle": 1},
 					"3":{"cycle": 1},
 					"4":{"cycle": 1}
@@ -549,7 +549,7 @@ empty_froms[1]={
 	"result": {"type" : "bool",
 	"value" : "false"
 },
-	"customers":{
+	"projects":{
 					"1":{"cycle": 1},
 					"3":{"cycle": 1},
 					"4":{"cycle": 1}
@@ -564,7 +564,7 @@ empty_froms[1]={
 	"result": {"type" : "bool",
 	"value" : "false"
 },
-	"customers":{
+	"projects":{
 					"1":{"cycle": 1},
 					"3":{"cycle": 2},
 					"4":{"cycle": 1}
@@ -579,7 +579,7 @@ empty_froms[1]={
 	"result": {"type" : "bool",
 	"value" : "false"
 },
-	"customers":{
+	"projects":{
 					"4":{"cycle": 1}
 }
 },{
@@ -591,7 +591,7 @@ empty_froms[1]={
 	"result": {"type" : "bool",
 	"value" : "false"
 },
-	"customers":{
+	"projects":{
 					"1":{"cycle": 1},
 					"3":{"cycle": 2},
 					"4":{"cycle": 1}
@@ -605,7 +605,7 @@ empty_froms[1]={
 	"result": {"type" : "bool",
 	"value" : "false"
 },
-	"customers":{
+	"projects":{
 					"1":{"cycle": 1},
 					"3":{"cycle": 2},
 					"4":{"cycle": 1}
@@ -619,7 +619,7 @@ empty_froms[1]={
 	"result": {"type" : "bool",
 	"value" : "false"
 },
-	"customers":{
+	"projects":{
 					"1":{"cycle": 1},
 					"3":{"cycle": 1},
 					"4":{"cycle": 1}
@@ -633,7 +633,7 @@ empty_froms[1]={
 	"result": {"type" : "bool",
 	"value" : "false"
 },
-	"customers":{
+	"projects":{
 					"1":{"cycle": 1},
 					"3":{"cycle": 2},
 					"4":{"cycle": 1}
@@ -650,7 +650,7 @@ empty_froms[1]={
 	"photos" : [],
 	"exm_photos" : ["eximages/1_16_1.jpg","eximages/1_16_2.jpg","eximages/1_16_3.jpg","eximages/1_16_4.jpg","eximages/1_16_5.jpg","eximages/1_16_6.jpg","eximages/1_16_7.jpg","eximages/1_16_8.jpg","eximages/1_16_9.jpg"]
 },
-	"customers":{
+	"projects":{
 					"1":{"cycle": 1},
 					"3":{"cycle": 1},
 					"4":{"cycle": 1}
@@ -665,7 +665,7 @@ empty_froms[1]={
 	"value" : "false"
 	
 },
-	"customers":{
+	"projects":{
 					"1":{"cycle": 1},
 					"4":{"cycle": 1}
 }
@@ -678,7 +678,7 @@ empty_froms[1]={
 	"result": {"type" : "bool",
 	"value" : "false"
 },
-	"customers":{
+	"projects":{
 					"1":{"cycle": 1},
 					"3":{"cycle": 1},
 					"4":{"cycle": 1}
@@ -692,7 +692,7 @@ empty_froms[1]={
 	"result": {"type" : "bool",
 	"value" : "false"
 },
-	"customers":{
+	"projects":{
 					
 					"4":{"cycle": 1}
 }
@@ -706,7 +706,7 @@ empty_froms[1]={
 	"result": {"type" : "bool",
 	"value" : "false"
 },
-	"customers":{
+	"projects":{
 					"1":{"cycle": 1},
 					"3":{"cycle": 1},
 					"4":{"cycle": 1}
@@ -723,7 +723,7 @@ empty_froms[1]={
 	"unit" : "°C",
 	"hint" : "20~25"
 },
-	"customers":{
+	"projects":{
 					"1":{"cycle": 1},
 					"3":{"cycle": 1},
 					"4":{"cycle": 1}
@@ -740,7 +740,7 @@ empty_froms[1]={
 		"unit" : "mbar",
 		"hint" : "100~120"
 	},
-	"customers":{
+	"projects":{
 					"1":{"cycle": 1},
 					"3":{"cycle": 1},
 					"4":{"cycle": 1}
@@ -755,7 +755,7 @@ empty_froms[1]={
 	"result": {"type" : "bool",
 	"value" : "false"
 },
-	"customers":{
+	"projects":{
 					
 					"4":{"cycle": 1}
 }
@@ -769,7 +769,7 @@ empty_froms[1]={
 	"result": {"type" : "bool",
 	"value" : "false"
 },
-	"customers":{
+	"projects":{
 					"4":{"cycle": 1}
 }
 },{
@@ -781,7 +781,7 @@ empty_froms[1]={
 	"result": {"type" : "bool",
 	"value" : "false"
 },
-	"customers":{
+	"projects":{
 					"1":{"cycle": 1},
 					"3":{"cycle": 1},
 					"4":{"cycle": 1}
@@ -795,7 +795,7 @@ empty_froms[1]={
 	"result": {"type" : "bool",
 	"value" : "false"
 },
-	"customers":{
+	"projects":{
 					"4":{"cycle": 1}
 }
 },{
@@ -807,7 +807,7 @@ empty_froms[1]={
 	"result": {"type" : "bool",
 	"value" : "false"
 },
-	"customers":{
+	"projects":{
 					"1":{"cycle": 1},
 					"3":{"cycle": 2},
 					"4":{"cycle": 1}
@@ -823,7 +823,7 @@ empty_froms[1]={
 	"unit" : "°C",
 	"hint" : "20~25"
 },
-	"customers":{
+	"projects":{
 					"1":{"cycle": 1},
 					"3":{"cycle": 2},
 					"4":{"cycle": 1}
@@ -838,7 +838,7 @@ empty_froms[1]={
 	"result": {"type" : "bool",
 	"value" : "false"
 },
-	"customers":{
+	"projects":{
 					"1":{"cycle": 1},
 					"3":{"cycle": 2},
 					"4":{"cycle": 1}
@@ -854,7 +854,7 @@ empty_froms[1]={
 	"unit" : "°C",
 	"hint" : "20~25"
 },
-	"customers":{
+	"projects":{
 					"1":{"cycle": 1},
 					"3":{"cycle": 2},
 					"4":{"cycle": 1}
@@ -872,7 +872,7 @@ empty_froms[1]={
 	"photos" : [],
 	"exm_photos" : ["eximages/1_14_1.jpg","eximages/1_14_2.jpg","eximages/1_14_3.jpg"]
 },
-	"customers":{
+	"projects":{
 					"1":{"cycle": 1},
 					"3":{"cycle": 2},
 					"4":{"cycle": 1}
@@ -887,7 +887,7 @@ empty_froms[1]={
 	"result": {"type" : "bool",
 	"value" : "false"
 },
-	"customers":{
+	"projects":{
 					"1":{"cycle": 1},
 					"3":{"cycle": 2},
 					"4":{"cycle": 1}
@@ -904,7 +904,7 @@ empty_froms[1]={
 	"unit" : ["A","A"],
 	"hint" : ["0~1","1~2"]
 },
-	"customers":{
+	"projects":{
 					"1":{"cycle": 1},
 					"3":{"cycle": 2},
 					"4":{"cycle": 1}
@@ -918,7 +918,7 @@ empty_froms[1]={
 	"result": {"type" : "bool",
 	"value" : "false"
 },
-	"customers":{
+	"projects":{
 					"1":{"cycle": 1},
 					"3":{"cycle": 1},
 					"4":{"cycle": 1}
@@ -932,7 +932,7 @@ empty_froms[1]={
 	"result": {"type" : "bool",
 	"value" : "false"
 },
-	"customers":{
+	"projects":{
 					"1":{"cycle": 1},
 					"3":{"cycle": 2},
 					"4":{"cycle": 1}
@@ -947,7 +947,7 @@ empty_froms[1]={
 	"result": {"type" : "bool",
 	"value" : "false"
 },
-	"customers":{
+	"projects":{
 					"4":{"cycle": 1}
 }
 
@@ -960,7 +960,7 @@ empty_froms[1]={
 	"result": {"type" : "bool",
 	"value" : "false"
 },
-	"customers":{
+	"projects":{
 					"4":{"cycle": 1}
 }
 
@@ -972,7 +972,7 @@ empty_froms[1]={
 	"group": "fan",
 	"result": {"type" : "none",
 },
-	"customers":{
+	"projects":{
 					"1":{"cycle": 1},
 					"3":{"cycle": 1},
 					"4":{"cycle": 1}
@@ -989,7 +989,7 @@ empty_froms[1]={
 	"unit" : "°C",
 	"hint" : "20~25"
 },
-	"customers":{
+	"projects":{
 					"1":{"cycle": 1},
 					"3":{"cycle": 1},
 					"4":{"cycle": 1}
@@ -1006,7 +1006,7 @@ empty_froms[1]={
 	"unit" : "ppm",
 	"hint" : "20~25"
 },
-	"customers":{
+	"projects":{
 					"1":{"cycle": 1},
 					"3":{"cycle": 1},
 					"4":{"cycle": 1}
@@ -1023,7 +1023,7 @@ empty_froms[1]={
 	"unit" : "°C",
 	"hint" : "20~25"
 },
-	"customers":{
+	"projects":{
 					"1":{"cycle": 1},
 					"3":{"cycle": 1}
 }
@@ -1041,7 +1041,7 @@ empty_froms[1]={
 	"photos" : [],
 	"exm_photos" : ["eximages/1_7_1.jpg","eximages/1_7_2.jpg","eximages/1_7_3.jpg","eximages/1_7_4.jpg","eximages/1_7_5.jpg","eximages/1_7_6.jpg"]
 },
-	"customers":{
+	"projects":{
 					
 					"3":{"cycle": 2}
 }
@@ -1057,7 +1057,7 @@ empty_froms[1]={
 "photos" : [],
 "exm_photos" : ["eximages/1_19_1.jpg","eximages/1_19_2.jpg"]
 },
-	"customers":{
+	"projects":{
 					"1":{"cycle": 1},
 					"3":{"cycle": 1},
 					"4":{"cycle": 3}
@@ -1074,7 +1074,7 @@ empty_froms[1]={
 	"photos" : [],
 	"exm_photos" : ["eximages/1_18.jpg"]
 },
-	"customers":{
+	"projects":{
 					"1":{"cycle": 1},
 					"3":{"cycle": 1},
 					"4":{"cycle": 3}
@@ -1091,7 +1091,7 @@ empty_froms[1]={
 	"unit" : "%",
 	"hint" : "90~100"
 },
-	"customers":{
+	"projects":{
 					"1":{"cycle": 6},
 					"3":{"cycle": 1},
 					"4":{"cycle": 6}
@@ -1105,7 +1105,7 @@ empty_froms[1]={
 	"result": {"type" : "bool",
 	"value" : "false"
 },
-	"customers":{
+	"projects":{
 					"1":{"cycle": 6},
 					"3":{"cycle": 6},
 					"4":{"cycle": 6}
@@ -1120,7 +1120,7 @@ empty_froms[1]={
 	"result": {"type" : "bool",
 	"value" : "false"
 },
-	"customers":{
+	"projects":{
 					"1":{"cycle": 6},
 					"3":{"cycle": 6}
 }
@@ -1134,7 +1134,7 @@ empty_froms[1]={
 	"result": {"type" : "bool",
 	"value" : "false"
 },
-	"customers":{
+	"projects":{
 					"1":{"cycle": 6},
 					"3":{"cycle": 6},
 					"4":{"cycle": 6}
@@ -1149,7 +1149,7 @@ empty_froms[1]={
 	"result": {"type" : "bool",
 	"value" : "false"
 },
-	"customers":{
+	"projects":{
 					"1":{"cycle": 6},
 					"3":{"cycle": 6},
 					"4":{"cycle": 6}
@@ -1164,7 +1164,7 @@ empty_froms[1]={
 	"result": {"type" : "bool",
 	"value" : "false"
 },
-	"customers":{
+	"projects":{
 					"1":{"cycle": 6},
 					"3":{"cycle": 6},
 					"4":{"cycle": 6}
@@ -1179,7 +1179,7 @@ empty_froms[1]={
 	"result": {"type" : "bool",
 	"value" : "false"
 },
-	"customers":{
+	"projects":{
 					"1":{"cycle": 6},
 					"3":{"cycle": 6}
 }
@@ -1193,7 +1193,7 @@ empty_froms[1]={
 	"result": {"type" : "bool",
 	"value" : "false"
 },
-	"customers":{
+	"projects":{
 					"1":{"cycle": 6},
 					"3":{"cycle": 6},
 					"4":{"cycle": 6}
@@ -1210,7 +1210,7 @@ empty_froms[1]={
 	"unit" : "°C",
 	"hint" : "20~25"
 },
-	"customers":{
+	"projects":{
 					"1":{"cycle": 6},
 					"3":{"cycle": 6},
 					"4":{"cycle": 6}
@@ -1227,7 +1227,7 @@ empty_froms[1]={
 	"unit" : "°C",
 	"hint" : "20~25"
 },
-	"customers":{
+	"projects":{
 					"1":{"cycle": 6},
 					"3":{"cycle": 6},
 					"4":{"cycle": 6}
@@ -1244,7 +1244,7 @@ empty_froms[1]={
 	"unit" : "°C",
 	"hint" : "20~25"
 },
-	"customers":{
+	"projects":{
 					"1":{"cycle": 6},
 					"3":{"cycle": 6},
 					"4":{"cycle": 6}
@@ -1259,7 +1259,7 @@ empty_froms[1]={
 	"result": {"type" : "bool",
 	"value" : "false"
 },
-	"customers":{
+	"projects":{
 					"1":{"cycle": 6},
 					"3":{"cycle": 6},
 					"4":{"cycle": 6}
@@ -1274,7 +1274,7 @@ empty_froms[1]={
 	"result": {"type" : "bool",
 	"value" : "false"
 },
-	"customers":{
+	"projects":{
 					"4":{"cycle": 6}
 }
 
@@ -1287,7 +1287,7 @@ empty_froms[1]={
 	"result": {"type" : "bool",
 	"value" : "false"
 },
-	"customers":{
+	"projects":{
 					"1":{"cycle": 6},
 					"3":{"cycle": 6}
 }
@@ -1301,7 +1301,7 @@ empty_froms[1]={
 	"result": {"type" : "bool",
 	"value" : "false"
 },
-	"customers":{
+	"projects":{
 					"1":{"cycle": 12}	
 }
 
@@ -1314,7 +1314,7 @@ empty_froms[1]={
 	"result": {"type" : "bool",
 	"value" : "false"
 },
-	"customers":{
+	"projects":{
 					"4":{"cycle": 12}
 }
 
@@ -1327,7 +1327,7 @@ empty_froms[1]={
 	"result": {"type" : "bool",
 	"value" : "false"
 },
-	"customers":{
+	"projects":{
 					"1":{"cycle": 12},
 					"3":{"cycle": 12}
 }
@@ -1355,7 +1355,7 @@ empty_froms[2]={
 		"result": {"type" : "bool",
 		"value" : "false"
 	},
-	"customers":{
+	"projects":{
 					"1":{"cycle": 1},
 					"3":{"cycle": 1},
 					"4":{"cycle": 1}
@@ -1370,7 +1370,7 @@ empty_froms[2]={
 	"result": {"type" : "bool",
 	"value" : "false"
 },
-	"customers":{
+	"projects":{
 					"1":{"cycle": 1},
 					"3":{"cycle": 1},
 					"4":{"cycle": 1}
@@ -1385,7 +1385,7 @@ empty_froms[2]={
 	"result": {"type" : "bool",
 	"value" : "false"
 },
-	"customers":{
+	"projects":{
 					"1":{"cycle": 1},
 					"3":{"cycle": 1},
 					"4":{"cycle": 1}
@@ -1400,7 +1400,7 @@ empty_froms[2]={
 	"result": {"type" : "bool",
 	"value" : "false"
 },
-	"customers":{
+	"projects":{
 					"1":{"cycle": 1},
 					"3":{"cycle": 1},
 					"4":{"cycle": 1}
@@ -1415,7 +1415,7 @@ empty_froms[2]={
 	"result": {"type" : "bool",
 	"value" : "false"
 },
-	"customers":{
+	"projects":{
 					"1":{"cycle": 1},
 					"3":{"cycle": 1},
 					"4":{"cycle": 1}
@@ -1430,7 +1430,7 @@ empty_froms[2]={
 	"result": {"type" : "bool",
 	"value" : "false"
 },
-	"customers":{
+	"projects":{
 					"1":{"cycle": 1},
 					"3":{"cycle": 1},
 					"4":{"cycle": 1}
@@ -1445,7 +1445,7 @@ empty_froms[2]={
 	"result": {"type" : "bool",
 	"value" : "false"
 },
-	"customers":{
+	"projects":{
 					"1":{"cycle": 1},
 					"3":{"cycle": 1},
 					"4":{"cycle": 1}
@@ -1463,7 +1463,7 @@ empty_froms[2]={
 	"photos" : [],
 	"exm_photos" : ["eximages/2_8.jpg"]
 },
-	"customers":{
+	"projects":{
 					"1":{"cycle": 1},
 					"3":{"cycle": 1},
 					"4":{"cycle": 1}
@@ -1483,7 +1483,7 @@ empty_froms[2]={
 	"photos" : [],
 	"exm_photos" : ["eximages/2_9.jpg"]
 },
-	"customers":{
+	"projects":{
 					"1":{"cycle": 1},
 					"3":{"cycle": 1},
 					"4":{"cycle": 1}
@@ -1498,7 +1498,7 @@ empty_froms[2]={
 	"result": {"type" : "bool",
 	"value" : "false"
 },
-	"customers":{
+	"projects":{
 					"1":{"cycle": 1},
 					"3":{"cycle": 2},
 					"4":{"cycle": 1}
@@ -1513,7 +1513,7 @@ empty_froms[2]={
 	"result": {"type" : "bool",
 	"value" : "false"
 },
-	"customers":{
+	"projects":{
 					
 					"3":{"cycle": 2},
 					"4":{"cycle": 1}
@@ -1528,7 +1528,7 @@ empty_froms[2]={
 	"result": {"type" : "bool",
 	"value" : "false"
 },
-	"customers":{
+	"projects":{
 					"1":{"cycle": 1},
 					"3":{"cycle": 2},
 					"4":{"cycle": 1}
@@ -1548,7 +1548,7 @@ empty_froms[2]={
 	"photos" : [],
 	"exm_photos" : ["eximages/2_13.jpg"]
 },
-	"customers":{
+	"projects":{
 					"1":{"cycle": 1},
 					"3":{"cycle": 2},
 					"4":{"cycle": 1}
@@ -1562,7 +1562,7 @@ empty_froms[2]={
 	"result": {"type" : "bool",
 	"value" : "false"
 },
-	"customers":{
+	"projects":{
 					"1":{"cycle": 1},
 					"3":{"cycle": 2},
 					"4":{"cycle": 1}
@@ -1576,7 +1576,7 @@ empty_froms[2]={
 	"result": {"type" : "bool",
 	"value" : "false"
 },
-	"customers":{
+	"projects":{
 					"1":{"cycle": 1},
 					"3":{"cycle": 2},
 					"4":{"cycle": 1}
@@ -1590,7 +1590,7 @@ empty_froms[2]={
 	"result": {"type" : "bool",
 	"value" : "false"
 },
-	"customers":{
+	"projects":{
 					"1":{"cycle": 1},
 					"3":{"cycle": 2},
 					"4":{"cycle": 1}
@@ -1604,7 +1604,7 @@ empty_froms[2]={
 	"result": {"type" : "bool",
 	"value" : "false"
 },
-	"customers":{
+	"projects":{
 					
 					"3":{"cycle": 1},
 					"4":{"cycle": 1}
@@ -1618,7 +1618,7 @@ empty_froms[2]={
 	"result": {"type" : "bool",
 	"value" : "false"
 },
-	"customers":{
+	"projects":{
 					
 					"3":{"cycle": 1},
 					"4":{"cycle": 1}
@@ -1632,7 +1632,7 @@ empty_froms[2]={
 	"result": {"type" : "bool",
 	"value" : "false"
 },
-	"customers":{
+	"projects":{
 					"1":{"cycle": 1},
 					"3":{"cycle": 2},
 					"4":{"cycle": 1}
@@ -1648,7 +1648,7 @@ empty_froms[2]={
 	"unit" : "°C",
 	"hint" : "20~25"
 },
-	"customers":{
+	"projects":{
 					
 					"3":{"cycle": 2},
 }
@@ -1660,25 +1660,13 @@ empty_froms[0].catalogs=["controller","pump","heat"];
 empty_froms[1].catalogs=["burner","boiler","controller","fan"];
 empty_froms[2].catalogs=["controller","fan","chimney"];
 
-var customers= [
+var projects= [
 { 	"id" : "1",
 "name_cn" : "十六浦",
 "name_en" : "Ponte 16 Resort Macau",
 "seq" :"MM-0608020-10",
 "created_at" :"2014-06-09 23:27:35",
-"cycles":[{ 	"value": "1",
-"name_cn": "月檢",
-"name_en": "Monthly"
-
-},{ 	"value": "6",
-"name_cn": "半年檢",
-"name_en": "Semi-Annually"
-
-},{ 	"value": "12",
-"name_cn": "年檢",
-"name_en": "Annually"
-
-}],
+"cycles":[1,6,12],
 "catalogs":["heat","boiler","chimney"]
 },
 { 	"id": "2",
@@ -1694,23 +1682,7 @@ var customers= [
 "name_en": "L'Arc Macau",
 "seq": "MM-0606014-05",
 "created_at": "2014-06-09 23:27:35",
-"cycles":[{ 	"value": "1",
-"name_cn": "月檢",
-"name_en": "Monthly"
-
-},{ 	"value": "2",
-"name_cn": "雙月檢",
-"name_en": "Even Monthly"
-
-},{ 	"value": "6",
-"name_cn": "半年檢",
-"name_en": "Semi-Annually"
-
-},{ 	"value": "12",
-"name_cn": "年檢",
-"name_en": "Annually"
-
-}],
+"cycles":[1,2,6,12],
 "catalogs":["heat","boiler","chimney"]
 },
 { 	"id": "4",
@@ -1718,23 +1690,7 @@ var customers= [
 "name_en": "Grand Lisboa",
 "seq":"MM-0406012-04",
 "created_at":"2014-06-09 23:27:35",
-"cycles":[{ 	"value": "1",
-"name_cn": "月檢",
-"name_en": "Monthly"
-
-},{ 	"value": "3",
-"name_cn": "季度檢",
-"name_en": "Quarterly"
-
-},{ 	"value": "6",
-"name_cn": "半年檢",
-"name_en": "Semi-Annually"
-
-},{ 	"value": "12",
-"name_cn": "年檢",
-"name_en": "Annually"
-
-}],
+"cycles":[1,3,6,12],
 "catalogs":["heat","boiler","chimney"]
 },
 { 	"id": "5",
@@ -1800,3 +1756,5 @@ var cycles=[{ 	"value": "1",
 "name_en": "Annually"
 
 }];
+
+

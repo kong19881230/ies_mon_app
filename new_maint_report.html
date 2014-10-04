@@ -91,10 +91,10 @@
 				var indexToCatalog=["heat","boiler","chimney"];
 
 
-				for(var index in customers){ 
-					$("#customers").append($('<option>', {
-						value: customers[index].id,
-						text: customers[index].name_en}));
+				for(var index in projects){ 
+					$("#projects").append($('<option>', {
+						value: projects[index].id,
+						text: projects[index].name_en}));
 				}
 
 				
@@ -102,12 +102,12 @@
 				$('#add_btn').addClass("ui-state-disabled");
 				$('select').selectmenu('refresh', true);
 
-				$("#customers").bind( "change", function(event, ui) {
+				$("#projects").bind( "change", function(event, ui) {
 
-					report.customer_id=$("#customers").val();
+					report.project_id=$("#projects").val();
 					window.localStorage.setItem("currentMReport", JSON.stringify(report));
 					
-					refreshSelect(report.customer_id);
+					refreshSelect(report.project_id);
 					checkFillRequired();
 				});
 				
@@ -130,15 +130,15 @@
 
 				$("#add_btn").click(function (e) {
 					current_catalog_index=$("#deviceType").val();
-					report.customer_id=$("#customers").val();
+					report.project_id=$("#projects").val();
 					report.cycle_type=$("#cycle").val();
 					var new_froms={};
 					var new_froms = jQuery.extend(true, {}, empty_froms[current_catalog_index]);
-					new_froms.id=report.id+"_"+current_catalog_index+"_"+(report.froms.length+1)+getTimeStr();
+					new_froms.id=report.project_id+"_"+current_catalog_index+"_"+(report.froms.length+1)+getTimeStr();
 					new_froms.items=jQuery.grep(new_froms.items, function(element, index){
-						var customer=element.customers[report.customer_id];
-						if(customer!=null){
-							return customer.cycle<=report.cycle_type;
+						var project=element.projects[report.project_id];
+						if(project!=null){
+							return project.cycle<=report.cycle_type;
 						}
 							return false;
 					});
@@ -152,13 +152,13 @@
 
 						});
 	
-					var customer=jQuery.grep(customers, function(element, index){
-										  return element.id==report.customer_id;
+					var project=jQuery.grep(projects, function(element, index){
+										  return element.id==report.project_id;
 										});
 					
 
 	
-					report.name=customer[0].name_en+' '+ cycle[0].name_en+' Maintance Report '+moment().format("YYYYMM"); 
+					report.name= project[0].name_en+' '+ cycle[0].name_en+' Maintance Report '+moment().format("YYYYMM"); 
 					window.localStorage.setItem("currentMReport", JSON.stringify(report));
 					window.localStorage.setItem("currentForm", JSON.stringify(new_froms));
 					window.localStorage.setItem("current_catalog_index", current_catalog_index);
@@ -183,14 +183,20 @@
 					saveMReport(report);
 
 				});
-				function refreshSelect(customer_id){
+				function refreshSelect(project_id){
 					
-					var customer=jQuery.grep(customers, function(element, index){
-									  return element.id==customer_id;
+					var project=jQuery.grep(projects, function(element, index){
+									  return element.id==project_id;
 									});
-				
-					currentCycles=customer[0].cycles;
-					currentCatalogs=customer[0].catalogs;
+					currentCycles=jQuery.grep(cycles, function(element, index){
+										for(var index in project[0].cycles){
+										  if(element.value==project[0].cycles[index]){
+										  	return true;
+										  } 
+										}
+										return false;
+									});
+					currentCatalogs=project[0].catalogs;
 					
 					$("#cycle").empty();
 					$("#cycle").append($('<option>', {
@@ -222,7 +228,7 @@
 											// "Result: " + result.text + "\n" +
 											// "Format: " + result.format + "\n" +
 											// "Cancelled: " + result.cancelled);
-					$("#customers").val("3");
+					$("#projects").val("3");
 					refreshSelect(3);
 					$("#deviceType").val("1");		
 					$("#deviceID").val("Boiler#1");
@@ -237,7 +243,7 @@
 				}
 			});
 function checkFillRequired(){
-	if($("#customers").val()!="Choose ..." &&  $("#cycle").val()!="Choose ..."  &&  $("#deviceType").val()!="Choose ..."){
+	if($("#projects").val()!="Choose ..." &&  $("#cycle").val()!="Choose ..."  &&  $("#deviceType").val()!="Choose ..."){
 
 		$('#add_btn').removeClass("ui-state-disabled");
 	}else{
@@ -279,9 +285,9 @@ function getTimeStr(){
 			</div>
 		</div>
 		<div class="ui-field-contain ui-shadow ">
-			<label for="textinput-1">Customer *</label>
+			<label for="textinput-1">Project *</label>
 				
-			<select data-native-menu="false" id="customers" name="customers"  >
+			<select data-native-menu="false" id="projects" name="projects"  >
 			<option >Choose ...</option>	
 			</select>
 				

@@ -90,7 +90,7 @@ width: 5em;
 			$(document).ready(function(){
 				
 				var report =JSON.parse(window.localStorage.getItem("currentMReport")); 
-				
+				alert(JSON.stringify(report));
 				var current_catalog_index=parseInt(window.localStorage.getItem("current_catalog_index"));
 				
 				if(isNaN(current_catalog_index)){
@@ -129,10 +129,10 @@ width: 5em;
 				}
 
 
-				for(var index in customers){ 
-					$("#customers").append($('<option>', {
-						value: customers[index].id,
-						text: customers[index].name_en}));
+				for(var index in projects){ 
+					$("#projects").append($('<option>', {
+						value: projects[index].id,
+						text: projects[index].name_en}));
 				}
 				
 				for(var index in cycles){ 
@@ -142,20 +142,20 @@ width: 5em;
 				}
 				
 				
-				if(report.customer_id!=""){
-					$('#customers option[value='+report.customer_id+']').attr('selected', 'selected');
-					$("#customers").selectmenu('disable');	
+				if(report.project_id!=""){
+					$("#projects").val(report.project_id);
+					$("#projects").selectmenu('disable');	
 				}
 				if(report.cycle_type>0){
-					$('#cycle option[value='+report.cycle_type+']').attr('selected', 'selected');
+					$("#cycle").val(report.cycle_type);
 					$("#cycle").selectmenu('disable');	
 				}
 				
 
 				$('select').selectmenu('refresh', true);
-				$("#customers").bind( "change", function(event, ui) {
+				$("#projects").bind( "change", function(event, ui) {
 
-					report.customer_id=$("#customers").val();
+					report.project_id=$("#projects").val();
 					window.localStorage.setItem("currentMReport", JSON.stringify(report));
 
 				});
@@ -170,9 +170,9 @@ width: 5em;
 					var new_froms = jQuery.extend(true, {}, empty_froms[current_catalog_index]);
 					new_froms.id=report.id+"_"+current_catalog_index+"_"+(report.froms.length+1)+getTimeStr();
 					new_froms.items=jQuery.grep(new_froms.items, function(element, index){
-						var customer=element.customers[report.customer_id];
-						if(customer!=null){
-							return customer.cycle<=report.cycle_type;
+						var project=element.projects[report.project_id];
+						if(project!=null){
+							return project.cycle<=report.cycle_type;
 						}
 							return false;
 					});
@@ -253,7 +253,7 @@ width: 5em;
 
 
 					var new_froms = jQuery.extend(true, {}, fromhash[current_catalog_index][current_from_index]);
-					new_froms.id=report.id+"_"+current_catalog_index+"_"+(report.froms.length+1)+getTimeStr();
+					new_froms.id=report.project_id+"_"+current_catalog_index+"_"+(report.froms.length+1)+getTimeStr();
 					new_froms.name_en=new_froms.name_en+" 2";
 					new_froms.name_cn=new_froms.name_cn+" 2";
 					report.froms.push(new_froms);
@@ -289,9 +289,16 @@ width: 5em;
 						    //url: 'http://localhost/ies_report_sys/submit_maint_report.php',
 						    data: {'report': reprot_str},
 						    success: function(msg) {
+						    	alert(msg);
+
+						    	var res =msg.split("#####");
+								var report_str =res[res.length-1];
+								alert(report_str);
+								report=JSON.parse(report_str); 
 						    	$.mobile.loading( "hide" );
 						    	alert("upload successlly");
 						    	report.status="uploaded";
+						    	
 						    	syncMReport(report);
 						    	$('#upload').removeClass("ui-state-disabled");
 						    },
@@ -368,7 +375,7 @@ $( document ).on( "click", ".show-page-loading-msg", function() {
     </div>
 		<div class="ui-bar" style="height:45px !important;">
         <div  data-role="controlgroup" data-type="horizontal" class="ui-btn-left">
-				<select  data-native-menu="false" id="customers" name="select-choice-1"  >
+				<select  data-native-menu="false" id="projects" name="select-choice-1"  >
 					
 				</select>
 				<select  data-native-menu="false" id="cycle" name="select-choice-1"  >

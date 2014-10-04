@@ -48,7 +48,9 @@
       	 height: 50px;
       }
 	</style>
+	<script src="js/from_data.js"></script>
 	<script src="js/report_app.js"></script>
+	<script src="js/moment.js"></script>
 	<script>
 		var empty_remark={
 			"text":"",
@@ -57,11 +59,28 @@
 		var currentRemarkCameraID="";
 		$(document).ready(function(){
 			var report =JSON.parse(window.localStorage.getItem("currentSReport")); 
-			var remarks=[];
+			var details=report.details;
+			alert(JSON.stringify(report));
+			$('#problem_reported').val(details.problem_reported);
+			$('#reported_by').val(details.reported_by);
+			$('input:radio[name=is_system_down][value='+details.is_system_down+']').attr('checked', 'checked');
+			$('#device_model').val(details.device_model);
+			$('#device_id').val(details.device_id);
+			$('#power').val(details.power);
+			$('#machine_type').val(details.machine_type);
+			$('#location').val(details.location);
+			$('#inspection_found').val(details.inspection_found);
+			$('input:radio[name=status_after_service][value='+details.status_after_service+']').attr('checked', 'checked');
+			$('#remarks').val(details.remarks);
+			$('#contact_name').val(details.contact_name);
+			$('#designation').val(details.designation);
+			$('#phone').val(details.phone);
+			$('#fax').val(details.fax);
+			$('#email').val(details.email);
+			$("input[type='radio']").checkboxradio("refresh");
+			var remarks=report.details.situation;
 
 			if(remarks.length==0){
-
-
 				remarks.push(empty_remark);
 			}
 
@@ -75,6 +94,24 @@
 				}
 
 			}
+			for(var index in projects){ 
+				$("#project_id").append($('<option>', {
+					value: projects[index].id,
+					text: projects[index].name_en}));
+			}
+
+			$('#project_id').val(report.project_id);
+			
+			$('select').selectmenu('refresh', true);
+			
+			$("#project_id").bind( "change", function(event, ui) {
+
+				report.project_id=$("#project_id").val();
+				window.localStorage.setItem("currentMReport", JSON.stringify(report));
+				
+				refreshSelect(report.project_id);
+				checkFillRequired();
+			});
 
 			$("#add_remark_btn").click(function(event, ui){
 
@@ -87,8 +124,42 @@
 					captureRemarkImage();
 				});
 			});	
-			$("#savebtn").click(function(event, ui){
+			$("#save").click(function(event, ui){
 				
+				alert(JSON.stringify(details));
+				var validRemarks=[];
+				for(var i in remarks){
+					remarks[i].text=$("#remark_text_"+i).val();
+					for(var j in remarks[i].photos){
+						var imgsrc =$('#remark_img_'+j+'_'+i).attr("src");
+						remarks[i].photos[j]=imgsrc;
+					}
+					if(remarks[i].text!=""){
+						validRemarks.push(remarks[i]);
+					}
+				}
+					
+				details.situation=validRemarks;
+				details.problem_reported=$('#problem_reported').val();
+				details.is_system_down=$("input:radio[name='is_system_down']:checked").val();
+				details.reported_by=$('#reported_by').val();
+				details.device_model=$('#device_model').val();
+				details.device_id=$('#device_id').val();
+				details.power=$('#power').val();
+				details.machine_type=$('#machine_type').val();
+				details.location=$('#location').val();
+				details.inspection_found=$('#inspection_found').val();
+				details.status_after_service=$("input:radio[name='status_after_service']:checked").val();
+				details.remarks=$('#remarks').val();
+				details.contact_name=$('#contact_name').val();
+				details.designation=$('#designation').val();
+				details.phone=$('#phone').val();
+				details.fax=$('#fax').val();
+				details.email=$('#email').val();
+				alert(JSON.stringify(details));
+				report.details=details;
+				report.project_id=$('#project_id').val();
+				alert(JSON.stringify(report));
 				saveSReport(report);
 			});	
 			$('.remark_camera').bind( "click", function(event, ui){
@@ -96,7 +167,34 @@
 				currentRemarkCameraID=event.currentTarget.id;
 				captureRemarkImage();
 			});
+			$('#upload').click(function() {
+					$('#upload').addClass("ui-state-disabled");
+					report.updated_at=moment().format("YYYY/MM/DD HH:mm:ss");
+					var reprot_str = JSON.stringify(report);
+						  // tmp value: [{"id":21,"children":[{"id":196},{"id":195},{"id":49},{"id":194}]},{"id":29,"children":[{"id":184},{"id":152}]},...]
+						  $.ajax({
+						  	type: 'POST',
+						  	url: 'http://uniquecode.net/job/ms/submit_service_report.php',
+						    //url: 'http://localhost/ies_report_sys/submit_maint_report.php',
+						    data: {'report': reprot_str},
+						    success: function(msg) {
+						    	alert(msg);
 
+						    	var res =msg.split("#####");
+								var report_str =res[res.length-1];
+								alert(report_str);
+								report=JSON.parse(report_str); 
+						    	$.mobile.loading( "hide" );
+						    	alert("upload successlly");
+						    	report.status="uploaded";
+						    	syncSReport(report);
+						    	$('#upload').removeClass("ui-state-disabled");
+						    },
+						    error: function(XMLHttpRequest, textStatus, errorThrown) {
+						    	alert(textStatus);
+						    }
+					});
+			});	
 			function onRemarkImageSuccess(imageURI) {
 
 				var index=getIndex(currentRemarkCameraID);
@@ -137,6 +235,24 @@ function createRemarkPhoto(p_index,index,image){
 	<img id="remark_img_'+p_index+'_'+index+'" src="'+image+'" class="ui-li-thumb">\
 </li>';
 }
+$( document ).on( "click", ".show-page-loading-msg", function() {
+    var $this = $( this ),
+        theme = $this.jqmData( "theme" ) || $.mobile.loader.prototype.options.theme,
+        msgText = $this.jqmData( "msgtext" ) || $.mobile.loader.prototype.options.text,
+        textVisible = $this.jqmData( "textvisible" ) || $.mobile.loader.prototype.options.textVisible,
+        textonly = !!$this.jqmData( "textonly" );
+        html = $this.jqmData( "html" ) || "";
+    $.mobile.loading( "show", {
+            text: msgText,
+            textVisible: textVisible,
+            theme: theme,
+            textonly: textonly,
+            html: html
+    });
+})
+.on( "click", ".hide-page-loading-msg", function() {
+    $.mobile.loading( "hide" );
+});
 </script>
 </head>
 <body>
@@ -164,23 +280,23 @@ function createRemarkPhoto(p_index,index,image){
 					<li><a href="#problem" data-prefetch="true"  data-ajax="false" id="problem_btn" class="tab-btn ui-btn-active">Problem</a></li>	
 					<li><a href="#actual" data-prefetch="true"  data-ajax="false" id="actual_btn" class="tab-btn">Actual Situation</a></li>
 					<li><a href="#report" data-prefetch="true"  data-ajax="false" id="report_btn" class="tab-btn">Report</a></li>
-					<li><a href="#customer" data-prefetch="true"  data-ajax="false" id="customer_btn" class="tab-btn">Customer</a></li>
+					<li><a href="#project" data-prefetch="true"  data-ajax="false" id="project_btn" class="tab-btn">Customer</a></li>
 				</ul>
 			</div>
 			<div id="problem" data-role="tabs" >
 				<div class="ui-field-contain ui-shadow ">
 					<label for="textarea">Problem Reported</label>
 					<div style="width: 98%;margin-left: 1em;margin-right: 1em"  class="right-container">	
-						<textarea cols="40" rows="16" name="textarea" id="textarea"></textarea>
+						<textarea cols="40" rows="16" name="problem_reported" id="problem_reported"></textarea>
 					</div>
 				</div>
 				<div class="ui-field-contain ui-shadow ">
 					<label for="textinput-1">System Down</label>
 					<div style="float: left; width: 40%"  class="right-container">	
 						<div style="margin:1%" data-role="controlgroup" data-type="horizontal" data-mini="true">
-							<input type="radio" name="radio-choice-b" id="radio-choice-d" value="grid" checked="true">
+							<input type="radio" name="is_system_down" id="radio-choice-d" value="true" checked="true">
 							<label for="radio-choice-d">Yes</label>
-							<input type="radio" name="radio-choice-b" id="radio-choice-e" value="gallery">
+							<input type="radio" name="is_system_down" id="radio-choice-e" value="false">
 							<label for="radio-choice-e">No</label>
 						</div>
 					</div>
@@ -188,20 +304,20 @@ function createRemarkPhoto(p_index,index,image){
 				<div class="ui-field-contain ui-shadow ">
 					<label for="textinput-1">Call Reported By</label>
 					<div style="float: left; width: 40%"  class="right-container">	
-						<input   class="input-textbox"  type="text" name="textinput-5" id="model"   />
+						<input   class="input-textbox"  type="text" name="textinput-5" id="reported_by"   />
 					</div>
 				</div>
 				<div class="ui-field-contain ui-shadow ">
 					<label for="textinput-1">Model</label>
 					<div style="float: left; width: 40%"  class="right-container">	
 						<button style="margin:5px" id="submit-1" data-mini="true" onClick="onScanBarcode()" class=" ui-btn ui-icon-search ui-btn-icon-left ui-shadow ui-corner-all">Scan QRcode</button>
-						<input   class="input-textbox"  type="text" name="textinput-5" id="model"   />
+						<input   class="input-textbox"  type="text" name="textinput-5" id="device_model"   />
 					</div>
 				</div>
 				<div class="ui-field-contain ui-shadow ">
 					<label for="textinput-1">Serial No</label>
 					<div style="float: left; width: 40%"  class="right-container">
-						<input   class="input-textbox"  type="text" name="textinput-5" id="serialNo"   />
+						<input   class="input-textbox"  type="text" name="textinput-5" id="device_id"   />
 					</div>
 				</div>
 				<div class="ui-field-contain ui-shadow ">
@@ -213,7 +329,7 @@ function createRemarkPhoto(p_index,index,image){
 				<div class="ui-field-contain ui-shadow ">
 					<label for="textinput-1">Equipment Type</label>
 					<div style="float: left; width: 40%"  class="right-container">
-						<select name="equipmentType" id="equipmentType" data-native-menu="false">
+						<select name="machine_type" id="machine_type" data-native-menu="false">
 							<option>Select a Equipment</option>
 							<option value="heat">Heat Transfer Component Unit</option>
 							<option value="boiler">Boiler</option>
@@ -252,22 +368,22 @@ function createRemarkPhoto(p_index,index,image){
 					<div class="ui-field-contain ui-shadow ">
 						<label for="textarea">Defects found on inspection</label>
 						<div style="width: 98%;margin-left: 1em;margin-right: 1em"  class="right-container">	
-							<textarea cols="40" rows="3" name="textarea" id="defects"></textarea>
+							<textarea cols="40" rows="3" name="inspection_found" id="inspection_found"></textarea>
 						</div>
 					</div>
 					<div class="ui-field-contain ui-shadow ">
 						<label for="textinput-1">Status After Service</label>
 						<div style="width: 98%;margin-left: 1em;margin-right: 1em"  class="right-container">	
 							<div style="margin:1%" data-role="controlgroup" data-type="horizontal" data-mini="true">
-								<input type="radio" name="status" id="status_a" value="grid" checked="true">
+								<input type="radio" name="status_after_service" id="status_a" value="grid" checked="true">
 								<label for="status_a">Complete</label>
-								<input type="radio" name="status" id="status_b" value="incomplete">
+								<input type="radio" name="status_after_service" id="status_b" value="incomplete">
 								<label for="status_b">Incomplete</label>
-								<input type="radio" name="status" id="status_c" value="pending">
+								<input type="radio" name="status_after_service" id="status_c" value="pending">
 								<label for="status_c">Pending for spares</label>
-								<input type="radio" name="status" id="status_d" value="observation">
+								<input type="radio" name="status_after_service" id="status_d" value="observation">
 								<label for="status_d">User Observation</label>
-								<input type="radio" name="status" id="status_e" value="working">
+								<input type="radio" name="status_after_service" id="status_e" value="working">
 								<label for="status_e">Working solution provided</label>
 							</div>
 							
@@ -277,41 +393,49 @@ function createRemarkPhoto(p_index,index,image){
 
 				</ul>
 			</div>
-			<div id="customer">
+			<div id="project">
+				<div class="ui-field-contain ui-shadow ">
+					<label for="textinput-1">Customer</label>
+					<div style="float: left; width: 40%"  class="right-container">
+						<select name="project_id" id="project_id" data-native-menu="false">
+							<option>Select a Customer</option>
+						</select>
+					</div>
+				</div>
 				<div class="ui-field-contain ui-shadow ">
 					<label for="textarea">Remarks</label>
 					<div style="width: 98%;margin-left: 1em;margin-right: 1em"  class="right-container">	
-						<textarea cols="40" rows="3" name="textarea" id="remarks"></textarea>
+						<textarea cols="40" rows="3" name="remarks" id="remarks"></textarea>
 					</div>
 				</div>
 				<div class="ui-field-contain ui-shadow ">
 					<label for="textinput-1">Name</label>
 					<div style="float: left; width: 40%"  class="right-container">
-						<input   class="input-textbox"  type="text" name="textinput-5" id="customer_name"   />
+						<input   class="input-textbox"  type="text" name="contact_name" id="contact_name"   />
 					</div>
 				</div>
 				<div class="ui-field-contain ui-shadow ">
 					<label for="textinput-1">Designation</label>
 					<div style="float: left; width: 40%"  class="right-container">
-						<input   class="input-textbox"  type="text" name="textinput-5" id="designation"   />
+						<input   class="input-textbox"  type="text" name="designation" id="designation"   />
 					</div>
 				</div>
 				<div class="ui-field-contain ui-shadow ">
 					<label for="textinput-1">Phone</label>
 					<div style="float: left; width: 40%"  class="right-container">
-						<input   class="input-textbox"  type="text" name="textinput-5" id="phone"   />
+						<input   class="input-textbox"  type="text" name="phone" id="phone"   />
 					</div>
 				</div>
 				<div class="ui-field-contain ui-shadow ">
 					<label for="textinput-1">Fax</label>
 					<div style="float: left; width: 40%"  class="right-container">
-						<input   class="input-textbox"  type="text" name="textinput-5" id="fax"   />
+						<input   class="input-textbox"  type="text" name="fax" id="fax"   />
 					</div>
 				</div>
 				<div class="ui-field-contain ui-shadow ">
 					<label for="textinput-1">Email</label>
 					<div style="float: left; width: 40%"  class="right-container">
-						<input   class="input-textbox"  type="text" name="textinput-5" id="email"   />
+						<input   class="input-textbox"  type="text" name="email" id="email"   />
 					</div>
 				</div>
 			</div>

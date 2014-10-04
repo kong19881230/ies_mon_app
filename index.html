@@ -117,10 +117,9 @@
 				
 				$("#new_m_report").click(function(event, ui) {
 					currentMReport=	{
-						"id": moment().format("DDHHmmss"),
 						"name" : "maintain report",
 						"type" : 0,
-						"customer_id": "",
+						"project_id": "",
 						"cycle_type" : -1,
 						"created_by" : "Thomas",
 						"created_at" : moment().format("YYYY/MM/DD HH:mm:ss"),
@@ -133,20 +132,18 @@
 					window.location.href="new_maint_report.html";
 				});
 				$("#new_s_report").click(function(event, ui) {
-					currentMReport=	{
-						"id": moment().format("DDHHmmss"),
+					currentSReport=	{
 						"name" : "service report",
 						"type" : 1,
-						"customer_id": "",
-						"cycle_type" : -1,
+						"project_id": "",
 						"created_by" : "Thomas",
 						"created_at" : moment().format("YYYY/MM/DD HH:mm:ss"),
 						"updated_at" : moment().format("YYYY/MM/DD HH:mm:ss"),
-						"froms" :[],
+						"details":{"situation":[]},
 						"status" :"filling",
 						"index":-1
 					};
-					window.localStorage.setItem("currentSReport", JSON.stringify(currentMReport));
+					window.localStorage.setItem("currentSReport", JSON.stringify(currentSReport));
 					window.location.href="service_report.html";
 				});	
 				$(".report_item").click(function(event, ui) {
@@ -163,7 +160,7 @@
 					}else{
 						currentSReport=sReportQueue[index];
 						currentSReport.index=index;
-						window.localStorage.setItem("currentSReport", JSON.stringify(currentMReport));
+						window.localStorage.setItem("currentSReport", JSON.stringify(currentSReport));
 						window.location.href="service_report.html";
 					}
 

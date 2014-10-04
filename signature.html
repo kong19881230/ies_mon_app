@@ -168,12 +168,12 @@ function showReportSummary(report){
 
 						});
 	
-	var customer=jQuery.grep(customers, function(element, index){
-						  return element.id==report.customer_id;
+	var project=jQuery.grep(projects, function(element, index){
+						  return element.id==report.project_id;
 						});
 
 	$("#summary").append('<h3>'+report.name+'</h3>');
-	$("#summary").append('<p>Customer:  '+customer[0].name_en+'</p>');
+	$("#summary").append('<p>Project:  '+project[0].name_en+'</p>');
     $("#summary").append('<p>Type:  '+cycle[0].name_en+'</p>');  
     $("#summary").append('<p>Date and Time:  '+moment().format("YYYY/MM/DD HH:mm")+ '</p>');   
  	$("#summary").append('<p>Total Deivce:  '+report.froms.length+'</p>');  
