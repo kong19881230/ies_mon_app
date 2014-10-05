@@ -13,6 +13,7 @@
 	<script src="js/jquery.js"></script>
 	
 	<script src="js/jquery.mobile-1.4.3.min.js"></script>
+	<script src="js/jquery.localize.min.js"></script>
 	<script type="text/javascript" charset="utf-8" src="cordova.js"></script>
 	<style id="inset-tablist">
 		.mycontrolgroup .ui-controlgroup-controls
@@ -76,6 +77,8 @@
 			
 			
 			$(document).ready(function(){
+				var currentLocale=window.localStorage.getItem("locale");
+				refreshUILocale(currentLocale);
 				
 				var report =JSON.parse(window.localStorage.getItem("currentMReport")); 
 				
@@ -94,7 +97,7 @@
 				for(var index in projects){ 
 					$("#projects").append($('<option>', {
 						value: projects[index].id,
-						text: projects[index].name_en}));
+						text: projects[index]["name_"+currentLocale]}));
 				}
 
 				
@@ -200,20 +203,23 @@
 					
 					$("#cycle").empty();
 					$("#cycle").append($('<option>', {
-							text: "Choose ..."}));
+							text: "Choose ...",
+							"data-localize":"new_maint_report.choose" }));
 					for(var index in currentCycles){ 
 						$("#cycle").append($('<option>', {
 							value: currentCycles[index].value,
-							text: currentCycles[index].name_en}));
+							text: currentCycles[index]["name_"+currentLocale]}));
 					}
 					$("#deviceType").empty();
 					$("#deviceType").append($('<option>', {
-							text: "Choose ..."}));
+							text: "Choose ...",
+							"data-localize":"new_maint_report.choose"}));
 					for(var index in currentCatalogs){ 
 						$("#deviceType").append($('<option>', {
 							value: index,
-							text: currentCatalogs[index]}));
+							text: machine_types[currentCatalogs[index]]["name_"+currentLocale]}));
 					}
+					refreshUILocale(currentLocale);
 					$('select').selectmenu('refresh', true);
 				}
 				$("#scanBarcode").click(function (e) {
@@ -264,9 +270,9 @@ function getTimeStr(){
 	
 	<div data-role="page" id="report" >
 		<div data-role="header" data-position="fixed"  >
-			<a href="index.html" rel="external" class="ui-btn  ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-left ui-icon-carat-l">Back</a>
+			<a href="index.html" rel="external" class="ui-btn  ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-left ui-icon-carat-l" data-localize="back">Back</a>
 			
-			<h1 style="text-align:left; margin-left:140px;">New Maintainance Report</h1>
+			<h1 data-localize="new_maint_report.title" style="text-align:left; margin-left:140px;">New Maintainance Report</h1>
 			<div data-role="controlgroup" data-type="horizontal" class="ui-mini ui-btn-right">
 				
 			
@@ -276,7 +282,7 @@ function getTimeStr(){
 		<div class="ui-field-contain ui-shadow ">
 			<label for="textinput-1"></label>
 			<div style="float: left; width: 40%"  class="right-container">
-				<button style="margin:5px" id="scanBarcode" data-mini="true"  class=" ui-btn ui-icon-search ui-btn-icon-left ui-shadow ui-corner-all">Scan QRcode</button>
+				<button style="margin:5px" id="scanBarcode" data-mini="true"  class=" ui-btn ui-icon-search ui-btn-icon-left ui-shadow ui-corner-all" data-localize="new_maint_report.scan_qr" >Scan QRcode</button>
 
 
 			
@@ -285,41 +291,41 @@ function getTimeStr(){
 			</div>
 		</div>
 		<div class="ui-field-contain ui-shadow ">
-			<label for="textinput-1">Project *</label>
+			<label for="textinput-1" data-localize="new_maint_report.project">Project *</label>
 				
 			<select data-native-menu="false" id="projects" name="projects"  >
-			<option >Choose ...</option>	
+			<option  data-localize="new_maint_report.choose">Choose ...</option>	
 			</select>
 				
 			
 		</div>
 		<div class="ui-field-contain ui-shadow ">
-			<label for="textinput-1">Report cycle *</label>
+			<label for="textinput-1" data-localize="new_maint_report.report_cycle">Report cycle *</label>
 				
 			<select data-native-menu="false" id="cycle" name="cycle"  >
-			<option >Choose ...</option>		
+			<option data-localize="new_maint_report.choose">Choose ...</option>		
 			</select>
 				
 			
 		</div>
 		<div class="ui-field-contain ui-shadow ">
-			<label for="textinput-1">Device Type *</label>
+			<label for="textinput-1" data-localize="new_maint_report.device_type">Device Type *</label>
 				
 			<select data-native-menu="false" id="deviceType" name="deviceType"  >
-			<option >Choose ...</option>		
+			<option data-localize="new_maint_report.choose">Choose ...</option>		
 			</select>
 				
 			
 		</div>
 		<div class="ui-field-contain ui-shadow ">
-			<label for="textinput-1">Device ID</label>
+			<label for="textinput-1" data-localize="new_maint_report.device_id">Device ID</label>
 				
 				<input   class="input-textbox"  type="text" name="textinput-5" id="deviceID"   />
 				
 			
 		</div>
 		<div class="ui-field-contain ui-shadow ">
-			<label for="textinput-1">Device Model</label>
+			<label for="textinput-1" data-localize="new_maint_report.device_model">Device Model</label>
 				
 				<input   class="input-textbox"  type="text" name="textinput-5" id="deviceModel"   />
 				
@@ -336,7 +342,7 @@ function getTimeStr(){
 				
 			</div>
 			<div data-role="controlgroup" data-type="horizontal" class="ui-mini ui-btn-left">
-				<a id="add_btn" href="#" rel="external" class="ui-btn ui-btn-icon-right ui-icon-plus">Add</a>
+				<a id="add_btn" href="#" rel="external" class="ui-btn ui-btn-icon-right ui-icon-plus" data-localize="new_maint_report.new_from">Add</a>
 
 				
 			</div>	

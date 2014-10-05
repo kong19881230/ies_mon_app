@@ -12,6 +12,7 @@
 
 	<script src="js/jquery.js"></script>
 	<script src="js/jquery.mobile-1.4.3.min.js"></script>
+	<script src="js/jquery.localize.min.js"></script>
 	<script type="text/javascript" charset="utf-8" src="cordova.js"></script>
 	<style>
 	
@@ -51,6 +52,7 @@
 	}
 	</style>
 	<script src="js/report_app.js"></script>
+	<script src="js/from_data.js"></script>
 	<script>
 			
 			var currentCameraID="";
@@ -59,8 +61,34 @@
 								"text":"",
 								"photos":[]
 				};
-			$(document).ready(function(){
+				var currentLocale;
+				var d_locale_arr={"en":{
+						"check":"Checked",
+						"uncheck":"Not Checked",
+						"info":"Info",
+						"controller":"Controller",
+						"pump":"Pump",
+						"heat":"Heat Exchanger",
+						"burner":"Burner",
+						"chimney":"Chimney",
+						"boiler":"Boiler",
+						"fill_remark":"Fill Remark"
+				},"cn":{
+						"check":"巳檢查",
+						"uncheck":"未檢查",
+						"info":"基本資料",
+						"controller":"控制器",
+						"pump":"水泵",
+						"heat":"換熱器",
+						"burner":"燃燒器",
+						"chimney":"煙囪",
+						"boiler":"鍋爐",
+						"fill_remark":"填寫備註"
 
+				}}
+			$(document).ready(function(){
+				currentLocale=window.localStorage.getItem("locale");
+				refreshUILocale(currentLocale);
 				var reportStr=	window.localStorage.getItem("currentMReport");
 				var report=JSON.parse(reportStr);
 				var  froms=JSON.parse(window.localStorage.getItem("currentForm")); 
@@ -90,7 +118,7 @@
 				from_default_name["chimney"]={"cn":"鍋爈表單","en":"Chimney From"};
 				
 			
-				$('#title').text(from_default_name[froms.from_type]["en"]);
+				$('#title').text(from_default_name[froms.from_type][currentLocale]);
 
 				var items=froms.items;
 				updateNavBar(custom_tab_list);
@@ -299,17 +327,17 @@
 				
 				if(item.result.type == "bool"){
 					$("#"+parent).append('<div id="item_'+item.index+'" class="ui-field-contain ui-shadow "> \
-							<label for="textinput-1">'+i+'. '+item.item_name_en +'</label> \
+							<label for="textinput-1">'+i+'. '+item["item_name_"+currentLocale] +'</label> \
 								 <select name="flip-1" id="filp_'+item.index+'" data-role="slider" data-theme="c" class="ui-slider-switch"> \
-									<option value="false">Not Check</option> \
-									<option '+(item.result.value=="true"?'selected=""':'') + ' value="true">Check</option>	\
+									<option value="false">'+d_locale_arr[currentLocale]['uncheck']+'</option> \
+									<option '+(item.result.value=="true"?'selected=""':'') + ' value="true">'+d_locale_arr[currentLocale]['check']+'</option>	\
 								</select>'+'</div>');
 					
 				}else if(item.result.type == "s_value"){
 			
 				
 					$("#"+parent).append('<div id="item_'+item.index+'" class="ui-field-contain ui-shadow "> \
-				<label for="textinput-1">'+i+'. '+item.item_name_en +'</label> \
+				<label for="textinput-1">'+i+'. '+item["item_name_"+currentLocale] +'</label> \
 					<input class="input-textbox"  type="number" name="textinput-5" id="textinput_'+item.index+'" placeholder="'+(item.result.unit?(item.result.hint+' '+item.result.unit):'')+'" value="'+item.result.value+'" data-mini="true"/>' 
 					+'</div>');
 				
@@ -319,7 +347,7 @@
 			
 				
 					$("#"+parent).append('<div id="item_'+item.index+'" class="ui-field-contain ui-shadow  "> \
-				<label for="textinput-1">'+i+'. '+item.item_name_en +'</label> \
+				<label for="textinput-1">'+i+'. '+item["item_name_"+currentLocale] +'</label> \
 					<div class="mycontrolgroup" id="controlgroup_'+item.index+'" data-role="controlgroup" data-type="horizontal" >\
 					<input class="input-textbox" data-wrapper-class="controlgroup-textinput ui-btn"  type="number" name="textinput-5" id="textinput_0_'+item.index+'" placeholder="'+(item.result.unit?(item.result.hint[0]+' '+item.result.unit[0]):'')+'" value="'+item.result.value[0]+'" data-mini="true"/>\
 					<input class="input-textbox" data-wrapper-class="controlgroup-textinput ui-btn"   type="number" name="textinput-5" id="textinput_1_'+item.index+'" placeholder="'+(item.result.unit?(item.result.hint[1]+' '+item.result.unit[1]):'')+'" value="'+item.result.value[1]+'" data-mini="true"/>' 
@@ -332,7 +360,7 @@
 			
 				
 					$("#"+parent).append('<div id="item_'+item.index+'" class="ui-field-contain ui-shadow  "> \
-				<label for="textinput-1">'+i+'. '+item.item_name_en +'</label> \
+				<label for="textinput-1">'+i+'. '+item["item_name_"+currentLocale] +'</label> \
 					</div>');
 
 				}
@@ -355,7 +383,7 @@
 			function updateNavBar(custom_tab_list){
 				$('#tab_navbar').remove();
 				var navbar='<div id="tab_navbar" data-role="navbar" data-grid="'+String.fromCharCode(96 + custom_tab_list.length)+'" ><ul>';
-				navbar+='<li><a  data-prefetch="true"  data-ajax="false" id="info_btn" class="tab-btn ui-btn-active">Info<span  class="info_count ui-li-count">2</span></a></li>';
+				navbar+='<li><a  data-prefetch="true"  data-ajax="false" id="info_btn" class="tab-btn ui-btn-active">'+d_locale_arr[currentLocale]['info']+'<span  class="info_count ui-li-count">2</span></a></li>';
 				for(var i in custom_tab_list){
 					navbar+=createCustomTabTitle(custom_tab_list[i]);
 				}				
@@ -392,7 +420,7 @@
 						</div>';
 		    }
 		     function createCustomTabTitle(name){
-		    	return '<li><a href="#" data-prefetch="true" id="'+name+'_btn"  data-ajax="false" class="tab-btn ui-link ui-btn">'+capitaliseFirstLetter(name)+'\
+		    	return '<li><a href="#" data-prefetch="true" id="'+name+'_btn"  data-ajax="false" class="tab-btn ui-link ui-btn">'+d_locale_arr[currentLocale][name]+'\
 		    		<span class="'+name+'_count ui-li-count">2</span></a></li>';
 		    }			
 	       function onScanBarcode(){
@@ -414,7 +442,7 @@
 		   function createRemark(index,value){
 		   	 return '<div class=" ui-shadow ui-content">\
 				        <label for="textinput-hide" class="ui-hidden-accessible">Remark</label>\
-						<input id="remark_text_'+index+'" type="text" name="textinput-hide" id="textinput-hide" placeholder="Text input" value="'+value+'">\
+						<input id="remark_text_'+index+'" type="text" name="textinput-hide" id="textinput-hide" placeholder="'+d_locale_arr[currentLocale]['fill_remark']+'" value="'+value+'">\
 				        <ul id="photos_'+index+'" data-role="listview" data-inset="true">\
 				             <li><a id="camera_remark_'+index+'" href="#" class="remark_camera">\
 				                <img src="images/camera-icon.jpg" class="ui-li-thumb">\
@@ -457,12 +485,12 @@
 	
 		<div id="chimney_from"  data-role="page" >
 			 <div data-role="header" data-position="fixed"  >
-			 <a href="maint_report.html" rel="external"  class="ui-btn  ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-left ui-icon-carat-l">Back</a>
+			 <a href="maint_report.html" rel="external"  class="ui-btn  ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-left ui-icon-carat-l" data-localize="back">Back</a>
 	      
 			  <h1 id="title">Chimney System From</h1>
 			   <div data-role="controlgroup" data-type="horizontal" class="ui-mini ui-btn-right">
-			  <a href="#remark" data-ajax="false" data-transition="pop" class="ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-check">Remark</a>
-			  		<a href="#popupSaveSuccessInfo" data-rel="popup" data-position-to="window" data-transition="pop" class="savebtn ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-check">Save</a>
+			  <a href="#remark" data-ajax="false" data-transition="pop" class="ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-check" data-localize="maint_from.remark">Remark</a>
+			  		<a href="#popupSaveSuccessInfo" data-rel="popup" data-position-to="window" data-transition="pop" class="savebtn ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-check" data-localize="save">Save</a>
 	    	</div>
 	    	<div id="navbar_container">
 	    		<div id="tab_navbar" data-role="navbar" data-grid="c" >
@@ -477,18 +505,18 @@
 			</div><!-- /header -->
 			<div data-role="popup" id="popupBigPhotoPanel" data-overlay-theme="b" data-theme="b" data-corners="false" data-dismissible="false">
 					    <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-b ui-icon-delete ui-btn-icon-notext ui-btn-right close-btn">Close</a><img src="" id="bigPhoto" class="popphoto"  style="max-height:500px;" >
-					    <button id="itemPhotoCamera"  data-mini="true"    class="camera-btn ui-btn ui-btn-a ui-icon-camera ui-btn-icon-left ui-shadow ui-corner-all">Camera</button></div>
+					    <button id="itemPhotoCamera"  data-mini="true"    class="camera-btn ui-btn ui-btn-a ui-icon-camera ui-btn-icon-left ui-shadow ui-corner-all" data-localize="maint_from.camera">Camera</button></div>
 		
 		  	 <div data-role="popup" data-theme="b" id="popupSaveSuccessInfo"  class="ui-content" style="max-width:280px">
 				    <a  href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-b ui-icon-delete ui-btn-icon-notext ui-btn-right close-btn">Close</a>
-					<p>Save successfully!!</p>
+					<p data-localize="maint_from.save_succ">Save successfully!!</p>
 				</div>
 			<div id="tab_container">
 		<div id="info" data-role="tabs" class="custom_tab">
 			<div class="ui-field-contain ui-shadow ">
-				<label for="textinput-1">Device ID</label>
+				<label for="textinput-1" data-localize="maint_from.device_id">Device ID</label>
 					<div style="float: left; width: 40%"  class="right-container">
-					 <button style="margin:5px" id="submit-1" data-mini="true" onClick="onScanBarcode()" class=" ui-btn ui-icon-search ui-btn-icon-left ui-shadow ui-corner-all">Scan QRcode</button>
+					 <button style="margin:5px" id="submit-1" data-mini="true" onClick="onScanBarcode()" class=" ui-btn ui-icon-search ui-btn-icon-left ui-shadow ui-corner-all" data-localize="maint_from.scan_qr">Scan QRcode</button>
 					
 					
 					<input   class="input-textbox"  type="text" name="textinput-5" id="deviceID"   />
@@ -497,7 +525,7 @@
 					</div>
 			</div>
 			<div class="ui-field-contain ui-shadow ">
-				<label for="textinput-1">Device Model</label>
+				<label for="textinput-1" data-localize="maint_from.device_model">Device Model</label>
 					<div style="float: left; width: 40%"  class="right-container">
 				
 					
@@ -508,7 +536,7 @@
 			</div>
 			
 			<div class="ui-field-contain ui-shadow ui-corner-all">
-				<label for="textinput-1">Device Photo</label>
+				<label for="textinput-1" data-localize="maint_from.device_photo">Device Photo</label>
 				<div style="float: left; width: 40%"  class="right-container">
 				
 				<div  style="float: right;" >
@@ -524,15 +552,15 @@
 </div>
 <div data-role="page" data-theme="a" id="remark" class="my-page">
 	<div data-role="header" data-position="fixed" data-theme="b" >
-			 <a href="#" data-rel="back"  class="ui-btn  ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-left ui-icon-carat-l">Back</a>
+			 <a href="#" data-rel="back"  class="ui-btn  ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-left ui-icon-carat-l" data-localize="back">Back</a>
 	      
-			  <h1 id="title">Remarks</h1>
+			  <h1 id="title" data-localize="maint_from.remarks">Remarks</h1>
 			
-			  		<a id="save_remark" href="#popupSaveRemarkSuccessInfo" data-rel="popup" data-position-to="window" data-transition="pop" class="savebtn ui-btn-right ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-check">Save</a>
+			  		<a id="save_remark" href="#popupSaveRemarkSuccessInfo" data-rel="popup" data-position-to="window" data-transition="pop" class="savebtn ui-btn-right ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-check" data-localize="save">Save</a>
 	    	</div>
 	    	 <div data-role="popup" data-theme="b" id="popupSaveRemarkSuccessInfo"  class="ui-content" style="max-width:280px">
 				    <a  href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-b ui-icon-delete ui-btn-icon-notext ui-btn-right close-btn">Close</a>
-					<p>Save successfully!!</p>
+					<p data-localize="maint_from.save_succ">Save successfully!!</p>
 				</div>
     <div id="remark_container" role="main"   >
   
@@ -542,7 +570,7 @@
 				<div class="ui-bar">
 				</div>
 				<div data-role="controlgroup" data-type="horizontal" class="ui-mini ui-btn-left">
-					<a id="add_remark_btn" href="#" rel="external" class="ui-btn ui-btn-icon-right ui-icon-plus">Add</a>
+					<a id="add_remark_btn" href="#" rel="external" class="ui-btn ui-btn-icon-right ui-icon-plus" data-localize="maint_from.add">Add</a>
 				
 				</div>	
 					

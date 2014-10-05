@@ -1,6 +1,9 @@
+
+
 /* A bit custom styling */
 .my-page .ui-listview li .ui-btn p {
-	color: #c0c0c0;
+	color: #FFFFFF;
+	text-shadow: 0px 1px 0px rgba(0, 0, 0, 1);
 }
 .my-page .ui-listview li .ui-btn .ui-li-aside {
 	color: #eee;

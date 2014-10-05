@@ -62,3 +62,8 @@ function syncSReport(report){
 	window.localStorage.setItem("currentSReport", JSON.stringify(report));	
 
 }
+
+function refreshUILocale(locale){
+	var opts = { language: locale, pathPrefix: "locale" };
+    $("[data-localize]").localize("app", opts);	
+}

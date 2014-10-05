@@ -15,10 +15,11 @@
 	<script src="js/jquery.js"></script>
 	
 	<script src="js/moment.js"></script>
-
+	
 	<script src="js/jquery.mobile-1.4.3.min.js"></script>
 	<script src="js/jquery.localize.min.js"></script>
 	<script type="text/javascript" charset="utf-8" src="cordova.js"></script>
+	<script src="js/report_app.js"></script>
 	<style id="inset-tablist">
 		
 		#photo{
@@ -89,10 +90,11 @@
 			}
 
 			$(document).ready(function(){
-				var opts = { language: "cn"};
-
-        		$("[data-localize]").localize("app", opts);	
-        		alert(111);	
+				var currentLocale=window.localStorage.getItem("locale");
+				refreshUILocale(currentLocale);
+				$('input:radio[name=locale][value='+currentLocale+']').attr('checked', 'checked');
+				$("input[type='radio']").checkboxradio("refresh");
+				
 				var mReportQueue=[];
 
 				var currentMReport={};
@@ -173,7 +175,11 @@
 
 
 				});
-					
+				$("input[name='locale']").change(function(event,ui) {
+				        window.localStorage.setItem("locale", this.value);
+				        currentLocale=this.value;
+				        refreshUILocale(currentLocale);
+				});	
 				var index=0;
 				 setInterval(function () {
 				 	if(index>=2){
@@ -203,11 +209,16 @@ function createReportItem(index,report){
 
 		<div data-role="header" data-position="fixed" data-theme="b"  >
 
-			<h1 data-localize="title">IES Maintainance Report App</h1>
-			<div data-role="controlgroup" data-type="horizontal" class="ui-btn-right ui-corner-all">
-				<a href="#" class="ui-btn ui-corner-all">中</a>
-				<a href="#" class="ui-btn ui-btn-a ui-corner-all ">EN</a>
-			</div>
+			<h1 data-localize="index.title">IES Maintainance Report App</h1>
+			
+
+				<div  class="ui-btn-right" data-theme="c"  data-role="controlgroup" data-type="horizontal" data-mini="true">
+					<input type="radio" name="locale" id="radio-choice-d" value="cn" checked="true">
+					<label for="radio-choice-d">中</label>
+					<input type="radio" name="locale" id="radio-choice-e" value="en">
+					<label for="radio-choice-e">EN</label>
+				</div>
+		
 		</div><!-- /header -->
 
 		<div id="photo" class="m-carousel m-fluid  ">
@@ -244,21 +255,21 @@ function createReportItem(index,report){
 
 		</div>
 		<div id="menu" data-role="controlgroup" data-type="horizontal" data-theme="b"  >
-			<a id="maint_report_btn"   href="#popupSelectMaintReport" data-rel="popup" data-position-to="window" data-transition="pop"  data-icon="custom"   class="ui-btn ui-alt-icon ui-btn-icon-top ui-corner-all ui-shadow ">Maintenance Report</a>
-			<a id="emergency_report_btn"   href="#popupSelectServiceReport" data-rel="popup" data-position-to="window" data-transition="pop"  data-icon="custom"  class="ui-btn ui-alt-icon ui-btn-icon-top ui-corner-all ui-shadow ">Emergency Report</a>
+			<a id="maint_report_btn"   href="#popupSelectMaintReport" data-rel="popup" data-position-to="window" data-transition="pop"  data-icon="custom"   class="ui-btn ui-alt-icon ui-btn-icon-top ui-corner-all ui-shadow " data-localize="index.maintain">Maintenance Report</a>
+			<a id="emergency_report_btn"   href="#popupSelectServiceReport" data-rel="popup" data-position-to="window" data-transition="pop"  data-icon="custom"  class="ui-btn ui-alt-icon ui-btn-icon-top ui-corner-all ui-shadow " data-localize="index.service">Service Report</a>
 
 		</div>
 		<div data-role="popup" id="popupSelectMaintReport" data-overlay-theme="b" data-theme="a" data-dismissible="false" style="width:500px;height:580px;" >
 			<a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-b ui-icon-delete ui-btn-icon-notext ui-btn-right close-btn ">Close</a>
 			<div data-role="header" data-theme="b">
-				<h1>Select a action</h1>
+				<h5  data-localize="index.select_m">Select a action</h5>
 			</div>
 			<div role="main" class="ui-content">
 
 				<ul id="m_report_list" data-role="listview" data-inset="true">
 					<li><a id="new_m_report"  href="#">
 						<img src="images/report.png" class="ui-li-thumb">
-						<p>New Report</p>
+						<p data-localize="index.new_report">New Report</p>
 
 					</a></li>
 
@@ -270,14 +281,14 @@ function createReportItem(index,report){
 		<div data-role="popup" id="popupSelectServiceReport" data-overlay-theme="b" data-theme="a" data-dismissible="false" style="width:500px;height:580px;" >
 			<a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-b ui-icon-delete ui-btn-icon-notext ui-btn-right close-btn ">Close</a>
 			<div data-role="header" data-theme="b">
-				<h1>Select a action</h1>
+				<h5 data-localize="index.select_s">Select a action</h5>
 			</div>
 			<div role="main" class="ui-content">
 
 				<ul id="s_report_list" data-role="listview" data-inset="true">
 					<li><a id="new_s_report" href="#">
 						<img src="images/report.png" class="ui-li-thumb">
-						<p>New Report</p>
+						<p data-localize="index.new_report">New Report</p>
 					</a></li>
 
 

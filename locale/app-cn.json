@@ -1,9 +1,36 @@
 {
+  
+  "back":"返回",
+  "save":"儲存",
+  "upload":"上傳",
   "index": {
     "title":"IES維護報告手機程式",
     "maintain":"維護報告",
     "service":"工作報告",
     "select_m":"選擇維護報告",
     "select_s":"選擇工作報告",
+    "new_report":"新增報告"
+  },
+  "new_maint_report":{
+    "title":"新增維護報告",
+    "scan_qr":"掃描QR碼",
+    "choose":"選擇 ...",
+    "project":"項目 *",
+    "report_cycle":"報告周期 *",
+    "device_type":"設備類型 *",
+    "device_id":"編號",
+    "device_model":"型號",
+    "new_from":"新增表單"
+
+  },
+  "maint_from":{
+     "remark":"備註",
+     "scan_qr":"掃描QR碼",
+     "device_id":"編號",
+     "device_photo":"設備相片",
+     "device_model":"型號",
+     "camera":"拍照",
+     "save_succ":"成功儲存!!!",
+     "add":"新增"
   }
 }

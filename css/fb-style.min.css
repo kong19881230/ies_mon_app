@@ -13,6 +13,12 @@
 /* Globals */
 /* Font
 -----------------------------------------------------------------------------------------------------------*/
+.ui-header .ui-title {
+  overflow: visible !important;
+  white-space: normal !important;
+   margin-right: 10% !important;
+    margin-left: 10% !important;
+}
 
 .ui-header .ui-btn, .ui-footer .ui-btn {
 font-size: 18px;

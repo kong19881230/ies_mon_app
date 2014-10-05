@@ -517,7 +517,7 @@ empty_froms[1]={
 		"item_name_cn": "檢查進氣和排氣的排氣管密封位置",
 		"index": 5,
 		"cycle": 1,
-		"group": "fan",
+		"group": "chimney",
 		"result": {"type" : "bool",
 		"value" : "false"
 	},
@@ -545,7 +545,7 @@ empty_froms[1]={
 	"item_name_cn": "檢查進氣口和排氣口沒有堵塞或發生任何異常情況",
 	"index": 7,
 	"cycle": 1,
-	"group": "fan",
+	"group": "chimney",
 	"result": {"type" : "bool",
 	"value" : "false"
 },
@@ -601,7 +601,7 @@ empty_froms[1]={
 	"item_name_cn": "檢查在煙囪排氣管道是否有洩漏",
 	"index": 11,
 	"cycle": 2,
-	"group": "fan",
+	"group": "chimney",
 	"result": {"type" : "bool",
 	"value" : "false"
 },
@@ -615,7 +615,7 @@ empty_froms[1]={
 	"item_name_cn": "檢查機動阻尼器和相關的聯鎖裝置",
 	"index": 12,
 	"cycle": 1,
-	"group": "fan",
+	"group": "chimney",
 	"result": {"type" : "bool",
 	"value" : "false"
 },
@@ -657,7 +657,7 @@ empty_froms[1]={
 }
 },{
 	"item_name_en": "Check the condition of isolating valves, gas burners, nozzles and governor",
-	"item_name_cn": "檢查隔離閥，燃燒器，噴嘴，調節器）",
+	"item_name_cn": "檢查隔離閥，燃燒器，噴嘴，調節器",
 	"index": 15,
 	"cycle": 1,
 	"group": "burner",
@@ -674,7 +674,7 @@ empty_froms[1]={
 	"item_name_cn": "檢查正確的進氣摩打的旋轉方向，進氣摩打沒有過載，必要時調整",
 	"index": 16,
 	"cycle": 1,
-	"group": "fan",
+	"group": "chimney",
 	"result": {"type" : "bool",
 	"value" : "false"
 },
@@ -684,11 +684,11 @@ empty_froms[1]={
 					"4":{"cycle": 1}
 }
 },{
-	"item_name_en": "Check the associated boiler booster fan interlock",
+	"item_name_en": "Check the associated boiler booster chimney interlock",
 	"item_name_cn": "檢查相關的鍋爐增壓風機聯鎖",
 	"index": 17,
 	"cycle": 1,
-	"group": "fan",
+	"group": "chimney",
 	"result": {"type" : "bool",
 	"value" : "false"
 },
@@ -791,7 +791,7 @@ empty_froms[1]={
 	"item_name_cn": "檢查鼓風機電機",
 	"index": 24,
 	"cycle": 1,
-	"group": "fan",
+	"group": "chimney",
 	"result": {"type" : "bool",
 	"value" : "false"
 },
@@ -803,7 +803,7 @@ empty_froms[1]={
 	"item_name_cn": "檢查煙囪氣體狀態",
 	"index": 25,
 	"cycle": 2,
-	"group": "fan",
+	"group": "chimney",
 	"result": {"type" : "bool",
 	"value" : "false"
 },
@@ -817,7 +817,7 @@ empty_froms[1]={
 	"item_name_cn": "記錄的煙囪氣體的溫度( °C )",
 	"index": 26,
 	"cycle": 2,
-	"group": "fan",
+	"group": "chimney",
 	"result": {"type" : "s_value",
 	"value" : "",
 	"unit" : "°C",
@@ -928,7 +928,7 @@ empty_froms[1]={
 	"item_name_cn": "清理鍋爐和控制箱, 保持機房清潔",
 	"index": 33,
 	"cycle": 2,
-	"group": "fan",
+	"group": "chimney",
 	"result": {"type" : "bool",
 	"value" : "false"
 },
@@ -969,7 +969,7 @@ empty_froms[1]={
 	"item_name_cn": "執行煙氣分析測驗",
 	"index": 36,
 	"cycle": 1,
-	"group": "fan",
+	"group": "chimney",
 	"result": {"type" : "none",
 },
 	"projects":{
@@ -983,7 +983,7 @@ empty_froms[1]={
 	"item_name_cn": "二氧化碳 (体積百份比)",
 	"index": 37,
 	"cycle": 1,
-	"group": "fan",
+	"group": "chimney",
 	"result": {"type" : "s_value",
 	"value" : "",
 	"unit" : "°C",
@@ -1000,7 +1000,7 @@ empty_froms[1]={
 	"item_name_cn": "一氧化碳 (每百萬份)",
 	"index": 38,
 	"cycle": 1,
-	"group": "fan",
+	"group": "chimney",
 	"result": {"type" : "s_value",
 	"value" : "",
 	"unit" : "ppm",
@@ -1017,7 +1017,7 @@ empty_froms[1]={
 	"item_name_cn": "氧氣 (体積百份比)",
 	"index": 39,
 	"cycle": 1,
-	"group": "fan",
+	"group": "chimney",
 	"result": {"type" : "s_value",
 	"value" : "",
 	"unit" : "°C",
@@ -1101,7 +1101,7 @@ empty_froms[1]={
 	"item_name_cn": "潤滑電機機械臂，燃氣和排氣蝶閥",
 	"index": 44,
 	"cycle": 6,
-	"group": "fan",
+	"group": "chimney",
 	"result": {"type" : "bool",
 	"value" : "false"
 },
@@ -1116,7 +1116,7 @@ empty_froms[1]={
 	"item_name_cn": "清潔插板閥及相關配件",
 	"index": 45,
 	"cycle": 6,
-	"group": "fan",
+	"group": "chimney",
 	"result": {"type" : "bool",
 	"value" : "false"
 },
@@ -1130,7 +1130,7 @@ empty_froms[1]={
 	"item_name_cn": "清潔水溫度傳感器及相關配件",
 	"index": 46,
 	"cycle": 6,
-	"group": "fan",
+	"group": "chimney",
 	"result": {"type" : "bool",
 	"value" : "false"
 },
@@ -1145,7 +1145,7 @@ empty_froms[1]={
 	"item_name_cn": "清潔/更換火花塞及相關配件",
 	"index": 47,
 	"cycle": 6,
-	"group": "fan",
+	"group": "chimney",
 	"result": {"type" : "bool",
 	"value" : "false"
 },
@@ -1160,7 +1160,7 @@ empty_froms[1]={
 	"item_name_cn": "清潔/更換擋板閥及相關配件",
 	"index": 48,
 	"cycle": 6,
-	"group": "fan",
+	"group": "chimney",
 	"result": {"type" : "bool",
 	"value" : "false"
 },
@@ -1175,7 +1175,7 @@ empty_froms[1]={
 	"item_name_cn": "清潔/更換水溫傳感器（切斷）及相關配",
 	"index": 49,
 	"cycle": 6,
-	"group": "fan",
+	"group": "chimney",
 	"result": {"type" : "bool",
 	"value" : "false"
 },
@@ -1204,7 +1204,7 @@ empty_froms[1]={
 	"item_name_cn": "第二价段高溫切斷溫度設定",
 	"index": 51,
 	"cycle": 6,
-	"group": "fan",
+	"group": "chimney",
 	"result": {"type" : "s_value",
 	"value" : "",
 	"unit" : "°C",
@@ -1238,7 +1238,7 @@ empty_froms[1]={
 	"item_name_cn": "檢查的煙道表面的溫度( °C )",
 	"index": 53,
 	"cycle": 6,
-	"group": "fan",
+	"group": "chimney",
 	"result": {"type" : "s_value",
 	"value" : "",
 	"unit" : "°C",
@@ -1596,11 +1596,11 @@ empty_froms[2]={
 					"4":{"cycle": 1}
 }
 },{
-	"item_name_en": "Check the flexible join of the exhaust Fan",
+	"item_name_en": "Check the flexible join of the exhaust chimney",
 	"item_name_cn": "檢查排氣扇的軟連接",
 	"index": 17,
 	"cycle": 1,
-	"group": "fan",
+	"group": "chimney",
 	"result": {"type" : "bool",
 	"value" : "false"
 },
@@ -1614,7 +1614,7 @@ empty_froms[2]={
 	"item_name_cn": "檢查煙囪的連接是否有洩漏",
 	"index": 18,
 	"cycle": 1,
-	"group": "fan",
+	"group": "chimney",
 	"result": {"type" : "bool",
 	"value" : "false"
 },
@@ -1657,8 +1657,8 @@ empty_froms[2]={
 };	
 
 empty_froms[0].catalogs=["controller","pump","heat"];
-empty_froms[1].catalogs=["burner","boiler","controller","fan"];
-empty_froms[2].catalogs=["controller","fan","chimney"];
+empty_froms[1].catalogs=["burner","boiler","controller","chimney"];
+empty_froms[2].catalogs=["controller","chimney"];
 
 var projects= [
 { 	"id" : "1",
@@ -1758,3 +1758,16 @@ var cycles=[{ 	"value": "1",
 }];
 
 
+var machine_types={"heat":{ 
+					"name_cn": "熱交換器機組",
+					"name_en": "Heat Transfer Compact Unit"
+
+				},"boiler":{ 
+					"name_cn": "熱水鍋爐",
+					"name_en": "Hot Water Boiler"
+
+				},"chimney":{ 
+					"name_cn": "煙囪系統",
+					"name_en": "Chimney System"
+
+				}};

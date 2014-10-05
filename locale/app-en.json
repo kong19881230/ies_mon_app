@@ -1,0 +1,36 @@
+{
+  "back":"Back",
+  "save":"Save",
+  "upload":"Upload",
+
+  "index": {
+    "title":"IES Maintainance Report App",
+    "maintain":"Maintenance Report",
+    "service":"Service Report",
+    "select_m":"Select a maintenance report",
+    "select_s":"Select a service report",
+    "new_report":"New Report"
+  },
+  "new_maint_report":{
+    "title":"New Maintainance Report",
+    "scan_qr":"Scan QRcode",
+    "choose":"Choose ...",
+    "project":"Project *",
+    "report_cycle":"Report Cycle *",
+    "device_type":"Device Type *",
+    "device_id":"Device ID",
+    "device_model":"Device Model",
+    "new_from":"New From"
+
+  },
+  "maint_from":{
+  	 "scan_qr":"Scan QRcode",
+  	 "device_id":"Device ID",
+     "device_model":"Device Model",
+     "device_photo":"Device Photo",
+  	 "remark":"Remarks",
+  	 "camera":"Camera",
+  	 "save_succ":"Save successfully!!",
+  	 "add":"Add"
+  }
+}
