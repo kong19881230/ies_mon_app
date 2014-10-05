@@ -1,0 +1,9 @@
+{
+  "index": {
+    "title":"IES維護報告手機程式",
+    "maintain":"維護報告",
+    "service":"工作報告",
+    "select_m":"選擇維護報告",
+    "select_s":"選擇工作報告",
+  }
+}
