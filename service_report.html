@@ -48,6 +48,7 @@
       	 height: 50px;
       }
 	</style>
+		<script src="js/jquery.localize.min.js"></script>
 	<script src="js/from_data.js"></script>
 	<script src="js/report_app.js"></script>
 	<script src="js/moment.js"></script>
@@ -58,6 +59,9 @@
 		};
 		var currentRemarkCameraID="";
 		$(document).ready(function(){
+currentLocale=window.localStorage.getItem("locale");
+	refreshUILocale(currentLocale);
+
 			var report =JSON.parse(window.localStorage.getItem("currentSReport")); 
 			var details=report.details;
 			alert(JSON.stringify(report));
@@ -97,7 +101,7 @@
 			for(var index in projects){ 
 				$("#project_id").append($('<option>', {
 					value: projects[index].id,
-					text: projects[index].name_en}));
+					text: projects[index]["name_"+currentLocale]}));
 			}
 
 			$('#project_id').val(report.project_id);
@@ -156,10 +160,8 @@
 				details.phone=$('#phone').val();
 				details.fax=$('#fax').val();
 				details.email=$('#email').val();
-				alert(JSON.stringify(details));
 				report.details=details;
 				report.project_id=$('#project_id').val();
-				alert(JSON.stringify(report));
 				saveSReport(report);
 			});	
 			$('.remark_camera').bind( "click", function(event, ui){
@@ -261,84 +263,84 @@ $( document ).on( "click", ".show-page-loading-msg", function() {
 
 
 		<div data-role="header" data-position="fixed" data-theme="a"  >
-			<a href="index.html" rel="external" class="ui-btn  ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-left ui-icon-carat-l">Back</a>
-			<h1 style="text-align:left; margin-left:140px;">Service Report</h1>
+			<a href="index.html" rel="external" class="ui-btn  ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-left ui-icon-carat-l" data-localize="back">Back</a>
+			<h1 style="text-align:left; margin-left:140px;" data-localize="service_report.title">Service Report</h1>
 			<div data-role="controlgroup" data-type="horizontal" class="ui-mini ui-btn-right">
 				<a id="signatureLink"  href="#popupSignature" class=" ui-btn ui-btn-a ui-mini" data-rel="popup" data-mini="true" style="height:22px !important;" data-position-to="window" data-transition="fade"><img  id="signature" class=" ui-btn ui-btn-a ui-mini" ></a>
-				<a id="sign" href="#" class=" ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-edit">Sign</a>
-				<a id="save" href="#popupSaveSuccessInfo" data-rel="popup" data-position-to="window" data-transition="pop" href="#" class=" ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-check">Save</a>
-				<a id="upload" href="#" class="show-page-loading-msg ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-recycle" data-theme="b" data-textonly="false" data-textvisible="true" data-msgtext="Loading ..." data-inline="true">Upload</a>
+				<a id="sign" href="#" class=" ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-edit" data-localize="sign">Sign</a>
+				<a id="save" href="#popupSaveSuccessInfo" data-rel="popup" data-position-to="window" data-transition="pop" href="#" class=" ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-check" data-localize="save">Save</a>
+				<a id="upload" href="#" class="show-page-loading-msg ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-recycle" data-theme="b" data-textonly="false" data-textvisible="true" data-msgtext="Loading ..." data-inline="true" data-localize="upload">Upload</a>
 			</div>	
 		</div>
 		<div data-role="popup" data-theme="b" id="popupSaveSuccessInfo"  class="ui-content" style="max-width:280px">
 			<a  href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-b ui-icon-delete ui-btn-icon-notext ui-btn-right close-btn">Close</a>
-			<p>Save successfully!!</p>
+			<p data-localize="save_succ">Save successfully!!</p>
 		</div>
 		<div data-role="tabs" id="tabs">
 			<div data-role="navbar">
 				<ul>
-					<li><a href="#problem" data-prefetch="true"  data-ajax="false" id="problem_btn" class="tab-btn ui-btn-active">Problem</a></li>	
-					<li><a href="#actual" data-prefetch="true"  data-ajax="false" id="actual_btn" class="tab-btn">Actual Situation</a></li>
-					<li><a href="#report" data-prefetch="true"  data-ajax="false" id="report_btn" class="tab-btn">Report</a></li>
-					<li><a href="#project" data-prefetch="true"  data-ajax="false" id="project_btn" class="tab-btn">Customer</a></li>
+					<li><a href="#problem" data-prefetch="true"  data-ajax="false" id="problem_btn" class="tab-btn ui-btn-active" data-localize="service_report.problem">Problem</a></li>	
+					<li><a href="#actual" data-prefetch="true"  data-ajax="false" id="actual_btn" class="tab-btn" data-localize="service_report.situation">Actual Situation</a></li>
+					<li><a href="#report" data-prefetch="true"  data-ajax="false" id="report_btn" class="tab-btn" data-localize="service_report.report">Report</a></li>
+					<li><a href="#project" data-prefetch="true"  data-ajax="false" id="project_btn" class="tab-btn" data-localize="service_report.customer">Customer</a></li>
 				</ul>
 			</div>
 			<div id="problem" data-role="tabs" >
 				<div class="ui-field-contain ui-shadow ">
-					<label for="textarea">Problem Reported</label>
+					<label for="textarea" data-localize="service_report.problem_reported">Problem Reported</label>
 					<div style="width: 98%;margin-left: 1em;margin-right: 1em"  class="right-container">	
 						<textarea cols="40" rows="16" name="problem_reported" id="problem_reported"></textarea>
 					</div>
 				</div>
 				<div class="ui-field-contain ui-shadow ">
-					<label for="textinput-1">System Down</label>
+					<label for="textinput-1" data-localize="service_report.system_down">System Down</label>
 					<div style="float: left; width: 40%"  class="right-container">	
 						<div style="margin:1%" data-role="controlgroup" data-type="horizontal" data-mini="true">
 							<input type="radio" name="is_system_down" id="radio-choice-d" value="true" checked="true">
-							<label for="radio-choice-d">Yes</label>
+							<label for="radio-choice-d" data-localize="service_report.yes">Yes</label>
 							<input type="radio" name="is_system_down" id="radio-choice-e" value="false">
-							<label for="radio-choice-e">No</label>
+							<label for="radio-choice-e" data-localize="service_report.no">No</label>
 						</div>
 					</div>
 				</div>
 				<div class="ui-field-contain ui-shadow ">
-					<label for="textinput-1">Call Reported By</label>
+					<label for="textinput-1" data-localize="service_report.call_report_by">Call Reported By</label>
 					<div style="float: left; width: 40%"  class="right-container">	
 						<input   class="input-textbox"  type="text" name="textinput-5" id="reported_by"   />
 					</div>
 				</div>
 				<div class="ui-field-contain ui-shadow ">
-					<label for="textinput-1">Model</label>
+					<label for="textinput-1" data-localize="service_report.model">Model</label>
 					<div style="float: left; width: 40%"  class="right-container">	
-						<button style="margin:5px" id="submit-1" data-mini="true" onClick="onScanBarcode()" class=" ui-btn ui-icon-search ui-btn-icon-left ui-shadow ui-corner-all">Scan QRcode</button>
+						<button style="margin:5px" id="submit-1" data-mini="true" onClick="onScanBarcode()" class=" ui-btn ui-icon-search ui-btn-icon-left ui-shadow ui-corner-all" data-localize="service_report.scan_qrcode">Scan QRcode</button>
 						<input   class="input-textbox"  type="text" name="textinput-5" id="device_model"   />
 					</div>
 				</div>
 				<div class="ui-field-contain ui-shadow ">
-					<label for="textinput-1">Serial No</label>
+					<label for="textinput-1" data-localize="service_report.serial_no">Serial No</label>
 					<div style="float: left; width: 40%"  class="right-container">
 						<input   class="input-textbox"  type="text" name="textinput-5" id="device_id"   />
 					</div>
 				</div>
 				<div class="ui-field-contain ui-shadow ">
-					<label for="textinput-1">Power</label>
+					<label for="textinput-1" data-localize="service_report.power">Power</label>
 					<div style="float: left; width: 40%"  class="right-container">
 						<input   class="input-textbox"  type="text" name="textinput-5" id="power"   />
 					</div>
 				</div>
 				<div class="ui-field-contain ui-shadow ">
-					<label for="textinput-1">Equipment Type</label>
+					<label for="textinput-1" data-localize="service_report.e_type">Equipment Type</label>
 					<div style="float: left; width: 40%"  class="right-container">
 						<select name="machine_type" id="machine_type" data-native-menu="false">
-							<option>Select a Equipment</option>
-							<option value="heat">Heat Transfer Component Unit</option>
-							<option value="boiler">Boiler</option>
-							<option value="chimney">Chimney</option>
+							<option data-localize="service_report.select_e">Select a Equipment</option>
+							<option value="heat" data-localize="service_report.heat">Heat Transfer Component Unit</option>
+							<option value="boiler" data-localize="service_report.boiler">Boiler</option>
+							<option value="chimney" data-localize="service_report.chimney">Chimney</option>
 						</select>
 					</div>
 				</div>
 				<div class="ui-field-contain ui-shadow ">
-					<label for="textinput-1">Location of Installation</label>
+					<label for="textinput-1" data-localize="service_report.loc_of_install">Location of Installation</label>
 					<div style="float: left; width: 40%"  class="right-container">
 						<input   class="input-textbox"  type="text" name="textinput-5" id="location"   />					
 					</div>
@@ -353,7 +355,7 @@ $( document ).on( "click", ".show-page-loading-msg", function() {
 					<div class="ui-bar">
 					</div>
 					<div data-role="controlgroup" data-type="horizontal" class="ui-mini ui-btn-left">
-						<a id="add_remark_btn" href="#" rel="external" class="ui-btn ui-btn-icon-right ui-icon-plus">Add</a>
+						<a id="add_remark_btn" href="#" rel="external" class="ui-btn ui-btn-icon-right ui-icon-plus" data-localize="add">Add</a>
 
 					</div>	
 					
@@ -366,25 +368,25 @@ $( document ).on( "click", ".show-page-loading-msg", function() {
 			<div id="report">
 				<ul data-role="listview" data-inset="true">
 					<div class="ui-field-contain ui-shadow ">
-						<label for="textarea">Defects found on inspection</label>
+						<label for="textarea" data-localize="service_report.defects_found">Defects found on inspection</label>
 						<div style="width: 98%;margin-left: 1em;margin-right: 1em"  class="right-container">	
 							<textarea cols="40" rows="3" name="inspection_found" id="inspection_found"></textarea>
 						</div>
 					</div>
 					<div class="ui-field-contain ui-shadow ">
-						<label for="textinput-1">Status After Service</label>
+						<label for="textinput-1" data-localize="service_report.status_af_ser">Status After Service</label>
 						<div style="width: 98%;margin-left: 1em;margin-right: 1em"  class="right-container">	
 							<div style="margin:1%" data-role="controlgroup" data-type="horizontal" data-mini="true">
 								<input type="radio" name="status_after_service" id="status_a" value="grid" checked="true">
-								<label for="status_a">Complete</label>
+								<label for="status_a" data-localize="service_report.compelete">Complete</label>
 								<input type="radio" name="status_after_service" id="status_b" value="incomplete">
-								<label for="status_b">Incomplete</label>
+								<label for="status_b" data-localize="service_report.incompelete">Incomplete</label>
 								<input type="radio" name="status_after_service" id="status_c" value="pending">
-								<label for="status_c">Pending for spares</label>
+								<label for="status_c" data-localize="service_report.pending">Pending for spares</label>
 								<input type="radio" name="status_after_service" id="status_d" value="observation">
-								<label for="status_d">User Observation</label>
+								<label for="status_d" data-localize="service_report.observation">User Observation</label>
 								<input type="radio" name="status_after_service" id="status_e" value="working">
-								<label for="status_e">Working solution provided</label>
+								<label for="status_e" data-localize="service_report.working_sol">Working solution provided</label>
 							</div>
 							
 						</div>
@@ -395,45 +397,45 @@ $( document ).on( "click", ".show-page-loading-msg", function() {
 			</div>
 			<div id="project">
 				<div class="ui-field-contain ui-shadow ">
-					<label for="textinput-1">Customer</label>
+					<label for="textinput-1" data-localize="service_report.customer">Customer</label>
 					<div style="float: left; width: 40%"  class="right-container">
 						<select name="project_id" id="project_id" data-native-menu="false">
-							<option>Select a Customer</option>
+							<option data-localize="service_report.select_a_customer">Select a Customer</option>
 						</select>
 					</div>
 				</div>
 				<div class="ui-field-contain ui-shadow ">
-					<label for="textarea">Remarks</label>
+					<label for="textarea" data-localize="service_report.remarks">Remarks</label>
 					<div style="width: 98%;margin-left: 1em;margin-right: 1em"  class="right-container">	
 						<textarea cols="40" rows="3" name="remarks" id="remarks"></textarea>
 					</div>
 				</div>
 				<div class="ui-field-contain ui-shadow ">
-					<label for="textinput-1">Name</label>
+					<label for="textinput-1" data-localize="service_report.name">Name</label>
 					<div style="float: left; width: 40%"  class="right-container">
 						<input   class="input-textbox"  type="text" name="contact_name" id="contact_name"   />
 					</div>
 				</div>
 				<div class="ui-field-contain ui-shadow ">
-					<label for="textinput-1">Designation</label>
+					<label for="textinput-1" data-localize="service_report.designation">Designation</label>
 					<div style="float: left; width: 40%"  class="right-container">
 						<input   class="input-textbox"  type="text" name="designation" id="designation"   />
 					</div>
 				</div>
 				<div class="ui-field-contain ui-shadow ">
-					<label for="textinput-1">Phone</label>
+					<label for="textinput-1" data-localize="service_report.phone">Phone</label>
 					<div style="float: left; width: 40%"  class="right-container">
 						<input   class="input-textbox"  type="text" name="phone" id="phone"   />
 					</div>
 				</div>
 				<div class="ui-field-contain ui-shadow ">
-					<label for="textinput-1">Fax</label>
+					<label for="textinput-1" data-localize="service_report.fax">Fax</label>
 					<div style="float: left; width: 40%"  class="right-container">
 						<input   class="input-textbox"  type="text" name="fax" id="fax"   />
 					</div>
 				</div>
 				<div class="ui-field-contain ui-shadow ">
-					<label for="textinput-1">Email</label>
+					<label for="textinput-1" data-localize="service_report.email">Email</label>
 					<div style="float: left; width: 40%"  class="right-container">
 						<input   class="input-textbox"  type="text" name="email" id="email"   />
 					</div>

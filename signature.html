@@ -1,9 +1,11 @@
 <!doctype html>
 <html>
 <head>
+<meta charset="utf-8">
+	 <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; minimum-scale=1.0; user-scalable=0;" />
+
     <title>Sketch Pad</title>
-    <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; minimum-scale=1.0; user-scalable=0;" />
-  
+   
 	<link rel="stylesheet" href="css/jquery.mobile.structure-1.4.3.min.css">
   	<link rel="stylesheet" href="css/jquery.mobile.icons-1.4.3.min.css">
   	  <link rel="stylesheet" href="css/fb-style.min.css" />
@@ -81,6 +83,8 @@
       }
      
     </style>
+    	<script src="js/jquery.localize.min.js"></script>
+
     <script src="js/from_data.js"></script>
     <script src="js/report_app.js"></script>
     <script src="js/moment.js"></script>
@@ -97,9 +101,31 @@ function onDeviceReady() {
 	
 var ctx, color = "#000", x = 0, y = 0, z = 0, etch = 0;	
 
+
+var d_locale_arr={"en":{
+						"project":"Project",
+					    "report_cycle":"Report Cycle",
+					    "device_type":"Device Type",
+					    "device_id":"Device ID",
+					    "device_model":"Device Model",
+					    "remark":"Remarks",
+					    "datetime":"Date and time",
+					    "totaldevice":"Total Device"
+				},"cn":{
+						"project":"項目",
+					    "report_cycle":"報告周期",
+					    "device_type":"設備類型",
+					    "device_id":"編號",
+					    "device_model":"型號",
+					    "remark":"備註",
+					    "datetime":"日期時間",
+					    "totaldevice":"設備總數"
+
+				}}
 $(document).ready(function () {
 	// hide the accelerometer aka etch on/off button
-
+	currentLocale=window.localStorage.getItem("locale");
+	refreshUILocale(currentLocale);
 	$("#etch").hide();
 	var reportStr=	window.localStorage.getItem("currentMReport");
 	var report=JSON.parse(reportStr);
@@ -172,21 +198,21 @@ function showReportSummary(report){
 						  return element.id==report.project_id;
 						});
 
-	$("#summary").append('<h3>'+report.name+'</h3>');
-	$("#summary").append('<p>Project:  '+project[0].name_en+'</p>');
-    $("#summary").append('<p>Type:  '+cycle[0].name_en+'</p>');  
-    $("#summary").append('<p>Date and Time:  '+moment().format("YYYY/MM/DD HH:mm")+ '</p>');   
- 	$("#summary").append('<p>Total Deivce:  '+report.froms.length+'</p>');  
+	$("#summary").append('<h3>'+report["name_"+currentLocale]+'</h3>');
+	$("#summary").append('<p>'+d_locale_arr[currentLocale]['project']+':  '+project[0]["name_"+currentLocale]+'</p>');
+    $("#summary").append('<p>'+d_locale_arr[currentLocale]['report_cycle']+':  '+cycle[0]["name_"+currentLocale]+'</p>');  
+    $("#summary").append('<p>'+d_locale_arr[currentLocale]['datetime']+':  '+moment().format("YYYY/MM/DD HH:mm")+ '</p>');   
+ 	$("#summary").append('<p>'+d_locale_arr[currentLocale]['totaldevice']+':  '+report.froms.length+'</p>');  
  	  
     var content = '<table data-role="table" id="from_table" data-mode="reflow" class="ui-responsive table-stroke"><thead>\
 			     <tr>\
-			       <th data-priority="1">Device ID</th>\
-			       <th data-priority="persist">Device Model</th>\
-			       <th data-priority="2">Device Type</th>\
-			       <th data-priority="3">Device Remark</th>\
+			       <th data-priority="1">'+d_locale_arr[currentLocale]['device_id']+'</th>\
+			       <th data-priority="persist">'+d_locale_arr[currentLocale]['device_model']+'</th>\
+			       <th data-priority="2">'+d_locale_arr[currentLocale]['device_type']+'</th>\
+			       <th data-priority="3">'+d_locale_arr[currentLocale]['remark']+'</th>\
 			     </tr></thead><tbody>';
 	for(i=0; i<report.froms.length; i++){
-	    content += '<tr><td>' + report.froms[i].device_id +'</td><td>'+ report.froms[i].device_model+'</td><td>'+ report.froms[i].from_type+'</td><td>';
+	    content += '<tr><td>' + report.froms[i].device_id +'</td><td>'+ report.froms[i].device_model+'</td><td>'+ machine_types[report.froms[i].from_type]["name_"+currentLocale]+'</td><td>';
 
 	    if( report.froms[i].remark.length>0){
 	    	for(var j in report.froms[i].remark){
@@ -385,11 +411,11 @@ function buzzDevice(pos){
 <body>
 <div data-role="page" id="page1">
     <div data-theme="a" data-role="header">
-        <h3>Signature</h3>
-		<a id="back" href="maint_report.html" rel="external" data-role="button" data-theme="b" class="ui-btn-left">Back</a>
+        <h3 data-localize="signature.title">Signature</h3>
+		<a id="back" href="maint_report.html" rel="external" data-role="button" data-theme="b" class="ui-btn-left" data-localize="back">Back</a>
 		
 		<a id="etch" data-role="button" data-theme="b" class="ui-btn-right">Etch OFF</a>
-		<a href="#popupSaveSuccessInfo" data-rel="popup" data-position-to="window" data-transition="pop"  id="save" data-role="button" data-theme="b" class="ui-btn-right">Save</a>
+		<a href="#popupSaveSuccessInfo" data-rel="popup" data-position-to="window" data-transition="pop"  id="save" data-role="button" data-theme="b" class="ui-btn-right" data-localize="save" >Save</a>
     </div>
      <div id="summary" class="ui-body ui-body-a ui-corner-all">
 
@@ -397,7 +423,7 @@ function buzzDevice(pos){
   </div>
 <div data-role="popup" data-theme="b" id="popupSaveSuccessInfo"  class="ui-content" style="max-width:280px">
 				    <a  href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-b ui-icon-delete ui-btn-icon-notext ui-btn-right close-btn">Close</a>
-					<p>Save successfully!!</p>
+					<p data-localize="save_succ">Save successfully!!</p>
 				</div>
 
   <div data-role="popup" id="popupSignature" data-overlay-theme="b" data-theme="b" data-dismissible="false" >
@@ -410,8 +436,8 @@ function buzzDevice(pos){
 			     <!-- <div data-role="footer" data-theme="c" data-position="fixed"> -->
 						  <div class="center-wrapper">
   
-			        <a id="save_sign" href="#" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b" data-rel="back" data-transition="flow">Save</a>
-			        <a href="#" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b" data-rel="back">Cancel</a>
+			        <a id="save_sign" href="#" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b" data-rel="back" data-transition="flow" data-localize="save">Save</a>
+			        <a href="#" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b" data-rel="back" data-localize="cancel">Cancel</a>
 			        <!-- </div> -->
 				</div>
 			</div>
@@ -422,7 +448,7 @@ function buzzDevice(pos){
 				
 			</div>
 			
-	 <a id="sign_pop_btn" href="#popupSignature" data-rel="popup" data-position-to="window" data-transition="pop" data-role="button" data-theme="b" class="ui-btn-right">Sign</a>
+	 <a id="sign_pop_btn" href="#popupSignature" data-rel="popup" data-position-to="window" data-transition="pop" data-role="button" data-theme="b" class="ui-btn-right" data-localize="sign">Sign</a>
 	   <img  id="canvasImg"    height="50" >
    
 	<!--   -->

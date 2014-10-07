@@ -78,19 +78,10 @@
 			function onDeviceReady() {
 				StatusBar.overlaysWebView(false);
 				
-				
-
-				
-				
-
-				
-				
-				
-				
 			}
 
 			$(document).ready(function(){
-				var currentLocale=window.localStorage.getItem("locale");
+				currentLocale=window.localStorage.getItem("locale");
 				refreshUILocale(currentLocale);
 				$('input:radio[name=locale][value='+currentLocale+']').attr('checked', 'checked');
 				$("input[type='radio']").checkboxradio("refresh");
@@ -126,7 +117,8 @@
 				
 				$("#new_m_report").click(function(event, ui) {
 					currentMReport=	{
-						"name" : "maintain report",
+						"name_en" : "maintain report",
+						"name_cn" : "",
 						"type" : 0,
 						"project_id": "",
 						"cycle_type" : -1,
@@ -142,7 +134,8 @@
 				});
 				$("#new_s_report").click(function(event, ui) {
 					currentSReport=	{
-						"name" : "service report",
+						"name_en" : "service report",
+						"name_cn" : "",
 						"type" : 1,
 						"project_id": "",
 						"created_by" : "Thomas",
@@ -196,7 +189,7 @@
 function createReportItem(index,report){
 	return '<li><a id="report_item_'+report.type+'_'+index+'" href="#" class="report_item">\
 	<img  src="images/report.png"\ class="ui-li-thumb">\
-	<p>'+report.name+'</p>\
+	<p>'+report["name_"+currentLocale]+'</p>\
 	<p class="ui-li-aside">'+report.status+'</p>\
 </a></li>';
 }

@@ -53,6 +53,7 @@
 	</style>
 	<script src="js/report_app.js"></script>
 	<script src="js/from_data.js"></script>
+	<script src="js/moment.js"></script>
 	<script>
 			
 			var currentCameraID="";
@@ -61,7 +62,7 @@
 								"text":"",
 								"photos":[]
 				};
-				var currentLocale;
+			
 				var d_locale_arr={"en":{
 						"check":"Checked",
 						"uncheck":"Not Checked",
@@ -115,7 +116,7 @@
 
 				from_default_name["heat"]={"cn":"熱交換器表單","en":"Heat Transfer Compact Unit From"};
 				from_default_name["boiler"]={"cn":"鍋爈表單","en":"Boiler From"};
-				from_default_name["chimney"]={"cn":"鍋爈表單","en":"Chimney From"};
+				from_default_name["chimney"]={"cn":"煙囪表單","en":"Chimney From"};
 				
 			
 				$('#title').text(from_default_name[froms.from_type][currentLocale]);
@@ -174,7 +175,7 @@
 					froms.device_id=$('#deviceID').val();
 					froms.device_model=$('#deviceModel').val();
 					froms.remark=validRemarks;
-					
+					froms.updated_at=moment().format("YYYY/MM/DD HH:mm:ss");
 					froms.name_en=from_default_name[froms.from_type]["en"]+" "+froms.device_id;
 					froms.name_cn=from_default_name[froms.from_type]["cn"]+" "+froms.device_id;
 					if($('#photo_camera_device').attr("src")!="eximages/device.png"){
@@ -509,7 +510,7 @@
 		
 		  	 <div data-role="popup" data-theme="b" id="popupSaveSuccessInfo"  class="ui-content" style="max-width:280px">
 				    <a  href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-b ui-icon-delete ui-btn-icon-notext ui-btn-right close-btn">Close</a>
-					<p data-localize="maint_from.save_succ">Save successfully!!</p>
+					<p data-localize="save_succ">Save successfully!!</p>
 				</div>
 			<div id="tab_container">
 		<div id="info" data-role="tabs" class="custom_tab">
@@ -554,7 +555,7 @@
 	<div data-role="header" data-position="fixed" data-theme="b" >
 			 <a href="#" data-rel="back"  class="ui-btn  ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-left ui-icon-carat-l" data-localize="back">Back</a>
 	      
-			  <h1 id="title" data-localize="maint_from.remarks">Remarks</h1>
+			  <h1 id="title" data-localize="maint_from.remark">Remarks</h1>
 			
 			  		<a id="save_remark" href="#popupSaveRemarkSuccessInfo" data-rel="popup" data-position-to="window" data-transition="pop" class="savebtn ui-btn-right ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-check" data-localize="save">Save</a>
 	    	</div>

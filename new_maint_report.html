@@ -77,7 +77,7 @@
 			
 			
 			$(document).ready(function(){
-				var currentLocale=window.localStorage.getItem("locale");
+				currentLocale=window.localStorage.getItem("locale");
 				refreshUILocale(currentLocale);
 				
 				var report =JSON.parse(window.localStorage.getItem("currentMReport")); 
@@ -136,6 +136,7 @@
 					report.project_id=$("#projects").val();
 					report.cycle_type=$("#cycle").val();
 					var new_froms={};
+					
 					var new_froms = jQuery.extend(true, {}, empty_froms[current_catalog_index]);
 					new_froms.id=report.project_id+"_"+current_catalog_index+"_"+(report.froms.length+1)+getTimeStr();
 					new_froms.items=jQuery.grep(new_froms.items, function(element, index){
@@ -160,8 +161,8 @@
 										});
 					
 
-	
-					report.name= project[0].name_en+' '+ cycle[0].name_en+' Maintance Report '+moment().format("YYYYMM"); 
+					report.name_cn= project[0].name_cn+ cycle[0].name_cn+'維護報告'+moment().format("YYYYMM");
+					report.name_en= project[0].name_en+' '+ cycle[0].name_en+' Maintance Report '+moment().format("YYYYMM"); 
 					window.localStorage.setItem("currentMReport", JSON.stringify(report));
 					window.localStorage.setItem("currentForm", JSON.stringify(new_froms));
 					window.localStorage.setItem("current_catalog_index", current_catalog_index);

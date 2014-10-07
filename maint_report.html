@@ -74,9 +74,11 @@ width: 5em;
       	 height: 50px;
       }
 	</style>
+	<script src="js/jquery.localize.min.js"></script>
 	<script src="js/from_data.js"></script>
 	<script src="js/report_app.js"></script>
 	<script src="js/moment.js"></script>
+
 	<script type="text/javascript" charset="utf-8">
 
 			// Wait for device API libraries to load
@@ -86,9 +88,16 @@ width: 5em;
 			// device APIs are available
 			//
 			
-			
+			var d_locale_arr={"en":{
+						"last_updated":"Last Updated"
+						
+				},"cn":{
+						"last_updated":"最後更新"
+
+				}}
 			$(document).ready(function(){
-				
+				currentLocale=window.localStorage.getItem("locale");
+				refreshUILocale(currentLocale);
 				var report =JSON.parse(window.localStorage.getItem("currentMReport")); 
 				alert(JSON.stringify(report));
 				var current_catalog_index=parseInt(window.localStorage.getItem("current_catalog_index"));
@@ -109,36 +118,44 @@ width: 5em;
 				}
 				var current_from_index=-1;
 				
+				var project=jQuery.grep(projects, function(element, index){
+									  return element.id==report.project_id;
+									});
+				var indexToCatalog=project[0].catalogs;
 
-				
 				var catalogToIndex={};
-				catalogToIndex["heat"]=0;
-				catalogToIndex["boiler"]=1;
-				catalogToIndex["chimney"]=2;
-				var indexToCatalog=["heat","boiler","chimney"];
-
+				for(var i in indexToCatalog){
+					catalogToIndex[indexToCatalog[i]]=i;
+					
+					$('#tab_list').append(createTabTitle(indexToCatalog[i],i));
+					$('#froms_tab').append(createTab(indexToCatalog[i]));
+				}
+				$('#tab_list').listview('refresh');
+				$('#froms_tab').tabs('refresh');
+				
 				var fromhash={};
-
 				for(var i in indexToCatalog){
 
 					fromhash[i]=jQuery.grep(report.froms, function(element, index){
+						
+
 						return element.from_type==indexToCatalog[i];
 					});
-					reloadFromList(index);
+				
 
 				}
 
-
+				
 				for(var index in projects){ 
 					$("#projects").append($('<option>', {
 						value: projects[index].id,
-						text: projects[index].name_en}));
+						text: projects[index]["name_"+currentLocale]}));
 				}
 				
 				for(var index in cycles){ 
 					$("#cycle").append($('<option>', {
 						value: cycles[index].value,
-						text: cycles[index].name_en}));
+						text: cycles[index]["name_"+currentLocale]}));
 				}
 				
 				
@@ -167,8 +184,10 @@ width: 5em;
 				});
 				$("#add_btn").click(function (e) {
 					var new_froms={};
+					alert(current_catalog_index);
 					var new_froms = jQuery.extend(true, {}, empty_froms[current_catalog_index]);
 					new_froms.id=report.id+"_"+current_catalog_index+"_"+(report.froms.length+1)+getTimeStr();
+					new_froms.updated_at=moment().format("YYYY/MM/DD HH:mm:ss");
 					new_froms.items=jQuery.grep(new_froms.items, function(element, index){
 						var project=element.projects[report.project_id];
 						if(project!=null){
@@ -186,17 +205,21 @@ width: 5em;
 				});
 				var fromhash={};
 
+
 				for(var i in indexToCatalog){
 
 					refreshFromHash(i);
 
 				}
+
 				addFromListEvent();
 				function refreshFromHash(i){
 					fromhash[i]=jQuery.grep(report.froms, function(element, index){
 						return element.from_type==indexToCatalog[i];
 					});
+
 					reloadFromList(i);
+
 				}
 				function reloadFromList(index){
 					$('#'+indexToCatalog[index]+'_list').empty();
@@ -206,9 +229,12 @@ width: 5em;
 
 						addFromInCatalog('#'+indexToCatalog[index]+'_list',fromhash[index][i],i,fromhash[index].length);
 					}
+					
+					$('#'+indexToCatalog[index]+'_list').listview();
 
-					$('#'+indexToCatalog[index]+'_list').listview('refresh');
 				}	
+
+				
 				function addFromListEvent(){	
 					$(".edit_btn").click(function(event, ui) {
 
@@ -254,6 +280,7 @@ width: 5em;
 
 					var new_froms = jQuery.extend(true, {}, fromhash[current_catalog_index][current_from_index]);
 					new_froms.id=report.project_id+"_"+current_catalog_index+"_"+(report.froms.length+1)+getTimeStr();
+					new_froms.updated_at=moment().format("YYYY/MM/DD HH:mm:ss");
 					new_froms.name_en=new_froms.name_en+" 2";
 					new_froms.name_cn=new_froms.name_cn+" 2";
 					report.froms.push(new_froms);
@@ -264,8 +291,7 @@ width: 5em;
 				});
 
 
-
-
+				
 				$('#froms_tab').tabs({
 					active: current_catalog_index,
 					activate: function(event ,ui){
@@ -320,15 +346,25 @@ function clearCurrentFromIndex(){
 	$('#copy_btn').addClass("ui-state-disabled");
 	$('#delete_pop_btn').addClass("ui-state-disabled");
 }
+function createTabTitle(key,index){
+
+	return '<li><a id="tab_'+index+'" href="#'+key+'_tab" data-ajax="false" data-transition="turn">'+machine_types[key]["name_"+currentLocale]+'</a></li>';
+}
+
+function createTab(key){
+	return '<div id="'+key+'_tab" class="tablist-content" class="ui-content" >\
+				<ul id="'+key+'_list" data-role="listview" data-split-icon="edit" data-split-theme="a" data-inset="true"></ul></div>';
+
+}
 function getTimeStr(){
 	var now =new Date();
 	return ""+now.getDate()+now.getHours()+now.getMinutes()+now.getSeconds();
 }
 function addFromInCatalog(parent,from,index,max){
-	$(parent).append('<li class="ui-li-has-alt ui-li-has-thumb '+(index==0?'ui-first-child':'')+(index==max-1?'ui-last-child':'')+' "><a id="item_'+from.from_type+'_'+index+'" href="#" class="ui-btn from-item">\
+	$(parent).append('<li class="ui-li-has-alt ui-li-has-thumb '+(index==0?' ui-first-child':'')+(index==max-1?' ui-last-child':'')+' "><a id="item_'+from.from_type+'_'+index+'" href="#" class="ui-btn from-item">\
 		<img src="images/report.png">\
-		<h3>'+from.name_en+'</h3>\
-		<p>14/25 last updated: 2014/8/17 12:33</p></a>\
+		<h3>'+from["name_"+currentLocale]+'</h3>\
+		<p>'+d_locale_arr[currentLocale]['last_updated']+':'+from.updated_at +'</p></a>\
 		<a id="edit_'+from.from_type+'_'+index+'"  rel="external"\
 		data-transition="pop" \
 		class="edit_btn ui-btn ui-btn-icon-notext ui-icon-edit ui-btn-a"></a>\
@@ -360,13 +396,13 @@ $( document ).on( "click", ".show-page-loading-msg", function() {
 	
 	<div data-role="page" id="report" >
 		<div data-role="header" data-position="fixed"  >
-			<a href="index.html" rel="external" class="ui-btn  ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-left ui-icon-carat-l">Back</a>
+			<a href="index.html" rel="external" class="ui-btn  ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-left ui-icon-carat-l" data-localize="back">Back</a>
 			
-			<h1 data-localize="index.title" style="text-align:left; margin-left:140px;">Maintainance Report</h1>
+			<h1  style="text-align:left; margin-left:140px;" data-localize="maint_report.title">Maintainance Report</h1>
 			<div data-role="controlgroup" data-type="horizontal" class="ui-mini ui-btn-right">
-				<a id="add_btn" href="#" rel="external" class="ui-btn ui-btn-icon-right ui-icon-plus">Add</a>
-				<a id="copy_btn" href="#popupCopySuccess" data-rel="popup" data-position-to="window" data-transition="pop"  class="ui-btn ui-btn-icon-right ui-icon-bullets">Copy</a>
-				<a id="delete_pop_btn" href="#popupConfrimDelete" data-rel="popup" data-position-to="window" data-transition="pop"  class="ui-btn ui-btn-icon-right ui-icon-delete">Delete</a>
+				<a id="add_btn" href="#" rel="external" class="ui-btn ui-btn-icon-right ui-icon-plus" data-localize="maint_report.add">Add</a>
+				<a id="copy_btn" href="#popupCopySuccess" data-rel="popup" data-position-to="window" data-transition="pop"  class="ui-btn ui-btn-icon-right ui-icon-bullets" data-localize="maint_report.copy">Copy</a>
+				<a id="delete_pop_btn" href="#popupConfrimDelete" data-rel="popup" data-position-to="window" data-transition="pop"  class="ui-btn ui-btn-icon-right ui-icon-delete" data-localize="maint_report.delete">Delete</a>
 				
 			</div>	
 			
@@ -385,53 +421,34 @@ $( document ).on( "click", ".show-page-loading-msg", function() {
 		</div>
 		</div>
 		<div id="froms_tab" data-role="tabs" >
-			<ul data-role="listview" data-inset="true"  class="tablist-left">
-				<li><a id="tab_0" href="#heat_tab" data-ajax="false" data-transition="turn">Heat Transfer<br/> Compact Unit</a></li>
-				<li><a id="tab_1" href="#boiler_tab" data-ajax="false" data-transition="turn">Hot Water <br/>Boiler </a></li>
-				<li><a id="tab_2" href="#chimney_tab" data-ajax="false" data-transition="turn">Chimney<br/>system </a></li>
-			</ul>
-			<div id="heat_tab" class="tablist-content" class="ui-content" >
-				<ul id="heat_list" data-role="listview" data-split-icon="edit" data-split-theme="a" data-inset="true">
-					
-				</ul>
-			</div>	    
-			<div id="boiler_tab" class="tablist-content" class="ui-content" >
-				<ul id="boiler_list" data-role="listview" data-split-icon="edit" data-split-theme="a" data-inset="true">
-					
-				</ul>
-			</div>
-			
-			
-			<div id="chimney_tab" class="tablist-content" class="ui-content" >
+			<ul id="tab_list" data-role="listview" data-inset="true"  class="tablist-left">
 				
-				<ul id="chimney_list" data-role="listview"  data-split-icon="edit" data-split-theme="a" data-inset="true" >
-					
-				</ul>
-			</div>
+			</ul>
+			
 
 		</div>	
 		
 		<div data-role="popup" id="popupConfrimDelete" data-overlay-theme="b" data-theme="b" data-dismissible="false" style="max-width:400px;">
 			<div data-role="header" data-theme="a">
-				<h1>Delete From?</h1>
+				<h1 data-localize="maint_report.delete_from">Delete From?</h1>
 			</div>
 			<div role="main" class="ui-content">
-				<h3 class="ui-title">Are you sure you want to delete this from?</h3>
-				<p>This action cannot be undone.</p>
+				<h3 class="ui-title" data-localize="maint_report.sure_delete">Are you sure you want to delete this from?</h3>
+				<p data-localize="maint_report.cannot_undone">This action cannot be undone.</p>
 				<div class="center-wrapper">
 					
-					<a id="delete_btn" href="#" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b" data-rel="back" data-transition="flow">Delete</a>
-					<a href="#" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b" data-rel="back">Cancel</a>
+					<a id="delete_btn" href="#" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b" data-rel="back" data-transition="flow" data-localize="maint_report.delete">Delete</a>
+					<a href="#" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b" data-rel="back" data-localize="maint_report.cancel">Cancel</a>
 				</div>
 			</div>
 		</div>
 		<div data-role="popup" id="popupCopySuccess" data-theme="b" class="ui-content" style="max-width:280px">
 			<a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-b ui-icon-delete ui-btn-icon-notext ui-btn-right close-btn">Close</a>
-			<p>Copy successfully!!</p>
+			<p data-localize="maint_report.copy_succ">Copy successfully!!</p>
 		</div>
 		<div data-role="popup" data-theme="b" id="popupSaveSuccessInfo"  class="ui-content" style="max-width:280px">
 			<a  href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-b ui-icon-delete ui-btn-icon-notext ui-btn-right close-btn">Close</a>
-			<p>Save successfully!!</p>
+			<p data-localize="save_succ">Save successfully!!</p>
 		</div>
 		<div data-role="popup" id="popupSignature" data-overlay-theme="b" data-theme="a" data-corners="false">
 			<a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-a ui-icon-delete ui-btn-icon-notext ui-btn-right close-btn" >Close</a><img src="" id="popSignatureImg" class="popphoto"  style="max-height:250px;" alt="Paris, France">
@@ -447,9 +464,9 @@ $( document ).on( "click", ".show-page-loading-msg", function() {
 			<h1></h1>
 			<div data-role="controlgroup" data-type="horizontal" class="ui-mini ui-btn-right">
 				<a id="signatureLink"  href="#popupSignature" class=" ui-btn ui-btn-a ui-mini" data-rel="popup" data-mini="true" style="height:22px !important;" data-position-to="window" data-transition="fade"><img  id="signature" class=" ui-btn ui-btn-a ui-mini" ></a>
-				<a id="sign" href="#" class=" ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-edit">Sign</a>
-				<a id="save" href="#popupSaveSuccessInfo" data-rel="popup" data-position-to="window" data-transition="pop" href="#" class=" ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-check">Save</a>
-				<a id="upload" href="#" class="show-page-loading-msg ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-recycle" data-theme="b" data-textonly="false" data-textvisible="true" data-msgtext="Loading ..." data-inline="true">Upload</a>
+				<a id="sign" href="#" class=" ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-edit" data-localize="sign">Sign</a>
+				<a id="save" href="#popupSaveSuccessInfo" data-rel="popup" data-position-to="window" data-transition="pop" href="#" class=" ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-check" data-localize="save">Save</a>
+				<a id="upload" href="#" class="show-page-loading-msg ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-recycle" data-theme="b" data-textonly="false" data-textvisible="true" data-msgtext="Loading ..." data-inline="true" data-localize="upload">Upload</a>
 			</div>
 			
 			

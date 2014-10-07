@@ -2,7 +2,9 @@
   "back":"Back",
   "save":"Save",
   "upload":"Upload",
-
+ "sign":"簽名",
+  "save_succ":"成功儲存!!!",
+  "cancel":"取消",
   "index": {
     "title":"IES Maintainance Report App",
     "maintain":"Maintenance Report",
@@ -32,5 +34,56 @@
   	 "camera":"Camera",
   	 "save_succ":"Save successfully!!",
   	 "add":"Add"
+  },
+  "maint_report":{
+     "add":"Add",
+     "copy":"Copy",
+     "delete":"Delete",
+     "title":"Maintainance Report",
+     "copy_succ":"Copy successfully!!!",
+     "cancel":"Cancel",
+     "cannot_undone":"This action cannot be undone.",
+     "sure_delete":"Are you sure you want to delete this from?",
+     "delete_from":"Delete From?"
+  },"signature":{
+        "title":"Signature"
+  },"service_report":{
+        "title":"Service Report",
+        "problem":"Problem",
+        "situation":"Actual Situation",
+        "report":"Report",
+        "customer":"Customer",
+        "problem_reported":"Problem Reported",
+        "system_down":"System Down",
+        "yes":"Yes",
+        "no":"No",
+        "call_report_by":"Call Reported By",
+        "model":"Model",
+        "scan_qrcode":"Scan QRcode",
+        "serial_no":"Serial No",
+        "power":"Power",
+        "e_type":"Equipment Type",
+        "heat":"Heat Transfer Component Unit",
+        "boiler":"Hot Water Boiler",
+        "chimney":"Chimney System",
+        "loc_of_install":"Location of Installation",
+        "defects_found":"Defects found on inspection",
+        "status_af_ser":"Status After Service",
+        "compelete":"Complete",
+        "incompelete":"Incomplete",
+        "pending":"Pending for spares",
+        "observation":"User Observation",
+        "working_sol":"Working solution provided",
+        "customer":"Customer",
+        "select_a_customer":"Select a Customer",
+        "remarks":"Remarks",
+        "name":"Name",
+        "designation":"Designation",
+        "phone":"Phone",
+        "fax":"Fax",
+        "boiler":"Hot Water Boiler",
+        "email":"Email",
+        "add":"Add",
+        "select_e": "Select a Equipment"
   }
 }

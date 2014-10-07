@@ -9,7 +9,8 @@ function syncMReport(report){
 	var mReportQueue=[];
 
 	var mReportQueueStr=window.localStorage.getItem("mReportQueue");
-	if(mReportQueueStr!=null){
+
+	if(!mReportQueueStr){
 		mReportQueue =JSON.parse(mReportQueueStr); 
 	}
 	if(report.index>=0){
@@ -41,7 +42,7 @@ function syncSReport(report){
 
 	var sReportQueueStr=window.localStorage.getItem("sReportQueue");
 
-	if(sReportQueueStr!=null){
+	if(!sReportQueueStr){
 		sReportQueue =JSON.parse(sReportQueueStr); 
 	}
 	if(report.index>=0){
@@ -62,8 +63,15 @@ function syncSReport(report){
 	window.localStorage.setItem("currentSReport", JSON.stringify(report));	
 
 }
-
+var currentLocale;
 function refreshUILocale(locale){
 	var opts = { language: locale, pathPrefix: "locale" };
     $("[data-localize]").localize("app", opts);	
+}
+
+function clearreport(){
+	window.localStorage.setItem("sReportQueue", null);
+	window.localStorage.setItem("currentSReport", null);	
+	window.localStorage.setItem("mReportQueue", null);
+	window.localStorage.setItem("currentMReport", null);	
 }
