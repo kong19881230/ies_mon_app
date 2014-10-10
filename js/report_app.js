@@ -10,7 +10,7 @@ function syncMReport(report){
 
 	var mReportQueueStr=window.localStorage.getItem("mReportQueue");
 
-	if(!mReportQueueStr){
+	if(mReportQueueStr){
 		mReportQueue =JSON.parse(mReportQueueStr); 
 	}
 	if(report.index>=0){
@@ -42,7 +42,7 @@ function syncSReport(report){
 
 	var sReportQueueStr=window.localStorage.getItem("sReportQueue");
 
-	if(!sReportQueueStr){
+	if(sReportQueueStr){
 		sReportQueue =JSON.parse(sReportQueueStr); 
 	}
 	if(report.index>=0){

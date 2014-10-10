@@ -82,6 +82,10 @@
 
 			$(document).ready(function(){
 				currentLocale=window.localStorage.getItem("locale");
+				if(!currentLocale){
+					currentLocale="cn";
+					window.localStorage.setItem("locale", "cn");
+				}
 				refreshUILocale(currentLocale);
 				$('input:radio[name=locale][value='+currentLocale+']').attr('checked', 'checked');
 				$("input[type='radio']").checkboxradio("refresh");
@@ -94,16 +98,14 @@
 				var currentSReport={};
 
 				var mReportQueueStr=window.localStorage.getItem("mReportQueue");
-				if(mReportQueueStr!=null){
+				if(mReportQueueStr){
 					mReportQueue =JSON.parse(mReportQueueStr); 
 				}
 				var sReportQueueStr=window.localStorage.getItem("sReportQueue");
-				if(sReportQueueStr!=null){
+				if(sReportQueueStr){
 					sReportQueue =JSON.parse(sReportQueueStr); 
 				}
 				
-				// alert(JSON.stringify(mReportQueue));
-				// alert(JSON.stringify(sReportQueue));
 				for(var index in mReportQueue){
 					$("#m_report_list").append(createReportItem(index,mReportQueue[index]));
 				}

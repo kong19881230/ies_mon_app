@@ -22,7 +22,7 @@
 	}
 	.controlgroup-textinput
 	{
-		width: 42% !important;
+		width: 39% !important;
 	}
 	.ui-field-contain>label{
 			float: left;
@@ -32,7 +32,7 @@
 	.ui-field-contain>label~[class*=ui-], .ui-field-contain .right-container 
 	{
 		float: left;
-		width: 39%;
+		width: 40%;
 		-webkit-box-sizing: border-box;
 		-moz-box-sizing: border-box;
 		box-sizing: border-box;
@@ -339,7 +339,7 @@
 				
 					$("#"+parent).append('<div id="item_'+item.index+'" class="ui-field-contain ui-shadow "> \
 				<label for="textinput-1">'+i+'. '+item["item_name_"+currentLocale] +'</label> \
-					<input class="input-textbox"  type="number" name="textinput-5" id="textinput_'+item.index+'" placeholder="'+(item.result.unit?(item.result.hint+' '+item.result.unit):'')+'" value="'+item.result.value+'" data-mini="true"/>' 
+					<input class="input-textbox"  type="number" name="textinput-5" id="textinput_'+item.index+'" placeholder="'+(item.result.unit?(item.result.hint+' '+item.result.unit):'')+'" value="'+item.result.value+'" />' 
 					+'</div>');
 				
 					$('#textinput_'+item.index).textinput();
@@ -350,8 +350,8 @@
 					$("#"+parent).append('<div id="item_'+item.index+'" class="ui-field-contain ui-shadow  "> \
 				<label for="textinput-1">'+i+'. '+item["item_name_"+currentLocale] +'</label> \
 					<div class="mycontrolgroup" id="controlgroup_'+item.index+'" data-role="controlgroup" data-type="horizontal" >\
-					<input class="input-textbox" data-wrapper-class="controlgroup-textinput ui-btn"  type="number" name="textinput-5" id="textinput_0_'+item.index+'" placeholder="'+(item.result.unit?(item.result.hint[0]+' '+item.result.unit[0]):'')+'" value="'+item.result.value[0]+'" data-mini="true"/>\
-					<input class="input-textbox" data-wrapper-class="controlgroup-textinput ui-btn"   type="number" name="textinput-5" id="textinput_1_'+item.index+'" placeholder="'+(item.result.unit?(item.result.hint[1]+' '+item.result.unit[1]):'')+'" value="'+item.result.value[1]+'" data-mini="true"/>' 
+					<input class="input-textbox" data-wrapper-class="controlgroup-textinput ui-btn"  type="number" name="textinput-5" id="textinput_0_'+item.index+'" placeholder="'+(item.result.unit?(item.result.hint[0]+' '+item.result.unit[0]):'')+'" value="'+item.result.value[0]+'" />\
+					<input class="input-textbox" data-wrapper-class="controlgroup-textinput ui-btn"   type="number" name="textinput-5" id="textinput_1_'+item.index+'" placeholder="'+(item.result.unit?(item.result.hint[1]+' '+item.result.unit[1]):'')+'" value="'+item.result.value[1]+'" />' 
 					+'</div></div>');
 
 					$('#textinput_0_'+item.index).textinput();
@@ -506,7 +506,7 @@
 			</div><!-- /header -->
 			<div data-role="popup" id="popupBigPhotoPanel" data-overlay-theme="b" data-theme="b" data-corners="false" data-dismissible="false">
 					    <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-b ui-icon-delete ui-btn-icon-notext ui-btn-right close-btn">Close</a><img src="" id="bigPhoto" class="popphoto"  style="max-height:500px;" >
-					    <button id="itemPhotoCamera"  data-mini="true"    class="camera-btn ui-btn ui-btn-a ui-icon-camera ui-btn-icon-left ui-shadow ui-corner-all" data-localize="maint_from.camera">Camera</button></div>
+					    <button id="itemPhotoCamera"     class="camera-btn ui-btn ui-btn-a ui-icon-camera ui-btn-icon-left ui-shadow ui-corner-all" data-localize="maint_from.camera">Camera</button></div>
 		
 		  	 <div data-role="popup" data-theme="b" id="popupSaveSuccessInfo"  class="ui-content" style="max-width:280px">
 				    <a  href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-b ui-icon-delete ui-btn-icon-notext ui-btn-right close-btn">Close</a>
@@ -517,7 +517,7 @@
 			<div class="ui-field-contain ui-shadow ">
 				<label for="textinput-1" data-localize="maint_from.device_id">Device ID</label>
 					<div style="float: left; width: 40%"  class="right-container">
-					 <button style="margin:5px" id="submit-1" data-mini="true" onClick="onScanBarcode()" class=" ui-btn ui-icon-search ui-btn-icon-left ui-shadow ui-corner-all" data-localize="maint_from.scan_qr">Scan QRcode</button>
+					 <button style="margin:5px" id="submit-1"  onClick="onScanBarcode()" class=" ui-btn ui-icon-search ui-btn-icon-left ui-shadow ui-corner-all" data-localize="maint_from.scan_qr">Scan QRcode</button>
 					
 					
 					<input   class="input-textbox"  type="text" name="textinput-5" id="deviceID"   />

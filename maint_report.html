@@ -22,6 +22,7 @@ width: 5em;
 		.tablist-left {
 			width: 35%;
 			display: inline-block;
+			line-height: 2;
 		}
 		.tablist-content {
 			width: 63%;
@@ -99,7 +100,7 @@ width: 5em;
 				currentLocale=window.localStorage.getItem("locale");
 				refreshUILocale(currentLocale);
 				var report =JSON.parse(window.localStorage.getItem("currentMReport")); 
-				alert(JSON.stringify(report));
+				
 				var current_catalog_index=parseInt(window.localStorage.getItem("current_catalog_index"));
 				
 				if(isNaN(current_catalog_index)){
@@ -398,7 +399,7 @@ $( document ).on( "click", ".show-page-loading-msg", function() {
 		<div data-role="header" data-position="fixed"  >
 			<a href="index.html" rel="external" class="ui-btn  ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-left ui-icon-carat-l" data-localize="back">Back</a>
 			
-			<h1  style="text-align:left; margin-left:140px;" data-localize="maint_report.title">Maintainance Report</h1>
+			<h1  style="text-align:left; margin-left:200px;" data-localize="maint_report.title">Maintainance Report</h1>
 			<div data-role="controlgroup" data-type="horizontal" class="ui-mini ui-btn-right">
 				<a id="add_btn" href="#" rel="external" class="ui-btn ui-btn-icon-right ui-icon-plus" data-localize="maint_report.add">Add</a>
 				<a id="copy_btn" href="#popupCopySuccess" data-rel="popup" data-position-to="window" data-transition="pop"  class="ui-btn ui-btn-icon-right ui-icon-bullets" data-localize="maint_report.copy">Copy</a>
