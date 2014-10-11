@@ -89,6 +89,7 @@ width: 5em;
 			// device APIs are available
 			//
 			
+			
 			var d_locale_arr={"en":{
 						"last_updated":"Last Updated",
 						"uploading_report": "Uploading Report...",
@@ -105,6 +106,11 @@ width: 5em;
 			var currentUploadIndex;
 			var totalUpload;
 			$(document).ready(function(){
+				$.mobile.loading( "show", {
+			            textVisible: false,
+			            textonly: false,
+			   			 });
+			
 				currentLocale=window.localStorage.getItem("locale");
 				refreshUILocale(currentLocale);
 				var report =JSON.parse(window.localStorage.getItem("currentMReport")); 
@@ -418,6 +424,8 @@ width: 5em;
 				function fail(error) {
 				    alert("An error has occurred: Code = " + error.code+ error.source+ error.target);
 				}	
+
+				$.mobile.loading( "hide" );
 			});
 
 function clearCurrentFromIndex(){
@@ -480,7 +488,7 @@ $( document ).on( "click", ".show-page-loading-msg", function() {
 		<div data-role="header" data-position="fixed"  >
 			<a href="index.html" rel="external" class="ui-btn  ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-left ui-icon-carat-l" data-localize="back">Back</a>
 			
-			<h1  style="text-align:left; margin-left:250px;" data-localize="maint_report.title">Maintainance Report</h1>
+			<h1  style="text-align:left; margin-left:140px!important;" data-localize="maint_report.title">Maintainance Report</h1>
 			<div data-role="controlgroup" data-type="horizontal" class="ui-mini ui-btn-right">
 				<a id="add_btn" href="#" rel="external" class="ui-btn ui-btn-icon-right ui-icon-plus" data-localize="maint_report.add">Add</a>
 				<a id="copy_btn" href="#popupCopySuccess" data-rel="popup" data-position-to="window" data-transition="pop"  class="ui-btn ui-btn-icon-right ui-icon-bullets" data-localize="maint_report.copy">Copy</a>

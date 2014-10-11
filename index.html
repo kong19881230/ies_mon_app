@@ -108,11 +108,11 @@
 				
 				// alert(JSON.stringify(mReportQueue));
 				// alert(JSON.stringify(sReportQueue));
-				for(var index in mReportQueue){
+				for(var index=mReportQueue.length-1;index>=0;index--){
 					$("#m_report_list").append(createReportItem(index,mReportQueue[index]));
 				}
 				
-				for(var index in sReportQueue){
+				for(var index=sReportQueue.length-1;index>=0;index--){
 					$("#s_report_list").append(createReportItem(index,sReportQueue[index]));
 				}
 
@@ -152,7 +152,7 @@
 						"index":-1
 					};
 					window.localStorage.setItem("currentSReport", JSON.stringify(currentSReport));
-					window.location.href="comingsoon.html";
+					window.location.href="service_report.html";
 				});	
 				$(".report_item").click(function(event, ui) {
 			
