@@ -90,14 +90,20 @@ width: 5em;
 			//
 			
 			var d_locale_arr={"en":{
-						"last_updated":"Last Updated"
-						
+						"last_updated":"Last Updated",
+						"uploading_report": "Uploading Report...",
+						"uploading_photo" : "Uploading Photo...",
+						"upload_finish":"all Upload Finished"
 				},"cn":{
-						"last_updated":"最後更新"
-
+						"last_updated":"最後更新",
+						"uploading_report": "上傳報告中...",
+						"uploading_photo" : "上傳相片中...",
+						"upload_finish":"全部上傳成功"
 				}}
 
+			var currentUploadKey;
 			var currentUploadIndex;
+			var totalUpload;
 			$(document).ready(function(){
 				currentLocale=window.localStorage.getItem("locale");
 				refreshUILocale(currentLocale);
@@ -309,6 +315,11 @@ width: 5em;
 				$('#delete_pop_btn').addClass("ui-state-disabled");
 				$('#upload').click(function() {
 					$('#upload').addClass("ui-state-disabled");
+					$.mobile.loading( "show", {
+						text: d_locale_arr[currentLocale]["uploading_report"],
+			            textVisible: true,
+			            textonly: false,
+			   			 });
 					report.updated_at=moment().format("YYYY/MM/DD HH:mm:ss");
 					var reprot_str = JSON.stringify(report);
 						  // tmp value: [{"id":21,"children":[{"id":196},{"id":195},{"id":49},{"id":194}]},{"id":29,"children":[{"id":184},{"id":152}]},...]
@@ -324,10 +335,15 @@ width: 5em;
 								var report_str =res[res.length-1];
 								report=JSON.parse(report_str); 
 						    	
-						    	alert("upload successlly");
 						    	report.status="uploaded";
+						    	currentUploadIndex=1;
+						    	totalUpload=getTotalUpdateCount();
 						    	
-						    	syncMReport(report);
+						    	$.mobile.loading( "show", {
+									text: d_locale_arr[currentLocale]["uploading_photo"]+currentUploadIndex+"/"+totalUpload,
+						            textVisible: true,
+						            textonly: false,
+						   			 });
 								uploadNextPhoto();
 						    	
 						    },
@@ -340,11 +356,21 @@ width: 5em;
 					saveMReport(report);
 
 				});
+				function getTotalUpdateCount(){
+					var count=0;
+					for(var key in report.photos){ 
+								var photo=report.photos[key];
+									if(photo.state=='h'){
+										count++
+									}
 
+						}
+					return count;
+				}
 				function uploadNextPhoto(){
 					
 						for(var key in report.photos){ 
-								currentUploadIndex=key;
+								currentUploadKey=key;
 								var photo=report.photos[key];
 									if(photo.state=='h'){
 										 uploadPhoto(photo.local,photo.id);
@@ -354,7 +380,7 @@ width: 5em;
 						}
 
 					
-					alert("all Upload sucess");
+					alert(d_locale_arr[currentLocale]["upload_finish"]);
 					$('#upload').removeClass("ui-state-disabled");
 					$.mobile.loading( "hide" );
 				}
@@ -375,9 +401,16 @@ width: 5em;
 				}
 
 				function win(r) {
-				    alert("Code = " + r.responseCode);
-				    report.froms[i].items[j].result.photos[k].state=='u';
+					if(currentUploadIndex<totalUpload){
+				    	currentUploadIndex++;
+				    }
+				    report.photos[currentUploadKey].state='u';
 				    syncMReport(report);
+				    $.mobile.loading( "show", {
+									text: d_locale_arr[currentLocale]["uploading_photo"]+currentUploadIndex+"/"+totalUpload,
+						            textVisible: true,
+						            textonly: false,
+						   			 });
 				    uploadNextPhoto();
 
 				}
@@ -447,7 +480,7 @@ $( document ).on( "click", ".show-page-loading-msg", function() {
 		<div data-role="header" data-position="fixed"  >
 			<a href="index.html" rel="external" class="ui-btn  ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-left ui-icon-carat-l" data-localize="back">Back</a>
 			
-			<h1  style="text-align:left; margin-left:200px;" data-localize="maint_report.title">Maintainance Report</h1>
+			<h1  style="text-align:left; margin-left:250px;" data-localize="maint_report.title">Maintainance Report</h1>
 			<div data-role="controlgroup" data-type="horizontal" class="ui-mini ui-btn-right">
 				<a id="add_btn" href="#" rel="external" class="ui-btn ui-btn-icon-right ui-icon-plus" data-localize="maint_report.add">Add</a>
 				<a id="copy_btn" href="#popupCopySuccess" data-rel="popup" data-position-to="window" data-transition="pop"  class="ui-btn ui-btn-icon-right ui-icon-bullets" data-localize="maint_report.copy">Copy</a>
@@ -515,7 +548,7 @@ $( document ).on( "click", ".show-page-loading-msg", function() {
 				<a id="signatureLink"  href="#popupSignature" class=" ui-btn ui-btn-a ui-mini" data-rel="popup" data-mini="true" style="height:22px !important;" data-position-to="window" data-transition="fade"><img  id="signature" class=" ui-btn ui-btn-a ui-mini" ></a>
 				<a id="sign" href="#" class=" ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-edit" data-localize="sign">Sign</a>
 				<a id="save" href="#popupSaveSuccessInfo" data-rel="popup" data-position-to="window" data-transition="pop" href="#" class=" ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-check" data-localize="save">Save</a>
-				<a id="upload" href="#" class="show-page-loading-msg ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-recycle" data-theme="b" data-textonly="false" data-textvisible="true" data-msgtext="Loading ..." data-inline="true" data-localize="upload">Upload</a>
+				<a id="upload" href="#" class="ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-recycle" data-theme="b"  data-localize="upload">Upload</a>
 			</div>
 			
 			

@@ -329,26 +329,8 @@
  					 targetHeight: 300,
  					 saveToPhotoAlbum: true,correctOrientation:true });
 			    }
-			});
-			function calCounter(items,group){
-					var count=0;
-				
-					for(var index in items){ 
-						if(items[index].group==group&&
-						((items[index].result.type=="bool"&&items[index].result.value=="false")||
-						(items[index].result.type=="s_value"&&items[index].result.value=="")||
-						(items[index].result.type=="d_value"&&(items[index].result.value[0]=="" || items[index].result.value[1]=="")))){
-							count++;
-						}
-					}
-					return count;
-			}
-			function getIndex(id){
-					var res =id.split("_");
-					var index =res[res.length-1];
-					return index;
-				}
-			function addFormItem(parent,item,i){
+
+			    function addFormItem(parent,item,i){
 		//	 
 			
 				
@@ -407,6 +389,26 @@
 				}
 				
 			}
+			});
+			function calCounter(items,group){
+					var count=0;
+				
+					for(var index in items){ 
+						if(items[index].group==group&&
+						((items[index].result.type=="bool"&&items[index].result.value=="false")||
+						(items[index].result.type=="s_value"&&items[index].result.value=="")||
+						(items[index].result.type=="d_value"&&(items[index].result.value[0]=="" || items[index].result.value[1]=="")))){
+							count++;
+						}
+					}
+					return count;
+			}
+			function getIndex(id){
+					var res =id.split("_");
+					var index =res[res.length-1];
+					return index;
+				}
+			
 			function hasPhoto(photos,index){
 				if(photos.length==0){
 					return false;
