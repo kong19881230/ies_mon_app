@@ -300,8 +300,10 @@
 			    function captureRemarkImage() {
 			        // Launch device camera application,
 			        // allowing user to capture up to 2 images
-			         navigator.camera.getPicture(onRemarkImageSuccess, onFail, { quality: 50,
-					destinationType: Camera.DestinationType.FILE_URI });
+			         navigator.camera.getPicture(onRemarkImageSuccess, onFail, { quality: 40,
+				destinationType: Camera.DestinationType.FILE_URI, encodingType: Camera.EncodingType.JPEG,targetWidth: 400,
+ 					 targetHeight: 300,
+ 					 saveToPhotoAlbum: true,correctOrientation:true });
 			    }
 			});
 			function calCounter(items,group){
@@ -410,8 +412,10 @@
 		        // allowing user to capture up to 2 images
 		       
 		        
-		         navigator.camera.getPicture(onSuccess, onFail, { quality: 50,
-				destinationType: Camera.DestinationType.FILE_URI });
+		         navigator.camera.getPicture(onSuccess, onFail, { quality: 40,
+				destinationType: Camera.DestinationType.FILE_URI, encodingType: Camera.EncodingType.JPEG,targetWidth: 400,
+ 					 targetHeight: 300,
+ 					 saveToPhotoAlbum: true,correctOrientation:true });
 		    }
 		    
 		    function createCustomTab(name){

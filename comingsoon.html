@@ -68,6 +68,7 @@
 			
 			// device APIs are available
 			//
+			var currentCameraID;
 			$(document).ready(function(){
 				$('#add_maint_item').click(function() {
 					
@@ -112,8 +113,81 @@
 						    }
 						});
 						});	
+				$('.camera-btn').bind( "click", function(event, ui){
+						
+						
+						captureImage();
+				});	
+				$('.small_photo').bind("click", function(event, ui){
+						
+						currentCameraID=event.currentTarget.id;
+						$('#bigPhoto').attr("src",$('#photo_'+event.currentTarget.id).attr('src'));
+					
+
+				});
+				$('#upload').bind("click", function(event, ui){
+						alert($('#photo_camera_device').attr("src"));
+						uploadPhoto($('#photo_camera_device').attr("src"));
+						
+
+				});
 
 			});
+
+				
+			function onSuccess(imageURI) {
+				
+				$('#photo_'+currentCameraID).attr("src",imageURI);
+				$('#bigPhoto').attr("src",imageURI);
+				$('#photo_'+currentCameraID).removeClass('transparent_img');
+			}
+
+			function onFail(message) {
+				alert('Failed because: ' + message);
+			}
+
+		    // A button will call this function
+		    //
+		    function captureImage() {
+		        // Launch device camera application,
+		        // allowing user to capture up to 2 images
+		       
+		        
+		         navigator.camera.getPicture(onSuccess, onFail, { quality: 40,
+				destinationType: Camera.DestinationType.FILE_URI, encodingType: Camera.EncodingType.JPEG,targetWidth: 400,
+ 					 targetHeight: 300,
+ 					 saveToPhotoAlbum: true,correctOrientation:true });
+		    }
+		    
+
+		    function uploadPhoto(imageURI) {
+            var options = new FileUploadOptions();
+            options.fileKey="file";
+            options.fileName=imageURI.substr(imageURI.lastIndexOf('/')+1);
+            options.mimeType="image/jpeg";
+
+            var params = {};
+            params.value1 = "test";
+            params.value2 = "param";
+
+            options.params = params;
+
+            var ft = new FileTransfer();
+            ft.upload(imageURI, encodeURI("http://uniquecode.net/job/ms/upload.php"), win, fail, options);
+	        }
+
+	        function win(r) {
+	        	alert(r);
+	            console.log("Code = " + r.responseCode);
+	            console.log("Response = " + r.response);
+	            console.log("Sent = " + r.bytesSent);
+	        }
+
+	        function fail(error) {
+	            alert("An error has occurred: Code = " + error.code);
+	            console.log("upload error source " + error.source);
+	            console.log("upload error target " + error.target);
+	        }
 	</script>
 </head>
 <body>
@@ -129,8 +203,23 @@
 				<a href="#" id="add_maint_item" class="ui-btn  ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-left ui-icon-carat-l">Add Maint Item</a>
 				</div>
 			</div><!-- /header -->
-				
+				<div data-role="popup" id="popupBigPhotoPanel" data-overlay-theme="b" data-theme="b" data-corners="false" data-dismissible="false">
+					    <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-b ui-icon-delete ui-btn-icon-notext ui-btn-right close-btn">Close</a><img src="" id="bigPhoto" class="popphoto"  style="max-height:500px;" >
+					    <button id="itemPhotoCamera"     class="camera-btn ui-btn ui-btn-a ui-icon-camera ui-btn-icon-left ui-shadow ui-corner-all" data-localize="maint_from.camera">Camera</button></div>
 			
+			<div class="ui-field-contain ui-shadow ui-corner-all">
+				<label for="textinput-1" data-localize="maint_from.device_photo">Device Photo</label>
+				<div style="float: left; width: 40%"  class="right-container">
+				
+				<div  style="float: right;" >
+				 <a id="camera_device" class="small_photo" href="#popupBigPhotoPanel" data-rel="popup" data-position-to="window" data-transition="fade" ><img id="photo_camera_device" alt="Smiley face" class="transparent_img" src="eximages/0_device.jpg" width="100" height="70" style="margin:5px"/></a>
+
+				  <button id="upload"     class="ui-btn ui-btn-a ui-icon-camera ui-btn-icon-left ui-shadow ui-corner-all" data-localize="maint_from.camera">Upload</button>
+				 </div>
+				 
+				 </div>
+				
+			</div>
 		</div>		
 		
 
