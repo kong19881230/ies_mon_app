@@ -96,6 +96,10 @@ width: 5em;
 						"last_updated":"最後更新"
 
 				}}
+
+			var currentUploadItemIndex;
+			var currentUploadPhotosIndex;
+			var currentFromPhotosIndex;
 			$(document).ready(function(){
 				currentLocale=window.localStorage.getItem("locale");
 				refreshUILocale(currentLocale);
@@ -316,18 +320,21 @@ width: 5em;
 						    //url: 'http://localhost/ies_report_sys/submit_maint_report.php',
 						    data: {'report': reprot_str},
 						    success: function(msg) {
-						    	alert(msg);
+						    	
 
 						    	var res =msg.split("#####");
 								var report_str =res[res.length-1];
-								alert(report_str);
 								report=JSON.parse(report_str); 
-						    	$.mobile.loading( "hide" );
+						    	
 						    	alert("upload successlly");
 						    	report.status="uploaded";
 						    	
 						    	syncMReport(report);
-						    	$('#upload').removeClass("ui-state-disabled");
+						    	currentUploadItemIndex=0;
+								currentUploadPhotosIndex=0;
+								currentFromPhotosIndex=0;
+								uploadNextPhoto();
+						    	
 						    },
 						    error: function(XMLHttpRequest, textStatus, errorThrown) {
 						    	alert(textStatus);
@@ -339,7 +346,56 @@ width: 5em;
 
 				});
 
+				function uploadNextPhoto(){
+					var currentUploadItemIndex;
+					var currentUploadPhotosIndex;
+					var currentFromPhotosIndex;
+					for(var i=currentFromPhotosIndex;i<report.froms.length;i++){
+						currentFromPhotosIndex=i;
+						for(var j=currentUploadItemIndex;j<report.froms[i].items.length;j++){
+							currentUploadItemIndex=j;
+							for(var k=currentUploadPhotosIndex;j<report.froms[i].items[j].result.photos.length;k++){
+									currentUploadPhotosIndex=k;
+									var photo=report.froms[i].items[j].result.photos[k];
+									if(photo.state=='h'){
+										 uploadPhoto(photo.local,photo.id);
+										 return true;
+									}
 
+							}
+						}
+					}
+					alert("all Upload sucess");
+					$('#upload').removeClass("ui-state-disabled");
+					$.mobile.loading( "hide" );
+				}
+
+				function uploadPhoto(imageURI,id) {
+					var options = new FileUploadOptions();
+					options.fileKey="file";
+					options.fileName=imageURI.substr(imageURI.lastIndexOf('/')+1);
+					options.mimeType="image/jpeg";
+
+					var params = {};
+					params.id = id;
+
+					options.params = params;
+					var ft = new FileTransfer();
+					ft.upload(imageURI, encodeURI("http://uniquecode.net/job/ms/upload.php"), win, fail, options);
+
+				}
+
+				function win(r) {
+				    alert("Code = " + r.responseCode);
+				    report.froms[i].items[j].result.photos[k].state=='u';
+				    syncMReport(report);
+				    uploadNextPhoto();
+
+				}
+
+				function fail(error) {
+				    alert("An error has occurred: Code = " + error.code+ error.source+ error.target);
+				}	
 			});
 
 function clearCurrentFromIndex(){
@@ -372,6 +428,9 @@ function addFromInCatalog(parent,from,index,max){
 	</li>');
 	
 }
+
+
+
 $( document ).on( "click", ".show-page-loading-msg", function() {
     var $this = $( this ),
         theme = $this.jqmData( "theme" ) || $.mobile.loader.prototype.options.theme,
