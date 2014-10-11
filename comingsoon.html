@@ -171,16 +171,15 @@
             params.value2 = "param";
 
             options.params = params;
-
             var ft = new FileTransfer();
             ft.upload(imageURI, encodeURI("http://uniquecode.net/job/ms/upload.php"), win, fail, options);
+         
 	        }
 
 	        function win(r) {
-	        	alert(r);
-	            console.log("Code = " + r.responseCode);
-	            console.log("Response = " + r.response);
-	            console.log("Sent = " + r.bytesSent);
+	            alert("Code = " + r.responseCode);
+	            alert("Response = " + r.response);
+	            alert("Sent = " + r.bytesSent);
 	        }
 
 	        function fail(error) {
