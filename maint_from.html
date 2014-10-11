@@ -146,16 +146,16 @@
 							if(items[index].result.photos.length==0){
 								for(var x in items[index].result.exm_photos){
 									
-									items[index].result.photos.push("n");
+									items[index].result.photos.push("");
 								}
 							}
 						for(var y in items[index].result.exm_photos){
 
 							var imgsrc =$('#photo_item_'+y+'_'+items[index].index).attr("src");
 					  	
-						  	if(imgsrc!=items[index].result.exm_photos[y]){
-						  		if(items[index].result.photos[y]=="n"){
-							  		var id= froms.id+"_"+index+"_"+y;
+						  	if(imgsrc!=getExmPhotoPath(items[index].result.exm_photos[y])){
+						  		if(items[index].result.photos[y]==""){
+							  		var id= froms.id+"-"+items[index].result.exm_photos[y];
 							  		var photo ={};
 							  		photo.id=id;
 							  		photo.local=imgsrc;
@@ -204,8 +204,23 @@
 					froms.updated_at=moment().format("YYYY/MM/DD HH:mm:ss");
 					froms.name_en=from_default_name[froms.from_type]["en"]+" "+froms.device_id;
 					froms.name_cn=from_default_name[froms.from_type]["cn"]+" "+froms.device_id;
-					if($('#photo_camera_device').attr("src")!="eximages/device.png"){
-						froms.device_photo=$('#photo_camera_device').attr("src");
+					var imgsrcD=$('#photo_camera_device').attr("src");
+					if(imgsrcD!=getExmPhotoPath(froms.exm_photos)){
+						if(froms.device_photo==""){
+							  		var id= froms.id+"-"+froms.exm_photos;
+							  		var photo ={};
+							  		photo.id=id;
+							  		photo.local=imgsrcD;
+							  		photo.state='h';
+							  		report.photos[id]=photo;
+							  		froms.device_photo=id;
+						  		}else{
+						  			var photoKey=froms.device_photo;
+						  			if(report.photos[photoKey].local!=imgsrcD){
+							  			report.photos[photoKey].local=imgsrcD;
+							  			report.photos[photoKey].state='h';
+							  		}
+						  		}
 					}
 					
 					froms.items=items;
@@ -313,12 +328,10 @@
 					$('#deviceModel').val(froms.device_model);
 				}
 				if(froms.device_photo!=""){
-					 $('#photo_camera_device').attr("src", froms.device_photo);
+					 $('#photo_camera_device').attr("src", report.photos[froms.device_photo]);
 					 $('#photo_camera_device').removeClass("transparent_img")
-					 $('#popphoto_camera_device').attr("src", froms.device_photo);
 				}else{
-					$('#photo_camera_device').attr("src", froms.exm_photos);
-					$('#popphoto_camera_device').attr("src", froms.exm_photos);
+					$('#photo_camera_device').attr("src",getExmPhotoPath(froms.exm_photos));
 				}
 
 				function onRemarkImageSuccess(imageURI) {
@@ -386,7 +399,7 @@
 
 					var photo_album='<div style="float: right; width: 40%;margin-right:1.5%;"  class="right-container"><div  style="float: right;" >';
 					for(var i in item.result.exm_photos){
-						photo_album+='<a id="item_'+i+'_'+item.index+'" style="float: right;" href="#popupBigPhotoPanel" data-rel="popup" class="small_photo" data-position-to="window" data-transition="fade"><img id="photo_item_'+i+'_'+item.index+'" alt="Smiley face" '+(!hasPhoto(item.result.photos,i)?'class="transparent_img"':'') +' src="'+(hasPhoto(item.result.photos,i)?report.photos[item.result.photos[i]].local:item.result.exm_photos[i])+'" width="100" height="75" style="margin:5px"/></a>';
+						photo_album+='<a id="item_'+i+'_'+item.index+'" style="float: right;" href="#popupBigPhotoPanel" data-rel="popup" class="small_photo" data-position-to="window" data-transition="fade"><img id="photo_item_'+i+'_'+item.index+'" alt="Smiley face" '+(!hasPhoto(item.result.photos,i)?'class="transparent_img"':'') +' src="'+(hasPhoto(item.result.photos,i)?report.photos[item.result.photos[i]].local:getExmPhotoPath(item.result.exm_photos[i]))+'" width="100" height="75" style="margin:5px"/></a>';
 					}
 					photo_album+='</div></div>';
   
@@ -421,7 +434,7 @@
 				if(photos.length==0){
 					return false;
 				}
-				if(photos[index]!="n"){
+				if(photos[index]!=""){
 					return true;
 				}else{
 					return false
@@ -488,6 +501,9 @@
 				  }
 			   );
 		   }		
+		   function getExmPhotoPath(key){
+		   	return "eximages/"+key+".jpg";
+		   }
 		   function createRemark(index,value){
 		   	 return '<div class=" ui-shadow ui-content">\
 				        <label for="textinput-hide" class="ui-hidden-accessible">Remark</label>\
