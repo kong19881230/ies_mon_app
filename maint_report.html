@@ -97,9 +97,7 @@ width: 5em;
 
 				}}
 
-			var currentUploadItemIndex;
-			var currentUploadPhotosIndex;
-			var currentFromPhotosIndex;
+			var currentUploadIndex;
 			$(document).ready(function(){
 				currentLocale=window.localStorage.getItem("locale");
 				refreshUILocale(currentLocale);
@@ -330,9 +328,6 @@ width: 5em;
 						    	report.status="uploaded";
 						    	
 						    	syncMReport(report);
-						    	currentUploadItemIndex=0;
-								currentUploadPhotosIndex=0;
-								currentFromPhotosIndex=0;
 								uploadNextPhoto();
 						    	
 						    },
@@ -347,24 +342,18 @@ width: 5em;
 				});
 
 				function uploadNextPhoto(){
-					var currentUploadItemIndex;
-					var currentUploadPhotosIndex;
-					var currentFromPhotosIndex;
-					for(var i=currentFromPhotosIndex;i<report.froms.length;i++){
-						currentFromPhotosIndex=i;
-						for(var j=currentUploadItemIndex;j<report.froms[i].items.length;j++){
-							currentUploadItemIndex=j;
-							for(var k=currentUploadPhotosIndex;j<report.froms[i].items[j].result.photos.length;k++){
-									currentUploadPhotosIndex=k;
-									var photo=report.froms[i].items[j].result.photos[k];
+					
+						for(var key in report.photos){ 
+								currentUploadIndex=key;
+								var photo=report.photos[key];
 									if(photo.state=='h'){
 										 uploadPhoto(photo.local,photo.id);
-										 return true;
+										 return false;
 									}
 
-							}
 						}
-					}
+
+					
 					alert("all Upload sucess");
 					$('#upload').removeClass("ui-state-disabled");
 					$.mobile.loading( "hide" );
