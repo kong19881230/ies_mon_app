@@ -107,7 +107,7 @@
 					$("#remark_container").trigger("create");
 					for(var j in remarks[i].photos){
 						
-						$("#photos_"+i).prepend(createRemarkPhoto(j,i,remarks[i].photos[j]));
+						$("#photos_"+i).prepend(createRemarkPhoto(j,i,report.photos[remarks[i].photos[j]].local));
 					
 					}
 					
@@ -184,13 +184,16 @@
 						for(var j in remarks[i].photos){
 							var imgsrc =$('#remark_img_'+j+'_'+i).attr("src");
 							remarks[i].photos[j]=imgsrc;
-							if(report.photos[remarks[i].photos[j]]){
+							alert(remarks[i].photos[j]);
+							alert(report.photos[remarks[i].photos[j]]);
+							if(report.photos[remarks[i].photos[j]]==undefined){
+								alert(report.photos[remarks[i].photos[j]]);
 								var id =createNewPhotoRecord(imgsrc, "r"+j+'_'+i);
 								remarks[i].photos[j]=id;
 							}else{
-								if(report.photos[remarks[i].photos[j]].local!=imgsrc){
+								
 									updatePhotoRecord(imgsrc, remarks[i].photos[j]);
-								}
+								
 							}
 						}
 						if(remarks[i].text!=""||remarks[i].photos.length>0){
@@ -209,9 +212,10 @@
 						if(froms.device_photo==""){
 							  		var id= createNewPhotoRecord(imgsrcD,froms.exm_photos);
 							  		froms.device_photo=id;
-						  		}else{
-						  			updatePhotoRecord(imgsrcD,froms.device_photo);
-						  		}
+				  		}else{
+				  				updatePhotoRecord(imgsrcD,froms.device_photo);
+				  			
+				  		}
 					}
 					
 					froms.items=items;
@@ -319,7 +323,7 @@
 					$('#deviceModel').val(froms.device_model);
 				}
 				if(froms.device_photo!=""){
-					 $('#photo_camera_device').attr("src", report.photos[froms.device_photo]);
+					 $('#photo_camera_device').attr("src", report.photos[froms.device_photo].local);
 					 $('#photo_camera_device').removeClass("transparent_img")
 				}else{
 					$('#photo_camera_device').attr("src",getExmPhotoPath(froms.exm_photos));

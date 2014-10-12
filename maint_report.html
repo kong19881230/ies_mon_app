@@ -127,8 +127,8 @@ width: 5em;
 					
 				}else{
 
-					$("#signature").attr("src",report.signature);
-					$("#popSignatureImg").attr("src",report.signature);
+					$("#signature").attr("src",report.photos[report.signature].local);
+					$("#popSignatureImg").attr("src",report.photos[report.signature].local);
 
 				}
 				var current_from_index=-1;
@@ -423,6 +423,9 @@ width: 5em;
 
 				function fail(error) {
 				    alert("An error has occurred: Code = " + error.code+ error.source+ error.target);
+				    $('#upload').removeClass("ui-state-disabled");
+					$.mobile.loading( "hide" );
+
 				}	
 
 				$.mobile.loading( "hide" );

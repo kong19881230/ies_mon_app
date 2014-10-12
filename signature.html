@@ -180,30 +180,34 @@ $(document).ready(function () {
 	ctx.beginPath();
 		ctx.strokeStyle = color;
 	$("#save_sign").click(function(){
-			var dataURL = document.getElementById("canvas").toDataURL("image/jpeg", 0.5);
+		
+			var dataURL = document.getElementById("canvas").toDataURL();
 	      $("#canvasImg").attr("src",dataURL);
-	      if(report.signature==""){
+	      if(report.signature==undefined || report.signature==""){
 	      	var id =createNewPhotoRecord(dataURL,"s_"+getTimeStr());
 	      	report.signature=id;
+
+	      alert(111);
 	      }else{
 	      	if(report.photos[report.signature].local!=dataURL){
 	      		 updatePhotoRecord(dataURL,report.signature);
 	      	}
 	      }
 	      saveMReport(report);
+	      alert(report.signature);
 	});
 	function updatePhotoRecord(imgsrc,photoKey){
 			if(report.photos[photoKey].local!=imgsrc){
   			report.photos[photoKey].local=imgsrc;
-  			report.photos[photoKey].state='h';
+  			report.photos[photoKey].state='s';
   		}
   	}
 	function createNewPhotoRecord(imgsrc,key){
-		var id =froms.id+"-"+key;
+		var id =key;
   		var photo ={};
   		photo.id=id;
   		photo.local=imgsrc;
-  		photo.state='h';
+  		photo.state='s';
   		report.photos[id]=photo;
   		return id;
 	}
