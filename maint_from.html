@@ -89,7 +89,7 @@
 				}}
 			$(document).ready(function(){
 				currentLocale=window.localStorage.getItem("locale");
-				refreshUILocale(currentLocale);
+				
 				var reportStr=	window.localStorage.getItem("currentMReport");
 				var report=JSON.parse(reportStr);
 				var  froms=JSON.parse(window.localStorage.getItem("currentForm")); 
@@ -101,6 +101,11 @@
 
 
 				var project=projectArr[0];
+
+				$("#deviceID").empty();
+				$("#deviceID").append($('<option>', {
+						text: "Choose ...",
+						"data-localize":"new_maint_report.choose"}));
 				for(var key in project.eq_lists[froms.from_type]){ 
 						$("#deviceID").append($('<option>', {
 							value: key,
@@ -113,6 +118,7 @@
 					$("#deviceModel").val(project[0].eq_lists[froms.from_type][deviceID].model);
 				});
 				$("#deviceID").selectmenu('refresh', true);
+				refreshUILocale(currentLocale);
 				var remarks=froms.remark;
 				if(remarks.length==0){
 
@@ -332,6 +338,7 @@
 				refreshAllCounter();
 				if(froms.device_id!=""){
 					$('#deviceID').val(froms.device_id);
+					$("#deviceID").selectmenu('refresh', true);
 				}
 				if(froms.device_model!=""){
 					$('#deviceModel').val(froms.device_model);
