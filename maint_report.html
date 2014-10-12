@@ -443,10 +443,7 @@ function createTab(key){
 				<ul id="'+key+'_list" data-role="listview" data-split-icon="edit" data-split-theme="a" data-inset="true"></ul></div>';
 
 }
-function getTimeStr(){
-	var now =new Date();
-	return ""+now.getDate()+now.getHours()+now.getMinutes()+now.getSeconds();
-}
+
 function addFromInCatalog(parent,from,index,max){
 	$(parent).append('<li class="ui-li-has-alt ui-li-has-thumb '+(index==0?' ui-first-child':'')+(index==max-1?' ui-last-child':'')+' "><a id="item_'+from.from_type+'_'+index+'" href="#" class="ui-btn from-item">\
 		<img src="images/report.png">\

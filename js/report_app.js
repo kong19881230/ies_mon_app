@@ -75,3 +75,8 @@ function clearreport(){
 	window.localStorage.setItem("mReportQueue", null);
 	window.localStorage.setItem("currentMReport", null);	
 }
+
+function getTimeStr(){
+	var now =new Date();
+	return ""+now.getDate()+now.getHours()+now.getMinutes()+now.getSeconds();
+}

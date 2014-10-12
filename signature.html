@@ -130,13 +130,12 @@ $(document).ready(function () {
 	var reportStr=	window.localStorage.getItem("currentMReport");
 	var report=JSON.parse(reportStr);
 	 showReportSummary(report);
-	$("#canvasImg").attr("src",report.signature);
+	 if(report.signature!=""){
+		$("#canvasImg").attr("src",report.photos[report.signature]);
+	}
 	// Call onDeviceReady when Cordova is loaded and talking with the native device
 	document.addEventListener("deviceready", onDeviceReady, false);
-		$("#save").click(function(){
-	      report.signature=$("#canvasImg").attr("src");
-	      saveMReport(report);
-	});
+		
 	// setup a new canvas for drawing
 	
 	
@@ -181,9 +180,33 @@ $(document).ready(function () {
 	ctx.beginPath();
 		ctx.strokeStyle = color;
 	$("#save_sign").click(function(){
-			var dataURL = document.getElementById("canvas").toDataURL();
+			var dataURL = document.getElementById("canvas").toDataURL("image/jpeg", 0.5);
 	      $("#canvasImg").attr("src",dataURL);
+	      if(report.signature==""){
+	      	var id =createNewPhotoRecord(dataURL,"s_"+getTimeStr());
+	      	report.signature=id;
+	      }else{
+	      	if(report.photos[report.signature].local!=dataURL){
+	      		 updatePhotoRecord(dataURL,report.signature);
+	      	}
+	      }
+	      saveMReport(report);
 	});
+	function updatePhotoRecord(imgsrc,photoKey){
+			if(report.photos[photoKey].local!=imgsrc){
+  			report.photos[photoKey].local=imgsrc;
+  			report.photos[photoKey].state='h';
+  		}
+  	}
+	function createNewPhotoRecord(imgsrc,key){
+		var id =froms.id+"-"+key;
+  		var photo ={};
+  		photo.id=id;
+  		photo.local=imgsrc;
+  		photo.state='h';
+  		report.photos[id]=photo;
+  		return id;
+	}
 });
 
 
@@ -415,7 +438,7 @@ function buzzDevice(pos){
 		<a id="back" href="maint_report.html" rel="external" data-role="button" data-theme="b" class="ui-btn-left" data-localize="back">Back</a>
 		
 		<a id="etch" data-role="button" data-theme="b" class="ui-btn-right">Etch OFF</a>
-		<a href="#popupSaveSuccessInfo" data-rel="popup" data-position-to="window" data-transition="pop"  id="save" data-role="button" data-theme="b" class="ui-btn-right" data-localize="save" >Save</a>
+		
     </div>
      <div id="summary" class="ui-body ui-body-a ui-corner-all">
 

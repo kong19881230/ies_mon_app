@@ -155,19 +155,11 @@
 					  	
 						  	if(imgsrc!=getExmPhotoPath(items[index].result.exm_photos[y])){
 						  		if(items[index].result.photos[y]==""){
-							  		var id= froms.id+"-"+items[index].result.exm_photos[y];
-							  		var photo ={};
-							  		photo.id=id;
-							  		photo.local=imgsrc;
-							  		photo.state='h';
-							  		report.photos[id]=photo;
+							  		var id=createNewPhotoRecord(imgsrc,items[index].result.exm_photos[y]);
 							  		items[index].result.photos[y]=id;
 						  		}else{
-						  			var photoKey=items[index].result.photos[y];
-						  			if(report.photos[photoKey].local!=imgsrc){
-							  			report.photos[photoKey].local=imgsrc;
-							  			report.photos[photoKey].state='h';
-							  		}
+						  			updatePhotoRecord(imgsrc,items[index].result.photos[y]);
+						  			
 						  		}
 						  	}
 						}
@@ -192,8 +184,16 @@
 						for(var j in remarks[i].photos){
 							var imgsrc =$('#remark_img_'+j+'_'+i).attr("src");
 							remarks[i].photos[j]=imgsrc;
+							if(report.photos[remarks[i].photos[j]]){
+								var id =createNewPhotoRecord(imgsrc, "r"+j+'_'+i);
+								remarks[i].photos[j]=id;
+							}else{
+								if(report.photos[remarks[i].photos[j]].local!=imgsrc){
+									updatePhotoRecord(imgsrc, remarks[i].photos[j]);
+								}
+							}
 						}
-						if(remarks[i].text!=""){
+						if(remarks[i].text!=""||remarks[i].photos.length>0){
 							validRemarks.push(remarks[i]);
 						}
 					}
@@ -207,19 +207,10 @@
 					var imgsrcD=$('#photo_camera_device').attr("src");
 					if(imgsrcD!=getExmPhotoPath(froms.exm_photos)){
 						if(froms.device_photo==""){
-							  		var id= froms.id+"-"+froms.exm_photos;
-							  		var photo ={};
-							  		photo.id=id;
-							  		photo.local=imgsrcD;
-							  		photo.state='h';
-							  		report.photos[id]=photo;
+							  		var id= createNewPhotoRecord(imgsrcD,froms.exm_photos);
 							  		froms.device_photo=id;
 						  		}else{
-						  			var photoKey=froms.device_photo;
-						  			if(report.photos[photoKey].local!=imgsrcD){
-							  			report.photos[photoKey].local=imgsrcD;
-							  			report.photos[photoKey].state='h';
-							  		}
+						  			updatePhotoRecord(imgsrcD,froms.device_photo);
 						  		}
 					}
 					
@@ -334,6 +325,21 @@
 					$('#photo_camera_device').attr("src",getExmPhotoPath(froms.exm_photos));
 				}
 
+				function updatePhotoRecord(imgsrc,photoKey){
+		  			if(report.photos[photoKey].local!=imgsrc){
+			  			report.photos[photoKey].local=imgsrc;
+			  			report.photos[photoKey].state='h';
+			  		}
+			  	}
+				function createNewPhotoRecord(imgsrc,key){
+					var id =froms.id+"-"+key;
+			  		var photo ={};
+			  		photo.id=id;
+			  		photo.local=imgsrc;
+			  		photo.state='h';
+			  		report.photos[id]=photo;
+			  		return id;
+				}
 				function onRemarkImageSuccess(imageURI) {
 				
 			
