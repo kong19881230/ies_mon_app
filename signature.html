@@ -130,8 +130,8 @@ $(document).ready(function () {
 	var reportStr=	window.localStorage.getItem("currentMReport");
 	var report=JSON.parse(reportStr);
 	 showReportSummary(report);
-	 if(report.signature!=""){
-		$("#canvasImg").attr("src",report.photos[report.signature]);
+	 if(report.signature!=undefined && report.signature!=""){
+		$("#canvasImg").attr("src",report.photos[report.signature].local);
 	}
 	// Call onDeviceReady when Cordova is loaded and talking with the native device
 	document.addEventListener("deviceready", onDeviceReady, false);
@@ -187,14 +187,12 @@ $(document).ready(function () {
 	      	var id =createNewPhotoRecord(dataURL,"s_"+getTimeStr());
 	      	report.signature=id;
 
-	      alert(111);
 	      }else{
 	      	if(report.photos[report.signature].local!=dataURL){
 	      		 updatePhotoRecord(dataURL,report.signature);
 	      	}
 	      }
 	      saveMReport(report);
-	      alert(report.signature);
 	});
 	function updatePhotoRecord(imgsrc,photoKey){
 			if(report.photos[photoKey].local!=imgsrc){
@@ -211,7 +209,7 @@ $(document).ready(function () {
   		report.photos[id]=photo;
   		return id;
 	}
-});
+});	
 
 
 function showReportSummary(report){

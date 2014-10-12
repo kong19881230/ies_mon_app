@@ -183,11 +183,7 @@
 						remarks[i].text=$("#remark_text_"+i).val();
 						for(var j in remarks[i].photos){
 							var imgsrc =$('#remark_img_'+j+'_'+i).attr("src");
-							remarks[i].photos[j]=imgsrc;
-							alert(remarks[i].photos[j]);
-							alert(report.photos[remarks[i].photos[j]]);
 							if(report.photos[remarks[i].photos[j]]==undefined){
-								alert(report.photos[remarks[i].photos[j]]);
 								var id =createNewPhotoRecord(imgsrc, "r"+j+'_'+i);
 								remarks[i].photos[j]=id;
 							}else{
@@ -355,7 +351,7 @@
 			    function captureRemarkImage() {
 			        // Launch device camera application,
 			        // allowing user to capture up to 2 images
-			         navigator.camera.getPicture(onRemarkImageSuccess, onFail, { quality: 50,
+			         navigator.camera.getPicture(onRemarkImageSuccess, onFail, { quality: 40,
 				destinationType: Camera.DestinationType.FILE_URI, encodingType: Camera.EncodingType.JPEG,targetWidth: 500,
  					 targetHeight: 375,
  					 saveToPhotoAlbum: true,correctOrientation:true });
@@ -479,7 +475,7 @@
 		        // allowing user to capture up to 2 images
 		       
 		        
-		         navigator.camera.getPicture(onSuccess, onFail, { quality: 50,
+		         navigator.camera.getPicture(onSuccess, onFail, { quality: 40,
 				destinationType: Camera.DestinationType.FILE_URI, encodingType: Camera.EncodingType.JPEG,targetWidth: 500,
  					 targetHeight: 375,
  					 saveToPhotoAlbum: true,correctOrientation:true });

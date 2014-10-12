@@ -342,6 +342,7 @@ width: 5em;
 								report=JSON.parse(report_str); 
 						    	
 						    	report.status="uploaded";
+						    	syncMReport(report);
 						    	currentUploadIndex=1;
 						    	totalUpload=getTotalUpdateCount();
 						    	
@@ -366,7 +367,7 @@ width: 5em;
 					var count=0;
 					for(var key in report.photos){ 
 								var photo=report.photos[key];
-									if(photo.state=='h'){
+									if(photo.state=='h'||photo.state=='s'){
 										count++
 									}
 
@@ -400,8 +401,6 @@ width: 5em;
 					  data: {"image": imageURI,"id":id }
 					}).done(function( respond ) {
 						win(respond);
-
-					 	 alert(respond);
 					});
 				}
 				function uploadPhoto(imageURI,id) {

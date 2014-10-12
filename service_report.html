@@ -58,13 +58,28 @@
 			"photos":[]
 		};
 		var currentRemarkCameraID="";
+
+				var d_locale_arr={"en":{
+						"last_updated":"Last Updated",
+						"uploading_report": "Uploading Report...",
+						"uploading_photo" : "Uploading Photo...",
+						"upload_finish":"all Upload Finished"
+				},"cn":{
+						"last_updated":"最後更新",
+						"uploading_report": "上傳報告中...",
+						"uploading_photo" : "上傳相片中...",
+						"upload_finish":"全部上傳成功"
+				}}
+					var currentUploadKey;
+			var currentUploadIndex;
+			var totalUpload;
+
 		$(document).ready(function(){
 currentLocale=window.localStorage.getItem("locale");
 	refreshUILocale(currentLocale);
 
 			var report =JSON.parse(window.localStorage.getItem("currentSReport")); 
 			var details=report.details;
-			alert(JSON.stringify(report));
 			$('#problem_reported').val(details.problem_reported);
 			$('#reported_by').val(details.reported_by);
 			$('input:radio[name=is_system_down][value='+details.is_system_down+']').attr('checked', 'checked');
@@ -93,8 +108,7 @@ currentLocale=window.localStorage.getItem("locale");
 				$("#remark_container").trigger("create");
 				for(var j in remarks[i].photos){
 
-					$("#photos_"+i).prepend(createRemarkPhoto(j,i,remarks[i].photos[j]));
-
+					$("#photos_"+i).prepend(createRemarkPhoto(j,i,report.photos[remarks[i].photos[j]].local));
 				}
 
 			}
@@ -130,15 +144,22 @@ currentLocale=window.localStorage.getItem("locale");
 			});	
 			$("#save").click(function(event, ui){
 				
-				alert(JSON.stringify(details));
+				
 				var validRemarks=[];
 				for(var i in remarks){
 					remarks[i].text=$("#remark_text_"+i).val();
 					for(var j in remarks[i].photos){
 						var imgsrc =$('#remark_img_'+j+'_'+i).attr("src");
-						remarks[i].photos[j]=imgsrc;
+						if(report.photos[remarks[i].photos[j]]==undefined){
+							var id =createNewPhotoRecord(imgsrc, "r"+j+'_'+i);
+							remarks[i].photos[j]=id;
+						}else{
+							
+								updatePhotoRecord(imgsrc, remarks[i].photos[j]);
+							
+						}
 					}
-					if(remarks[i].text!=""){
+					if(remarks[i].text!=""||remarks[i].photos.length>0){
 						validRemarks.push(remarks[i]);
 					}
 				}
@@ -163,6 +184,7 @@ currentLocale=window.localStorage.getItem("locale");
 				report.details=details;
 				report.project_id=$('#project_id').val();
 				saveSReport(report);
+				alert(JSON.stringify(report));
 			});	
 			$('.remark_camera').bind( "click", function(event, ui){
 
@@ -171,6 +193,11 @@ currentLocale=window.localStorage.getItem("locale");
 			});
 			$('#upload').click(function() {
 					$('#upload').addClass("ui-state-disabled");
+						$.mobile.loading( "show", {
+						text: d_locale_arr[currentLocale]["uploading_report"],
+			            textVisible: true,
+			            textonly: false,
+			   			 });
 					report.updated_at=moment().format("YYYY/MM/DD HH:mm:ss");
 					var reprot_str = JSON.stringify(report);
 						  // tmp value: [{"id":21,"children":[{"id":196},{"id":195},{"id":49},{"id":194}]},{"id":29,"children":[{"id":184},{"id":152}]},...]
@@ -180,40 +207,138 @@ currentLocale=window.localStorage.getItem("locale");
 						    //url: 'http://localhost/ies_report_sys/submit_maint_report.php',
 						    data: {'report': reprot_str},
 						    success: function(msg) {
-						    	alert(msg);
-
 						    	var res =msg.split("#####");
 								var report_str =res[res.length-1];
-								alert(report_str);
 								report=JSON.parse(report_str); 
-						    	$.mobile.loading( "hide" );
-						    	alert("upload successlly");
 						    	report.status="uploaded";
 						    	syncSReport(report);
-						    	$('#upload').removeClass("ui-state-disabled");
+
+						    	currentUploadIndex=1;
+						    	totalUpload=getTotalUpdateCount();
+						    	
+						    	$.mobile.loading( "show", {
+									text: d_locale_arr[currentLocale]["uploading_photo"]+currentUploadIndex+"/"+totalUpload,
+						            textVisible: true,
+						            textonly: false,
+						   			 });
+								uploadNextPhoto();
 						    },
 						    error: function(XMLHttpRequest, textStatus, errorThrown) {
 						    	alert(textStatus);
 						    }
 					});
-			});	
+			});
+			function updatePhotoRecord(imgsrc,photoKey){
+		  			if(report.photos[photoKey].local!=imgsrc){
+			  			report.photos[photoKey].local=imgsrc;
+			  			report.photos[photoKey].state='h';
+			  		}
+			  	}
+				function createNewPhotoRecord(imgsrc,key){
+					var id =getTimeStr()+"-"+key;
+			  		var photo ={};
+			  		photo.id=id;
+			  		photo.local=imgsrc;
+			  		photo.state='h';
+			  		report.photos[id]=photo;
+			  		return id;
+				}
+			function getTotalUpdateCount(){
+					var count=0;
+					for(var key in report.photos){ 
+								var photo=report.photos[key];
+									if(photo.state=='h'||photo.state=='s'){
+										count++
+									}
+
+						}
+					return count;
+				}
+				function uploadNextPhoto(){
+					
+						for(var key in report.photos){ 
+								currentUploadKey=key;
+								var photo=report.photos[key];
+									if(photo.state=='h'){
+										 uploadPhoto(photo.local,photo.id);
+										 return false;
+									}else if(photo.state=='s'){
+										uploadDataUrl(photo.local,photo.id);
+										return false;
+									}
+
+						}
+
+					
+					alert(d_locale_arr[currentLocale]["upload_finish"]);
+					$('#upload').removeClass("ui-state-disabled");
+					$.mobile.loading( "hide" );
+				}
+				function uploadDataUrl(imageURI,id) {
+					$.ajax({
+					  type: "POST",
+					  url: "http://uniquecode.net/job/ms/upload_data_url.php",
+					  data: {"image": imageURI,"id":id }
+					}).done(function( respond ) {
+						win(respond);
+					});
+				}
+				function uploadPhoto(imageURI,id) {
+					var options = new FileUploadOptions();
+					options.fileKey="file";
+					options.fileName=imageURI.substr(imageURI.lastIndexOf('/')+1);
+					options.mimeType="image/jpeg";
+
+					var params = {};
+					params.id = id;
+
+					options.params = params;
+					var ft = new FileTransfer();
+					ft.upload(imageURI, encodeURI("http://uniquecode.net/job/ms/upload.php"), win, fail, options);
+
+				}
+
+				function win(r) {
+					if(currentUploadIndex<totalUpload){
+				    	currentUploadIndex++;
+				    }
+				    report.photos[currentUploadKey].state='u';
+				    syncSReport(report);
+				    $.mobile.loading( "show", {
+									text: d_locale_arr[currentLocale]["uploading_photo"]+currentUploadIndex+"/"+totalUpload,
+						            textVisible: true,
+						            textonly: false,
+						   			 });
+				    uploadNextPhoto();
+
+				}
+
+				function fail(error) {
+				    alert("An error has occurred: Code = " + error.code+ error.source+ error.target);
+				    $('#upload').removeClass("ui-state-disabled");
+					$.mobile.loading( "hide" );
+
+				}	
 			function onRemarkImageSuccess(imageURI) {
 
 				var index=getIndex(currentRemarkCameraID);
-				alert(index);
 				$("#photos_"+index).prepend(createRemarkPhoto(remarks[index].photos.length,index,imageURI));
 				$("#photos_"+index).listview('refresh');
 				remarks[index].photos.push(imageURI);
-				alert(remarks[index].photos.length);
 			}
 
 			function captureRemarkImage() {
 					        // Launch device camera application,
 					        // allowing user to capture up to 2 images
-
-					        navigator.camera.getPicture(onRemarkImageSuccess, onFail, { quality: 50,
-					        	destinationType: Camera.DestinationType.FILE_URI });
-					    }
+					        
+					        navigator.camera.getPicture(onRemarkImageSuccess, onFail, { quality: 40,
+				destinationType: Camera.DestinationType.FILE_URI, encodingType: Camera.EncodingType.JPEG,targetWidth: 500,
+ 					 targetHeight: 375,
+ 					 saveToPhotoAlbum: true,correctOrientation:true });
+			}
+				function onFail(message) {
+				alert('Failed because: ' + message);
+			}
 					    function getIndex(id){
 					    	var res =id.split("_");
 					    	var index =res[res.length-1];
@@ -269,7 +394,7 @@ $( document ).on( "click", ".show-page-loading-msg", function() {
 				<a id="signatureLink"  href="#popupSignature" class=" ui-btn ui-btn-a ui-mini" data-rel="popup" data-mini="true" style="height:22px !important;" data-position-to="window" data-transition="fade"><img  id="signature" class=" ui-btn ui-btn-a ui-mini" ></a>
 				<a id="sign" href="#" class=" ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-edit" data-localize="sign">Sign</a>
 				<a id="save" href="#popupSaveSuccessInfo" data-rel="popup" data-position-to="window" data-transition="pop" href="#" class=" ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-check" data-localize="save">Save</a>
-				<a id="upload" href="#" class="show-page-loading-msg ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-recycle" data-theme="b" data-textonly="false" data-textvisible="true" data-msgtext="Loading ..." data-inline="true" data-localize="upload">Upload</a>
+				<a id="upload" href="#" class="show-page-loading-msg ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-recycle" data-theme="b"  data-localize="upload">Upload</a>
 			</div>	
 		</div>
 		<div data-role="popup" data-theme="b" id="popupSaveSuccessInfo"  class="ui-content" style="max-width:280px">
