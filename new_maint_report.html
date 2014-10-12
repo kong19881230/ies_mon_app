@@ -124,11 +124,21 @@
 				$("#deviceType").bind( "change", function(event, ui) {
 				
 					current_catalog_index=$("#deviceType").val();
+					refreshDevciceIDSelect(current_catalog_index,report.project_id);
 					checkFillRequired();
 
 				});
 
-		
+				$("#deviceID").bind( "change", function(event, ui) {
+				
+					var deviceID=$("#deviceID").val();
+					var project=jQuery.grep(projects, function(element, index){
+									  return element.id==report.project_id;
+									});
+					var currentCatalogs=project[0].catalogs;
+					$("#deviceModel").val(project[0].eq_lists[currentCatalogs[current_catalog_index]][deviceID].model);
+				});
+
 
 
 				$("#add_btn").click(function (e) {
@@ -138,6 +148,7 @@
 					var new_froms={};
 					
 					var new_froms = jQuery.extend(true, {}, empty_froms[current_catalog_index]);
+
 					new_froms.id=report.project_id+"_"+current_catalog_index+"_"+(report.froms.length+1)+getTimeStr();
 					new_froms.items=jQuery.grep(new_froms.items, function(element, index){
 						var project=element.projects[report.project_id];
@@ -146,6 +157,7 @@
 						}
 							return false;
 					});
+					
 					new_froms.device_id=$("#deviceID").val();
 					new_froms.device_model=$("#deviceModel").val();
 					
@@ -223,6 +235,24 @@
 					refreshUILocale(currentLocale);
 					$('select').selectmenu('refresh', true);
 				}
+				function refreshDevciceIDSelect(current_catalog_index,project_id){
+					
+					var project=jQuery.grep(projects, function(element, index){
+									  return element.id==project_id;
+									});
+					var type=project[0].catalogs[current_catalog_index];
+					$("#deviceID").empty();
+					$("#deviceID").append($('<option>', {
+							text: "Choose ...",
+							"data-localize":"new_maint_report.choose"}));
+					for(var key in project[0].eq_lists[type]){ 
+						$("#deviceID").append($('<option>', {
+							value: key,
+							text: key}));
+					}
+					refreshUILocale(currentLocale);
+					$('select').selectmenu('refresh', true);
+				}
 				$("#scanBarcode").click(function (e) {
 					onScanBarcode();
 				});
@@ -250,17 +280,12 @@
 				}
 			});
 function checkFillRequired(){
-	if($("#projects").val()!="Choose ..." &&  $("#cycle").val()!="Choose ..."  &&  $("#deviceType").val()!="Choose ..."){
+	if($("#projects").val()!="Choose ..." &&  $("#cycle").val()!="Choose ..."  &&  $("#deviceType").val()!="Choose ..."&&$("#projects").val()!="選擇 ..." &&  $("#cycle").val()!="選擇 ..."  &&  $("#deviceType").val()!="選擇 ..."){
 
 		$('#add_btn').removeClass("ui-state-disabled");
 	}else{
 		$('#add_btn').addClass("ui-state-disabled");
 	}
-}
-
-function getTimeStr(){
-	var now =new Date();
-	return ""+now.getDate()+now.getHours()+now.getMinutes()+now.getSeconds();
 }
 
 	
@@ -321,14 +346,16 @@ function getTimeStr(){
 		<div class="ui-field-contain ui-shadow ">
 			<label for="textinput-1" data-localize="new_maint_report.device_id">Device ID</label>
 				
-				<input   class="input-textbox"  type="text" name="textinput-5" id="deviceID"   />
-				
+			
+			<select data-native-menu="false" id="deviceID" name="deviceID"  >
+			<option data-localize="new_maint_report.choose">Choose ...</option>		
+			</select>
 			
 		</div>
 		<div class="ui-field-contain ui-shadow ">
 			<label for="textinput-1" data-localize="new_maint_report.device_model">Device Model</label>
 				
-				<input   class="input-textbox"  type="text" name="textinput-5" id="deviceModel"   />
+				<input   class="input-textbox ui-state-disabled"  type="text" name="textinput-5" id="deviceModel"   />
 				
 			
 		</div>

@@ -1667,7 +1667,14 @@ var projects= [
 "seq" :"MM-0608020-10",
 "created_at" :"2014-06-09 23:27:35",
 "cycles":[1,6,12],
-"catalogs":["heat","boiler","chimney"]
+"catalogs":["heat","boiler","chimney"],
+"eq_lists":{"boiler":{"1# 熱水鍋爐":{"model":"Viessmann - Vitocrossal 300-575kW","type":"boiler"},
+				"2# 熱水鍋爐":{"model":"Viessmann - Vitocrossal 300-575kW","type":"boiler"},
+				"3# 熱水鍋爐":{"model":"Viessmann - Vitocrossal 300-575kW","type":"boiler"}},
+			"heat":{"CU-01":{"model":"","type":"heat"},
+					"CU-02":{"model":"","type":"heat"}},
+			"chimney":{"Fan 1":{"model":"","type":"chimney"}}
+}
 },
 { 	"id": "2",
 "name_cn": "蘭桂坊",
@@ -1683,7 +1690,21 @@ var projects= [
 "seq": "MM-0606014-05",
 "created_at": "2014-06-09 23:27:35",
 "cycles":[1,2,6,12],
-"catalogs":["heat","boiler","chimney"]
+"catalogs":["heat","boiler","chimney"],
+"eq_lists":{"boiler":{"Boiler VB-01":{"model":"Viessmann - Vitoplex 100","type":"boiler"},
+					"Boiler VB-02":{"model":"Viessmann - Vitoplex 100","type":"boiler"},
+					"Boiler VB-03":{"model":"Viessmann - Vitoplex 100","type":"boiler"},
+					"Boiler VB-04":{"model":"Viessmann - Vitoplex 200","type":"boiler"},
+					"Boiler VB-05":{"model":"Viessmann - Vitoplex 200","type":"boiler"}},
+			"heat":{"CU-01":{"model":"","type":"heat"},
+					"CU-02":{"model":"","type":"heat"},
+					"CU-03":{"model":"","type":"heat"},
+					"CU-04":{"model":"","type":"heat"},
+					"CU-05":{"model":"","type":"heat"},
+					"CU-06":{"model":"","type":"heat"}},
+			"chimney":{"Exhaust Fan 1":{"model":"","type":"chimney"}}
+
+}
 },
 { 	"id": "4",
 "name_cn": "新葡京",
@@ -1691,7 +1712,20 @@ var projects= [
 "seq":"MM-0406012-04",
 "created_at":"2014-06-09 23:27:35",
 "cycles":[1,3,6,12],
-"catalogs":["heat","boiler","chimney"]
+"catalogs":["heat","boiler","chimney"],
+"eq_lists":{"boiler":{"1# 熱水鍋爐":{"model":"Viessmann - Vitoplex 1400KW","type":"boiler"},
+					"2# 熱水鍋爐":{"model":"Viessmann - Vitoplex 1400KW","type":"boiler"},
+					"3# 熱水鍋爐":{"model":"Viessmann - Vitoplex 1400KW","type":"boiler"},
+					"4# 熱水鍋爐":{"model":"Viessmann - Vitoplex 1400KW","type":"boiler"}},
+			"heat":{"CU-01":{"model":"","type":"heat"},
+					"CU-02":{"model":"","type":"heat"},
+					"CU-03":{"model":"","type":"heat"},
+					"CU-04":{"model":"","type":"heat"},
+					"CU-05":{"model":"","type":"heat"},
+					"CU-06":{"model":"","type":"heat"}},
+			"chimney":{"Exhaust Fan 1":{"model":"","type":"chimney"},
+						"Exhaust Fan 2":{"model":"","type":"chimney"}}
+}
 },
 { 	"id": "5",
 "name_cn": "金沙",

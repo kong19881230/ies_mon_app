@@ -95,6 +95,24 @@
 				var  froms=JSON.parse(window.localStorage.getItem("currentForm")); 
 				 var custom_tab_list=froms.catalogs;
 				var from_default_name={};
+				var projectArr=jQuery.grep(projects, function(element, index){
+									  return element.id==report.project_id;
+									});
+
+
+				var project=projectArr[0];
+				for(var key in project.eq_lists[froms.from_type]){ 
+						$("#deviceID").append($('<option>', {
+							value: key,
+							text: key}));
+				}
+
+				$("#deviceID").bind( "change", function(event, ui) {
+				
+					var deviceID=$("#deviceID").val();
+					$("#deviceModel").val(project[0].eq_lists[froms.from_type][deviceID].model);
+				});
+				$("#deviceID").selectmenu('refresh', true);
 				var remarks=froms.remark;
 				if(remarks.length==0){
 
@@ -135,7 +153,7 @@
 					}
 				}
 				//$('#tab_navbar_com').trigger('create');
-				$('select').slider(); 
+				$('.ui-slider-switch').slider(); 
 				$(".savebtn").click(function() {
 
 					for(var index in items){ 
@@ -591,18 +609,17 @@
 					<div style="float: left; width: 40%"  class="right-container">
 					 <button style="margin:5px" id="submit-1"  onClick="onScanBarcode()" class=" ui-btn ui-icon-search ui-btn-icon-left ui-shadow ui-corner-all" data-localize="maint_from.scan_qr">Scan QRcode</button>
 					
-					
-					<input   class="input-textbox"  type="text" name="textinput-5" id="deviceID"   />
-						
-					
-					</div>
+						<select class="input-textbox" data-native-menu="false" id="deviceID" name="deviceID"  >
+						<option data-localize="new_maint_report.choose">Choose ...</option>		
+						</select>
+				</div>
 			</div>
 			<div class="ui-field-contain ui-shadow ">
 				<label for="textinput-1" data-localize="maint_from.device_model">Device Model</label>
 					<div style="float: left; width: 40%"  class="right-container">
 				
 					
-					<input   class="input-textbox"  type="text" name="textinput-5" id="deviceModel"   />
+					<input   class="input-textbox ui-state-disabled"  type="text" name="textinput-5" id="deviceModel"    />
 						
 					
 					</div>

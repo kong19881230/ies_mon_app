@@ -2,9 +2,9 @@
   "back":"Back",
   "save":"Save",
   "upload":"Upload",
- "sign":"簽名",
-  "save_succ":"成功儲存!!!",
-  "cancel":"取消",
+ "sign":"Sign",
+  "save_succ":"Save Successfully!!!",
+  "cancel":"Cancel",
   "index": {
     "title":"IES Maintainance Report App",
     "maintain":"Maintenance Report",
