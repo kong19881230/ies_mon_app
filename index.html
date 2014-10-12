@@ -140,13 +140,13 @@
 				$("#new_s_report").click(function(event, ui) {
 					currentSReport=	{
 						"name_en" : "service report",
-						"name_cn" : "",
+						"name_cn" : "工作報告",
 						"type" : 1,
 						"project_id": "",
 						"created_by" : "Thomas",
 						"created_at" : moment().format("YYYY/MM/DD HH:mm:ss"),
 						"updated_at" : moment().format("YYYY/MM/DD HH:mm:ss"),
-						"details":{"situation":[],"reported_at":  moment().format("DD/MM/YYYY HH:mm")},
+						"details":{"situation":[],"reported_at":  moment().format("YYYY-MM-DDTHH:mm"),"start_service_at":moment().format("YYYY-MM-DD hh:mm"),"end_service_at":moment().format("YYYY-MM-DD hh:mm")},
 						"photos":{},
 						"status" :"filling",
 						"index":-1

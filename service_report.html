@@ -98,6 +98,9 @@ currentLocale=window.localStorage.getItem("locale");
 			$('#fax').val(details.fax);
 			$('#email').val(details.email);
 			$("input[type='radio']").checkboxradio("refresh");
+			$('#start_service').val(moment(details.start_service_at,"YYYY-MM-DD hh:mm").format("hh:mm"));
+			$('#end_service').val(moment(details.end_service_at,"YYYY-MM-DD hh:mm").format("hh:mm"));
+			$('#service_date').val(moment(details.start_service_at,"YYYY-MM-DD hh:mm").format("YYYY-MM-DD"));
 			var remarks=report.details.situation;
 
 			if(remarks.length==0){
@@ -145,61 +148,62 @@ currentLocale=window.localStorage.getItem("locale");
 			});	
 			$("#save").click(function(event, ui){
 				
-				
-				var validRemarks=[];
-				for(var i in remarks){
-					remarks[i].text=$("#remark_text_"+i).val();
-					for(var j in remarks[i].photos){
-						var imgsrc =$('#remark_img_'+j+'_'+i).attr("src");
-						if(report.photos[remarks[i].photos[j]]==undefined){
-							var id =createNewPhotoRecord(imgsrc, "r"+j+'_'+i);
-							remarks[i].photos[j]=id;
-						}else{
-							
-								updatePhotoRecord(imgsrc, remarks[i].photos[j]);
-							
+					var validRemarks=[];
+					for(var i in remarks){
+						remarks[i].text=$("#remark_text_"+i).val();
+						for(var j in remarks[i].photos){
+							var imgsrc =$('#remark_img_'+j+'_'+i).attr("src");
+							if(report.photos[remarks[i].photos[j]]==undefined){
+								var id =createNewPhotoRecord(imgsrc, "r"+j+'_'+i);
+								remarks[i].photos[j]=id;
+							}else{
+								
+									updatePhotoRecord(imgsrc, remarks[i].photos[j]);
+								
+							}
+						}
+						if(remarks[i].text!=""||remarks[i].photos.length>0){
+							validRemarks.push(remarks[i]);
 						}
 					}
-					if(remarks[i].text!=""||remarks[i].photos.length>0){
-						validRemarks.push(remarks[i]);
+						
+					details.situation=validRemarks;
+					details.problem_reported=$('#problem_reported').val();
+					details.is_system_down=$("input:radio[name='is_system_down']:checked").val();
+					details.reported_by=$('#reported_by').val();
+					details.reported_at=$('#reported_at').val();
+					details.device_model=$('#device_model').val();
+					details.device_id=$('#device_id').val();
+					details.power=$('#power').val();
+					details.machine_type=$('#machine_type').val();
+					details.location=$('#location').val();
+					details.start_service_at=$('#service_date').val()+" "+$('#start_service').val();
+					details.end_service_at=$('#service_date').val()+" "+$('#end_service').val();
+					details.inspection_found=$('#inspection_found').val();
+					details.status_after_service=$("input:radio[name='status_after_service']:checked").val();
+
+					details.reported_at=$('#reported_at').val();
+					details.remarks=$('#remarks').val();
+					details.contact_name=$('#contact_name').val();
+					details.designation=$('#designation').val();
+					details.phone=$('#phone').val();
+					details.fax=$('#fax').val();
+					details.email=$('#email').val();
+
+					report.details=details;
+					report.project_id=$('#project_id').val();
+					if(report.project_id!=""){
+					var project=jQuery.grep(projects, function(element, index){
+											  return element.id==report.project_id;
+											});
+						
+
+					report.name_cn= project[0].name_cn+'工作報告'+moment().format("YYYYMMDD");
+					report.name_en= project[0].name_en+' Service Report '+moment().format("YYYYMMDD"); 
 					}
-				}
-					
-				details.situation=validRemarks;
-				details.problem_reported=$('#problem_reported').val();
-				details.is_system_down=$("input:radio[name='is_system_down']:checked").val();
-				details.reported_by=$('#reported_by').val();
-				details.reported_at=$('#reported_at').val();
-				details.device_model=$('#device_model').val();
-				details.device_id=$('#device_id').val();
-				details.power=$('#power').val();
-				details.machine_type=$('#machine_type').val();
-				details.location=$('#location').val();
-				details.start_service_at=$('#service_date').val()+" "+$('#start_service').val();
-				details.end_service_at=$('#service_date').val()+" "+$('#end_service').val();
-				details.inspection_found=$('#inspection_found').val();
-				details.status_after_service=$("input:radio[name='status_after_service']:checked").val();
-
-				details.reported_at=$('#reported_at').val();
-				details.remarks=$('#remarks').val();
-				details.contact_name=$('#contact_name').val();
-				details.designation=$('#designation').val();
-				details.phone=$('#phone').val();
-				details.fax=$('#fax').val();
-				details.email=$('#email').val();
-
-				report.details=details;
-				report.project_id=$('#project_id').val();
-
-				var project=jQuery.grep(projects, function(element, index){
-										  return element.id==report.project_id;
-										});
-					
-
-				report.name_cn= project[0].name_cn+'工作報告'+moment().format("YYYYMMDD");
-				report.name_en= project[0].name_en+' Service Report '+moment().format("YYYYMMDD"); 
-				saveSReport(report);
-				alert(JSON.stringify(report));
+					saveSReport(report);
+					alert(JSON.stringify(report));
+				
 			});	
 			$('.remark_camera').bind( "click", function(event, ui){
 
@@ -461,7 +465,7 @@ $( document ).on( "click", ".show-page-loading-msg", function() {
 				<div class="ui-field-contain ui-shadow ">
 					<label for="textinput-1" data-localize="service_report.call_report_time">Call Reported Time</label>
 					<div style="float: left; width: 40%"  class="right-container">	
-						<input   class="input-textbox"  type="text" name="textinput-5" id="reported_at"   />
+						<input    type="datetime-local" data-clear-btn="true" name="textinput-5" id="reported_at"   />
 					</div>
 				</div>
 				<div class="ui-field-contain ui-shadow ">
