@@ -83,6 +83,7 @@ currentLocale=window.localStorage.getItem("locale");
 			$('#problem_reported').val(details.problem_reported);
 			$('#reported_by').val(details.reported_by);
 			$('input:radio[name=is_system_down][value='+details.is_system_down+']').attr('checked', 'checked');
+			$('#reported_at').val(details.reported_at);
 			$('#device_model').val(details.device_model);
 			$('#device_id').val(details.device_id);
 			$('#power').val(details.power);
@@ -168,21 +169,35 @@ currentLocale=window.localStorage.getItem("locale");
 				details.problem_reported=$('#problem_reported').val();
 				details.is_system_down=$("input:radio[name='is_system_down']:checked").val();
 				details.reported_by=$('#reported_by').val();
+				details.reported_at=$('#reported_at').val();
 				details.device_model=$('#device_model').val();
 				details.device_id=$('#device_id').val();
 				details.power=$('#power').val();
 				details.machine_type=$('#machine_type').val();
 				details.location=$('#location').val();
+				details.start_service_at=$('#service_date').val()+$('#start_service').val();
+				details.end_service_at=$('#service_date').val()+$('#end_service').val();
 				details.inspection_found=$('#inspection_found').val();
 				details.status_after_service=$("input:radio[name='status_after_service']:checked").val();
+
+				details.reported_at=$('#reported_at').val();
 				details.remarks=$('#remarks').val();
 				details.contact_name=$('#contact_name').val();
 				details.designation=$('#designation').val();
 				details.phone=$('#phone').val();
 				details.fax=$('#fax').val();
 				details.email=$('#email').val();
+
 				report.details=details;
 				report.project_id=$('#project_id').val();
+
+				var project=jQuery.grep(projects, function(element, index){
+										  return element.id==report.project_id;
+										});
+					
+
+				report.name_cn= project[0].name_cn+'工作報告'+moment().format("YYYYMMDD");
+				report.name_en= project[0].name_en+' Service Report '+moment().format("YYYYMMDD"); 
 				saveSReport(report);
 				alert(JSON.stringify(report));
 			});	
@@ -412,6 +427,14 @@ $( document ).on( "click", ".show-page-loading-msg", function() {
 			</div>
 			<div id="problem" data-role="tabs" >
 				<div class="ui-field-contain ui-shadow ">
+					<label for="textinput-1" data-localize="service_report.customer">Customer</label>
+					<div style="float: left; width: 40%"  class="right-container">
+						<select name="project_id" id="project_id" data-native-menu="false">
+							<option data-localize="service_report.select_a_customer">Select a Customer</option>
+						</select>
+					</div>
+				</div>
+				<div class="ui-field-contain ui-shadow ">
 					<label for="textarea" data-localize="service_report.problem_reported">Problem Reported</label>
 					<div style="width: 98%;margin-left: 1em;margin-right: 1em"  class="right-container">	
 						<textarea cols="40" rows="16" name="problem_reported" id="problem_reported"></textarea>
@@ -432,6 +455,12 @@ $( document ).on( "click", ".show-page-loading-msg", function() {
 					<label for="textinput-1" data-localize="service_report.call_report_by">Call Reported By</label>
 					<div style="float: left; width: 40%"  class="right-container">	
 						<input   class="input-textbox"  type="text" name="textinput-5" id="reported_by"   />
+					</div>
+				</div>
+				<div class="ui-field-contain ui-shadow ">
+					<label for="textinput-1" data-localize="service_report.call_report_time">Call Reported Time</label>
+					<div style="float: left; width: 40%"  class="right-container">	
+						<input   class="input-textbox"  type="text" name="textinput-5" id="reported_at"   />
 					</div>
 				</div>
 				<div class="ui-field-contain ui-shadow ">
@@ -499,6 +528,24 @@ $( document ).on( "click", ".show-page-loading-msg", function() {
 						</div>
 					</div>
 					<div class="ui-field-contain ui-shadow ">
+					<label for="textinput-1" data-localize="service_report.service_date">Date of Service</label>
+					<div style="float: left; width: 40%"  class="right-container">	
+						<input  type="date" data-clear-btn="false" name="textinput-5" id="service_date"   />
+					</div>
+				</div>
+				<div class="ui-field-contain ui-shadow ">
+					<label for="textinput-1" data-localize="service_report.start_service">Start of Service</label>
+					<div style="float: left; width: 40%"  class="right-container">	
+						<input     type="time" data-clear-btn="true" name="textinput-5" id="start_service"   />
+					</div>
+				</div>
+				<div class="ui-field-contain ui-shadow ">
+					<label for="textinput-1" data-localize="service_report.end_service">End of Service</label>
+					<div style="float: left; width: 40%"  class="right-container">	
+						<input    type="time" data-clear-btn="true" name="textinput-5" id="end_service"   />
+					</div>
+				</div>
+					<div class="ui-field-contain ui-shadow ">
 						<label for="textinput-1" data-localize="service_report.status_af_ser">Status After Service</label>
 						<div style="width: 98%;margin-left: 1em;margin-right: 1em"  class="right-container">	
 							<div style="margin:1%" data-role="controlgroup" data-type="horizontal" data-mini="true">
@@ -521,14 +568,7 @@ $( document ).on( "click", ".show-page-loading-msg", function() {
 				</ul>
 			</div>
 			<div id="project">
-				<div class="ui-field-contain ui-shadow ">
-					<label for="textinput-1" data-localize="service_report.customer">Customer</label>
-					<div style="float: left; width: 40%"  class="right-container">
-						<select name="project_id" id="project_id" data-native-menu="false">
-							<option data-localize="service_report.select_a_customer">Select a Customer</option>
-						</select>
-					</div>
-				</div>
+				
 				<div class="ui-field-contain ui-shadow ">
 					<label for="textarea" data-localize="service_report.remarks">Remarks</label>
 					<div style="width: 98%;margin-left: 1em;margin-right: 1em"  class="right-container">	
