@@ -381,6 +381,9 @@ width: 5em;
 									if(photo.state=='h'){
 										 uploadPhoto(photo.local,photo.id);
 										 return false;
+									}else if(photo.state=='s'){
+										uploadDataUrl(photo.local,photo.id);
+										return false;
 									}
 
 						}
@@ -390,7 +393,17 @@ width: 5em;
 					$('#upload').removeClass("ui-state-disabled");
 					$.mobile.loading( "hide" );
 				}
+				function uploadDataUrl(imageURI,id) {
+					$.ajax({
+					  type: "POST",
+					  url: "http://uniquecode.net/job/ms/upload_data_url.php",
+					  data: {"image": imageURI,"id":id }
+					}).done(function( respond ) {
+						win(respond);
 
+					 	 alert(respond);
+					});
+				}
 				function uploadPhoto(imageURI,id) {
 					var options = new FileUploadOptions();
 					options.fileKey="file";
