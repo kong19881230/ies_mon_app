@@ -65,7 +65,12 @@
 		}
 		#maint_report_btn:after { background:  url("images/report.png") 50% 50% no-repeat;  background-size: 24px 24px; }
 		#emergency_report_btn:after { background:  url("images/repair.png") 50% 50% no-repeat;  background-size: 24px 24px; }
-		
+		.modify{
+			background: none repeat scroll 0% 0% rgba(209, 64, 64, 1)!important;
+		}
+		.upload{
+			background: none repeat scroll 0% 0% rgba(21, 159, 81, 1)!important;
+		}
 	</style>
 	<script type="text/javascript" charset="utf-8">
 
@@ -196,7 +201,7 @@ function createReportItem(index,report){
 	return '<li><a id="report_item_'+report.type+'_'+index+'" href="#" class="report_item">\
 	<img  src="images/report.png"\ class="ui-li-thumb">\
 	<p>'+report["name_"+currentLocale]+'</p>\
-	<p class="ui-li-aside">'+report.status+'</p>\
+	<p class="ui-li-aside '+(report.status=="uploaded"?"upload":"")+(report.status=="modified"?"modify":"")+'">'+report.status+'</p>\
 </a></li>';
 }
 
