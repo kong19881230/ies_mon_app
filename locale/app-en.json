@@ -22,7 +22,9 @@
     "device_type":"Device Type *",
     "device_id":"Device ID",
     "device_model":"Device Model",
-    "new_from":"New From"
+    "new_from":"New From",
+    "technican":"Maintenance Technican",
+    "new_technican":"New Maintenance Technican"
 
   },
   "maint_from":{

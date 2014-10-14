@@ -64,6 +64,9 @@
 				};
 			
 				var d_locale_arr={"en":{
+						"repaired":"Repaired",
+						"normal":"Normal",
+						"wait":"Waiting",
 						"check":"Checked",
 						"uncheck":"Not Checked",
 						"info":"Info",
@@ -75,6 +78,9 @@
 						"boiler":"Boiler",
 						"fill_remark":"Fill Remark"
 				},"cn":{
+						"repaired":"巳修復",
+						"normal":"正常",
+						"wait":"侍處理",
 						"check":"巳檢查",
 						"uncheck":"未檢查",
 						"info":"基本資料",
@@ -158,8 +164,11 @@
 					  addFormItem(custom_tab_list[i]+"_items",tmp[j],parseInt(j)+1);
 					}
 				}
+				 $("input[type='radio']").checkboxradio();
+					$('.mycontrolgroup').controlgroup();
+				// $("input[type='radio']").checkboxradio();
 				//$('#tab_navbar_com').trigger('create');
-				$('.ui-slider-switch').slider(); 
+				//$('.ui-slider-switch').slider(); 
 				$(".savebtn").click(function() {
 
 					for(var index in items){ 
@@ -190,8 +199,10 @@
 					  	
 					  }
 					  if(items[index].result.type== "bool"){
-							
-							items[index].result.value=$("#filp_"+items[index].index).val();
+							var value=$("input:radio[name='filp_"+items[index].index+"'']:checked").val();
+							if(value!=undefined){
+								items[index].result.value=value;
+							}
 							
 					  }else if(items[index].result.type== "s_value"){
 							items[index].result.value=$("#textinput_"+items[index].index).val();
@@ -317,19 +328,18 @@
 						$.mobile.loading( "hide" );
 
 				});
-				$('.ui-slider-switch').on('change', function(event, ui) {
-				
-							var res = event.currentTarget.id.split("_");
+				$('input[type="radio"]').change( function(event, ui) {
+					var res = event.currentTarget.name.split("_");
 							var index =res[res.length-1];
-							
 							for(var i in items){ 
 								if(items[i].index==index){
 									items[i].result.value=event.currentTarget.value;
 										break;
 								}
 							}
-						refreshAllCounter();
-				});
+					refreshAllCounter();
+                });   
+				
 				function refreshAllCounter(){
 					for(var i in custom_tab_list){
 						$("."+custom_tab_list[i]+"_count").text(calCounter(items,custom_tab_list[i]));
@@ -387,13 +397,22 @@
 			
 				
 				if(item.result.type == "bool"){
-					$("#"+parent).append('<div id="item_'+item.index+'" class="ui-field-contain ui-shadow "> \
+
+
+
+					$("#"+parent).append('<div id="item_'+item.index+'"  class="ui-field-contain ui-shadow "> \
 							<label for="textinput-1">'+i+'. '+item["item_name_"+currentLocale] +'</label> \
-								 <select name="flip-1" id="filp_'+item.index+'" data-role="slider" data-theme="c" class="ui-slider-switch"> \
-									<option value="false">'+d_locale_arr[currentLocale]['uncheck']+'</option> \
-									<option '+(item.result.value=="true"?'selected=""':'') + ' value="true">'+d_locale_arr[currentLocale]['check']+'</option>	\
-								</select>'+'</div>');
-					
+								 <div id="controlgroup_'+item.index+'" class="mycontrolgroup" data-role="controlgroup" data-type="horizontal" data-mini="true">\
+							<label for="radio-choice-d'+item.index+'" >'+d_locale_arr[currentLocale]['normal']+'</label>\
+							<input id="radio-choice-d'+item.index+'" type="radio" name="filp_'+item.index+'" value="normal" >\
+							<label for="radio-choice-e'+item.index+'" >'+d_locale_arr[currentLocale]['repaired']+'</label>\
+							<input id="radio-choice-e'+item.index+'" type="radio" name="filp_'+item.index+'" value="repaired">\
+							<label for="radio-choice-f'+item.index+'" >'+d_locale_arr[currentLocale]['wait']+'</label>\
+							<input id="radio-choice-f'+item.index+'" type="radio" name="filp_'+item.index+'" value="wait">\
+						</div></div>');
+					if(item.result.value!="false"){
+						$('input:radio[name=filp_'+item.index+'][value='+item.result.value+']').attr('checked', 'checked');
+					}
 				}else if(item.result.type == "s_value"){
 			
 				

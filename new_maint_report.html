@@ -83,7 +83,14 @@
 				var report =JSON.parse(window.localStorage.getItem("currentMReport")); 
 				
 				
-				
+				var technicans=[];
+				var technicansStr=window.localStorage.getItem("technicans");
+
+				if(technicansStr){
+					technicans =JSON.parse(technicansStr); 
+				}
+				alert(JSON.stringify(technicans));
+
 				var current_catalog_index=-1;
 				var currentCycles=[];
 				var currentCatalogs=[];
@@ -99,7 +106,11 @@
 						value: projects[index].id,
 						text: projects[index]["name_"+currentLocale]}));
 				}
-
+				for(var index in technicans){ 
+					$("#technican").append($('<option>', {
+						value: technicans[index],
+						text: technicans[index]}));
+				}
 				
 			
 				$('#add_btn').addClass("ui-state-disabled");
@@ -138,13 +149,14 @@
 					var currentCatalogs=project[0].catalogs;
 					$("#deviceModel").val(project[0].eq_lists[currentCatalogs[current_catalog_index]][deviceID].model);
 				});
-
+				
 
 
 				$("#add_btn").click(function (e) {
 					current_catalog_index=$("#deviceType").val();
 					report.project_id=$("#projects").val();
 					report.cycle_type=$("#cycle").val();
+					report.technican=$("#technican").val();
 					var new_froms={};
 					
 					var new_froms = jQuery.extend(true, {}, empty_froms[current_catalog_index]);
@@ -186,19 +198,27 @@
 
 
 
-
-
-
-
-
 				
-
-				
-				
-				$('#save').click(function() {
-					saveMReport(report);
-
+				$('#new_tech').click(function() {
+					var name=$('#technican_name').val();
+					if(name!=""){
+						technicans.push(name);
+						window.localStorage.setItem("technicans", JSON.stringify(technicans));
+					}
+					$("#technican").append($('<option>', {
+						value: name,
+						text: name}));
+					$("#technican").selectmenu('refresh', true);
+					$('#technican_name').val("");
 				});
+
+
+
+
+				
+
+				
+				
 				function refreshSelect(project_id){
 					
 					var project=jQuery.grep(projects, function(element, index){
@@ -359,17 +379,43 @@ function checkFillRequired(){
 				
 			
 		</div>
+			<div class="ui-field-contain ui-shadow ">
+
+			<label for="textinput-1" data-localize="new_maint_report.technican">Maintenance Technican
+			</label>
+			
+			
+			<select data-native-menu="false" id="technican" name="technican"  >
+			<option data-localize="new_maint_report.choose">Choose ...</option>		
+			</select>
+			
+		</div>
+		<div class="ui-field-contain ui-shadow " style="height:70px!important;">
+		<div data-role="controlgroup" data-type="horizontal" class="ui-btn-left">
+		<a href="#popupNewTechnican" data-rel="popup" data-position-to="window" data-transition="pop" class="ui-btn ui-btn-icon-right ui-icon-plus" data-localize="new_maint_report.new_technican">new technican</a>	
+		</div>	
+			</div>
+
+
+			<div data-role="popup" id="popupNewTechnican" data-overlay-theme="b" data-theme="a" data-dismissible="false" style="width:400px;height:110px">
 		
-		
-		
-		
+			<div role="main" class="ui-content">
+				
+					<div data-role="controlgroup" data-type="horizontal"  data-theme="a" >
+					<input id="technican_name"  data-wrapper-class="controlgroup-textinput ui-btn"  type="text" name="textinput-5"  />
+
+					<a id="new_tech" href="#" data-rel="back" class="ui-btn" data-transition="flow" data-localize="new_maint_report.new_technican" style="line-height: 2.2em;">new technican</a>
+					</div>
+					
+			</div>
+		</div>
 		<div data-role="footer" data-theme="b" data-position="fixed">
 			
 			<div class="ui-bar">
 				
 				
 			</div>
-			<div data-role="controlgroup" data-type="horizontal" class="ui-mini ui-btn-left">
+			<div data-role="controlgroup" data-type="horizontal" class="ui-btn-left">
 				<a id="add_btn" href="#" rel="external" class="ui-btn ui-btn-icon-right ui-icon-plus" data-localize="new_maint_report.new_from">Add</a>
 
 				

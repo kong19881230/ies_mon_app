@@ -63,10 +63,30 @@
 			color: rgb(255, 255, 255) !important;
 			text-shadow: 0 1px 0 rgb(0, 85, 153) !important;
 		}
-		#maint_report_btn:after { background:  url("images/report.png") 50% 50% no-repeat;  background-size: 24px 24px; }
-		#emergency_report_btn:after { background:  url("images/repair.png") 50% 50% no-repeat;  background-size: 24px 24px; }
+		#maint_report_btn:after { background:  url("images/report.png") 50% 50% no-repeat;  background-size: 72px 72px;
+			margin-left: -33px;
+			width: 66px;
+			height: 66px;
+			border-radius: 2em;
+		 }
+		 #maint_report_btn{
+		 		font-size: 1.5em!important;
+				line-height: 1.5!important;
+				padding-top: 4em;
+		 }
+		#emergency_report_btn:after { background:  url("images/repair.png") 50% 50% no-repeat; background-size: 72px 72px;
+			margin-left: -33px;
+			width: 66px;
+			height: 66px;
+			border-radius: 2em; }
+
+		#emergency_report_btn{
+		 		font-size: 1.5em!important;
+				line-height: 1.5!important;
+				padding-top: 4em;
+		 }
 		.modify{
-			background: none repeat scroll 0% 0% rgba(209, 64, 64, 1)!important;
+			background: none repeat scroll 0% 0% rgba(164, 30, 129, 1)!important;
 		}
 		.upload{
 			background: none repeat scroll 0% 0% rgba(21, 159, 81, 1)!important;
@@ -85,6 +105,15 @@
 				
 			}
 
+				var d_locale_arr={"en":{
+						"uploaded":"Uploaded",
+						"modified": "Modified",
+						"filling" : "Filling"
+				},"cn":{
+						"uploaded":"巳上傳",
+						"modified": "巳修改",
+						"filling" : "未完成"
+				}}
 			$(document).ready(function(){
 				currentLocale=window.localStorage.getItem("locale");
 				if(!currentLocale){
@@ -201,7 +230,7 @@ function createReportItem(index,report){
 	return '<li><a id="report_item_'+report.type+'_'+index+'" href="#" class="report_item">\
 	<img  src="images/report.png"\ class="ui-li-thumb">\
 	<p>'+report["name_"+currentLocale]+'</p>\
-	<p class="ui-li-aside '+(report.status=="uploaded"?"upload":"")+(report.status=="modified"?"modify":"")+'">'+report.status+'</p>\
+	<p class="ui-li-aside '+(report.status=="uploaded"?"upload":"")+(report.status=="modified"?"modify":"")+'">'+d_locale_arr[currentLocale][report.status]+'</p>\
 </a></li>';
 }
 
@@ -272,7 +301,7 @@ function createReportItem(index,report){
 
 				<ul id="m_report_list" data-role="listview" data-inset="true">
 					<li><a id="new_m_report"  href="#">
-						<img src="images/report.png" class="ui-li-thumb">
+						<img src="images/new_report.png" class="ui-li-thumb">
 						<p data-localize="index.new_report">New Report</p>
 
 					</a></li>
@@ -291,7 +320,7 @@ function createReportItem(index,report){
 
 				<ul id="s_report_list" data-role="listview" data-inset="true">
 					<li><a id="new_s_report" href="#">
-						<img src="images/report.png" class="ui-li-thumb">
+						<img src="images/new_report.png" class="ui-li-thumb">
 						<p data-localize="index.new_report">New Report</p>
 					</a></li>
 

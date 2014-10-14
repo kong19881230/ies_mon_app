@@ -23,8 +23,9 @@
     "device_type":"設備類型 *",
     "device_id":"編號",
     "device_model":"型號",
-    "new_from":"新增表單"
-
+    "new_from":"新增表單",
+    "technican":"保養技術員",
+    "new_technican":"新增保養技術員"
   },
   "maint_from":{
      "remark":"備註",
