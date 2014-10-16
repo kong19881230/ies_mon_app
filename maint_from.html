@@ -15,7 +15,11 @@
 	<script src="js/jquery.localize.min.js"></script>
 	<script type="text/javascript" charset="utf-8" src="cordova.js"></script>
 	<style>
-	
+	.remark_count{
+			background-color: rgba(180, 16, 16, 1)!important;
+			padding: 0.7em 0.5em!important;
+	}
+
 	.mycontrolgroup .ui-controlgroup-controls
 	{
 		width: 100% !important;
@@ -59,6 +63,8 @@
 			var currentCameraID="";
 			var currentRemarkCameraID="";
 			var empty_remark={
+								"ref":"",
+								"title":"",
 								"text":"",
 								"photos":[]
 				};
@@ -126,14 +132,14 @@
 				$("#deviceID").selectmenu('refresh', true);
 				refreshUILocale(currentLocale);
 				var remarks=froms.remark;
-				if(remarks.length==0){
+				// if(remarks.length==0){
 
 
-					remarks.push(empty_remark);
-				}
+				// 	remarks.push(empty_remark);
+				// }
 
 				for(var i in remarks){
-					$("#remark_container").append(createRemark(i,remarks[i].text));
+					$("#remark_container").append(createRemark(remarks[i],i));
 					$("#remark_container").trigger("create");
 					for(var j in remarks[i].photos){
 						
@@ -150,7 +156,7 @@
 				
 			
 				$('#title').text(from_default_name[froms.from_type][currentLocale]);
-
+				$('#new_remark_count').hide();
 				var items=froms.items;
 				updateNavBar(custom_tab_list);
 			
@@ -161,6 +167,13 @@
 					  return element.group==custom_tab_list[i];
 					});
 					for(var j in tmp){ 
+
+					  if(tmp[j].result.rstate=="p"){
+
+					  	tmp[j].result.rstate="n";
+					  }
+					  tmp[j].g_index=parseInt(j)+1;
+
 					  addFormItem(custom_tab_list[i]+"_items",tmp[j],parseInt(j)+1);
 					}
 				}
@@ -170,7 +183,24 @@
 				//$('#tab_navbar_com').trigger('create');
 				//$('.ui-slider-switch').slider(); 
 				$(".savebtn").click(function() {
-
+					var validRemarks=[];
+					for(var i in remarks){
+						remarks[i].text=$("#remark_text_"+i).val();
+						for(var j in remarks[i].photos){
+							var imgsrc =$('#remark_img_'+j+'_'+i).attr("src");
+							if(report.photos[remarks[i].photos[j]]==undefined){
+								var id =createNewPhotoRecord(imgsrc, "r"+j+'_'+i);
+								remarks[i].photos[j]=id;
+							}else{
+								
+									updatePhotoRecord(imgsrc, remarks[i].photos[j]);
+								
+							}
+						}
+						if(remarks[i].text!=""||remarks[i].photos.length>0){
+							validRemarks.push(remarks[i]);
+						}
+					}
 					for(var index in items){ 
 
 					  if(items[index].result.min_photos){
@@ -198,10 +228,20 @@
 						}
 					  	
 					  }
+					  
 					  if(items[index].result.type== "bool"){
-							var value=$("input:radio[name='filp_"+items[index].index+"'']:checked").val();
+							var value=$("input:radio[name='filp_"+items[index].index+"']:checked").val();
 							if(value!=undefined){
 								items[index].result.value=value;
+								if(items[index].result.rstate=="p"&&(items[index].result.value=="repaired"||items[index].result.value=="wait")){
+									for(var x in validRemarks){
+										if(validRemarks[x].title==items[index]["item_name_"+currentLocale]){
+											items[index].result.rstate="s";
+											break;
+										}
+										
+									}
+								}
 							}
 							
 					  }else if(items[index].result.type== "s_value"){
@@ -211,26 +251,9 @@
 					  		items[index].result.value[0]=$("#textinput_0_"+items[index].index).val();
 					  		items[index].result.value[1]=$("#textinput_1_"+items[index].index).val();
 					  }
+						
+					}
 					
-					}
-					var validRemarks=[];
-					for(var i in remarks){
-						remarks[i].text=$("#remark_text_"+i).val();
-						for(var j in remarks[i].photos){
-							var imgsrc =$('#remark_img_'+j+'_'+i).attr("src");
-							if(report.photos[remarks[i].photos[j]]==undefined){
-								var id =createNewPhotoRecord(imgsrc, "r"+j+'_'+i);
-								remarks[i].photos[j]=id;
-							}else{
-								
-									updatePhotoRecord(imgsrc, remarks[i].photos[j]);
-								
-							}
-						}
-						if(remarks[i].text!=""||remarks[i].photos.length>0){
-							validRemarks.push(remarks[i]);
-						}
-					}
 					
 					froms.device_id=$('#deviceID').val();
 					froms.device_model=$('#deviceModel').val();
@@ -263,7 +286,7 @@
 					}
 					saveMReport(report);	
 					alert(JSON.stringify(report));
-				
+					refreshAllCounter();
 				});
 				$(".tab-btn").click(function(event, ui){
 						$(event.currentTarget.id).addClass("ui-btn-active");
@@ -275,16 +298,39 @@
 						$('#info').show();
 				$("#add_remark_btn").click(function(event, ui){
 					
-					$("#remark_container").append(createRemark(remarks.length,""));
+					createEmptyRemark(empty_remark);
+				});	
+
+				$("#remark_btn").click(function(event, ui){
+					alert(JSON.stringify(items));
+					for(var index in items){ 
+
+						if(items[index].result.type=="bool"&&(items[index].result.value=="repaired"||items[index].result.value=="wait")&&items[index].result.rstate=="n"
+						){
+
+							var new_remark = jQuery.extend(true, {},empty_remark);
+							
+							new_remark.ref=d_locale_arr[currentLocale][items[index].group]+" "+items[index].g_index;
+							new_remark.title=items[index]['item_name_'+currentLocale];
+
+							createEmptyRemark(new_remark);
+							items[index].result.rstate="p";
+						}
+					}
+					alert(JSON.stringify(remarks));
+				});	
+
+				function createEmptyRemark(eremark){
+					$("#remark_container").append(createRemark(eremark,remarks.length));
 					$("#remark_container").trigger("create");
 
-					remarks.push(empty_remark);
+					remarks.push(eremark);
 					$('.remark_camera').bind( "click", function(event, ui){
 						currentRemarkCameraID=event.currentTarget.id;
 						
 						captureRemarkImage();
-				});
-				});	
+					});
+				}
 				$(".input-textbox").change(function(event, ui) {
 					var res = event.currentTarget.id.split("_");
 							var index =res[res.length-1];
@@ -296,7 +342,6 @@
 											items[i].result.value=event.currentTarget.value;
 										}else if (items[i].result.type=="d_value"){
 											items[i].result.value[input_index]=event.currentTarget.value;
-												
 										}	
 										break;
 								}
@@ -334,6 +379,7 @@
 							for(var i in items){ 
 								if(items[i].index==index){
 									items[i].result.value=event.currentTarget.value;
+									items[i].result.rstate="n";
 										break;
 								}
 							}
@@ -344,6 +390,16 @@
 					for(var i in custom_tab_list){
 						$("."+custom_tab_list[i]+"_count").text(calCounter(items,custom_tab_list[i]));
 					}
+					var remarCount=calRemarkCounter(items);
+					if(remarCount>0){
+						$('#new_remark_count').html(remarCount);
+						$('#new_remark_count').show();
+					}else{
+						$('#new_remark_count').html(remarCount);
+						$('#new_remark_count').hide();
+
+					}
+					
 				}
 				refreshAllCounter();
 				if(froms.device_id!=""){
@@ -474,6 +530,19 @@
 					}
 					return count;
 			}
+			function calRemarkCounter(items){
+					var count=0;
+				
+					for(var index in items){ 
+						if(
+						items[index].result.type=="bool"&&(items[index].result.value=="repaired"||items[index].result.value=="wait")&&items[index].result.rstate!="s"
+						){
+							count++;
+						}
+					}
+
+					return count;
+			}
 			function getIndex(id){
 					var res =id.split("_");
 					var index =res[res.length-1];
@@ -554,10 +623,12 @@
 		   function getExmPhotoPath(key){
 		   	return "eximages/"+key+".jpg";
 		   }
-		   function createRemark(index,value){
-		   	 return '<div class=" ui-shadow ui-content">\
-				        <label for="textinput-hide" class="ui-hidden-accessible">Remark</label>\
-						<input id="remark_text_'+index+'" type="text" name="textinput-hide" id="textinput-hide" placeholder="'+d_locale_arr[currentLocale]['fill_remark']+'" value="'+value+'">\
+		  
+		   function createRemark(remark,index){
+		   	 return '<div class=" ui-shadow ui-content">'+
+		   	 			(remark.ref!=""?'<span >'+remark.ref+'. '+remark.title+'</span>':'')+
+				        '<label for="textinput-hide" class="ui-hidden-accessible">Remark</label>\
+						<input id="remark_text_'+index+'" type="text" name="textinput-hide" id="textinput-hide" placeholder="'+d_locale_arr[currentLocale]['fill_remark']+'" value="'+remark.text+'">\
 				        <ul id="photos_'+index+'" data-role="listview" data-inset="true">\
 				             <li><a id="camera_remark_'+index+'" href="#" class="remark_camera">\
 				                <img src="images/camera-icon.jpg" class="ui-li-thumb">\
@@ -606,8 +677,10 @@
 	      
 			  <h1 id="title">Chimney System From</h1>
 			   <div data-role="controlgroup" data-type="horizontal" class="ui-mini ui-btn-right">
-			  <a href="#remark" data-ajax="false" data-transition="pop" class="ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-check" data-localize="maint_from.remark">Remark</a>
+			<a id="remark_btn" href="#remark" data-ajax="false" data-transition="pop" class="ui-btn ui-btn-b ui-btn-inline ui-corner-all ui-btn-icon-right ui-icon-bullets" data-localize="maint_from.remark">Remark</a>
+					<a id="new_remark_count" class="remark_count ui-btn  ui-btn-b ui-btn-inline">2</a>
 			  		<a href="#popupSaveSuccessInfo" data-rel="popup" data-position-to="window" data-transition="pop" class="savebtn ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-check" data-localize="save">Save</a>
+
 	    	</div>
 	    	<div id="navbar_container">
 	    		<div id="tab_navbar" data-role="navbar" data-grid="c" >
