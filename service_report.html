@@ -202,7 +202,7 @@ currentLocale=window.localStorage.getItem("locale");
 					report.name_en= project[0].name_en+' Service Report '+moment().format("YYYYMMDD"); 
 					}
 					saveSReport(report);
-					alert(JSON.stringify(report));
+					// alert(JSON.stringify(report));
 				
 			});	
 			$('.remark_camera').bind( "click", function(event, ui){
@@ -226,7 +226,7 @@ currentLocale=window.localStorage.getItem("locale");
 						    //url: 'http://localhost/ies_report_sys/submit_maint_report.php',
 						    data: {'report': reprot_str},
 						    success: function(msg) {
-						    	alert(msg);
+						    	// alert(msg);
 						    	var res =msg.split("#####");
 								var report_str =res[res.length-1];
 								report=JSON.parse(report_str); 

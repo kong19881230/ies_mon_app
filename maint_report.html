@@ -199,7 +199,6 @@ width: 5em;
 				});
 				$("#add_btn").click(function (e) {
 					var new_froms={};
-					alert(current_catalog_index);
 					var new_froms = jQuery.extend(true, {}, empty_froms[current_catalog_index]);
 					new_froms.id=report.id+"_"+current_catalog_index+"_"+(report.froms.length+1)+getTimeStr();
 					new_froms.updated_at=moment().format("YYYY/MM/DD HH:mm:ss");
