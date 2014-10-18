@@ -60,6 +60,10 @@
 	<script src="js/moment.js"></script>
 	<script>
 			
+			
+		var correct_style="background: none repeat scroll 0% 0% rgba(67, 209, 14, 0.27)!important;"
+		var wrong_style="background: none repeat scroll 0% 0% rgba(209, 14, 14, 0.36)!important;"
+	
 			var currentCameraID="";
 			var currentRemarkCameraID="";
 			var empty_remark={
@@ -68,7 +72,6 @@
 								"text":"",
 								"photos":[]
 				};
-			
 				var d_locale_arr={"en":{
 						"repaired":"Repaired",
 						"normal":"Normal",
@@ -340,15 +343,36 @@
 										
 										if(items[i].result.type=="s_value"){
 											items[i].result.value=event.currentTarget.value;
+											
+											showHintEffect(items[i].result.hint,items[i].result.value,this);
 										}else if (items[i].result.type=="d_value"){
 											items[i].result.value[input_index]=event.currentTarget.value;
+											
+											showHintEffect(items[i].result.hint[input_index],items[i].result.value[input_index],this);
 										}	
 										break;
 								}
 							}
 							refreshAllCounter();
 				});
-
+					function showHintEffect(hint,value,textfield){
+						if(value==""){
+							textfield.style="";
+						}
+						else if(checkValid(hint,value)){
+							textfield.style=correct_style;
+						}else{
+							textfield.style=wrong_style;
+						}
+					}
+				function checkValid(hint,value){
+					if(hint.indexOf('~') === -1){
+						return true;
+					}else{
+						var res=hint.split("~");
+						return value>=res[0]&&value<=res[1];
+					}
+				}
 				$('.remark_camera').bind( "click", function(event, ui){
 						currentRemarkCameraID=event.currentTarget.id;
 						captureRemarkImage();

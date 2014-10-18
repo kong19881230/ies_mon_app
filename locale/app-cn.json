@@ -45,10 +45,12 @@
      "cancel":"取消",
      "cannot_undone":"這個動作不能還原.",
      "sure_delete":"確認移除這張表單?",
-     "delete_from":"移除表單?"
+     "delete_from":"移除表單?",
+     "preview_report":"預覽"
   }
   ,"signature":{
-        "title":"簽名"
+        "title":"簽名",
+        "previewFrom":"預覽表單"
   },"service_report":{
         "title":"工作報告",
         "problem":"問題類別",
