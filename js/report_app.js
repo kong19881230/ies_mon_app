@@ -20,7 +20,7 @@ function syncMReport(report){
 	}else{
 		report.index=0;
 		mReportQueue.push(report);
-		if(mReportQueue.length>3){
+		if(mReportQueue.length>6){
 			mReportQueue.shift();
 		}
 
@@ -53,7 +53,7 @@ function syncSReport(report){
 
 		report.index=0;
 		sReportQueue.push(report);
-		if(sReportQueue.length>3){
+		if(sReportQueue.length>6){
 			sReportQueue.shift();
 		}
 

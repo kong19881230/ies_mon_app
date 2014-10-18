@@ -3,7 +3,6 @@
 <head>
 <meta charset="utf-8">
 	 <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; minimum-scale=1.0; user-scalable=0;" />
-
     <title>Sketch Pad</title>
    
 	<link rel="stylesheet" href="css/jquery.mobile.structure-1.4.3.min.css">
@@ -103,6 +102,12 @@ var ctx, color = "#000", x = 0, y = 0, z = 0, etch = 0;
 
 
 var d_locale_arr={"en":{
+						"repaired":"Repaired",
+						"normal":"Normal",
+						"item":"Item",
+						"result":"Result",
+						"wait":"Waiting",
+						"false":"Not Check",
 						"project":"Project",
 					    "report_cycle":"Report Cycle",
 					    "device_type":"Device Type",
@@ -110,8 +115,15 @@ var d_locale_arr={"en":{
 					    "device_model":"Device Model",
 					    "remark":"Remarks",
 					    "datetime":"Date and time",
-					    "totaldevice":"Total Device"
+					    "totaldevice":"Total Device",
+					    "sign":"Signature"
 				},"cn":{
+						"repaired":"巳修復",
+						"item":"項目",
+						"result":"結果",
+						"normal":"正常",
+						"wait":"侍處理",
+						"false":"未檢查",
 						"project":"項目",
 					    "report_cycle":"報告周期",
 					    "device_type":"設備類型",
@@ -119,10 +131,18 @@ var d_locale_arr={"en":{
 					    "device_model":"型號",
 					    "remark":"備註",
 					    "datetime":"日期時間",
-					    "totaldevice":"設備總數"
+					    "totaldevice":"設備總數",
+					    "sign":"簽名"
 
 				}}
+				var dataURLHash={};
 $(document).ready(function () {
+	
+	var dataURLHashStr=window.localStorage.getItem("dataURLHash");
+	if(dataURLHashStr){
+		dataURLHash =JSON.parse(dataURLHashStr); 
+	}
+	var currentFromIndex=-1;
 	// hide the accelerometer aka etch on/off button
 	currentLocale=window.localStorage.getItem("locale");
 	refreshUILocale(currentLocale);
@@ -130,9 +150,9 @@ $(document).ready(function () {
 	var reportStr=	window.localStorage.getItem("currentMReport");
 	var report=JSON.parse(reportStr);
 	 showReportSummary(report);
-	 if(report.signature!=undefined && report.signature!=""){
-		$("#canvasImg").attr("src",report.photos[report.signature].local);
-	}
+	 
+
+	 
 	// Call onDeviceReady when Cordova is loaded and talking with the native device
 	document.addEventListener("deviceready", onDeviceReady, false);
 		
@@ -180,20 +200,38 @@ $(document).ready(function () {
 	ctx.beginPath();
 		ctx.strokeStyle = color;
 	$("#save_sign").click(function(){
-		
+		 
 			var dataURL = document.getElementById("canvas").toDataURL();
 	      $("#canvasImg").attr("src",dataURL);
-	      if(report.signature==undefined || report.signature==""){
-	      	var id =createNewPhotoRecord(dataURL,"s_"+getTimeStr());
-	      	report.signature=id;
+	      var dataURLid=genDataURLID();
+	      alert(currentFromIndex);
+	      alert(creatDataURLRecord(dataURL,dataURLid,report.froms[currentFromIndex].id));
+	      dataURLHash[dataURLid]=creatDataURLRecord(dataURL,dataURLid,report.froms[currentFromIndex].id);
+	      window.localStorage.setItem("dataURLHash", JSON.stringify(dataURLHash));	
+	       
+	      if(report.froms[currentFromIndex].signature==undefined || report.froms[currentFromIndex].signature==""){
+	      	var id =createNewPhotoRecord(dataURLid,"s_"+getTimeStr());
+	      	report.froms[currentFromIndex].signature=id;
 
 	      }else{
-	      	if(report.photos[report.signature].local!=dataURL){
-	      		 updatePhotoRecord(dataURL,report.signature);
+	      	 alert(report.photos[report.froms[currentFromIndex].signature].local);
+	      	if(report.photos[report.froms[currentFromIndex].signature].local!=dataURLid){
+	      		 updatePhotoRecord(dataURLid,report.froms[currentFromIndex].signature);
 	      	}
 	      }
 	      saveMReport(report);
+	      showReportSummary(report);
 	});
+	function genDataURLID(){
+		return "data_"+getTimeStr();
+	}
+	function creatDataURLRecord(url,id,from_id){
+		return { 
+			"id":id,
+			"from_id":from_id,
+			"url":url
+		};
+	}
 	function updatePhotoRecord(imgsrc,photoKey){
 			if(report.photos[photoKey].local!=imgsrc){
   			report.photos[photoKey].local=imgsrc;
@@ -209,9 +247,61 @@ $(document).ready(function () {
   		report.photos[id]=photo;
   		return id;
 	}
-});	
+	function showFromSummary(from){
+	
+	$("#from_summary").empty();
+	 $("#from_summary").append('<p>'+d_locale_arr[currentLocale]['device_type']+':  '+machine_types[from.from_type]["name_"+currentLocale]+'</p>');  
+	$("#from_summary").append('<p>'+d_locale_arr[currentLocale]['device_id']+':  '+from.device_id+'</p>');
+    $("#from_summary").append('<p>'+d_locale_arr[currentLocale]['device_model']+':  '+from.device_model+'</p>');  
+     var content = '<table data-role="table" id="from_item_table" data-mode="reflow" class="ui-responsive table-stroke"><thead>\
+			     <tr>\
+			       <th data-priority="1">'+d_locale_arr[currentLocale]['item']+'</th>\
+			       <th data-priority="persist">'+d_locale_arr[currentLocale]['result']+'</th>\
+			     </tr></thead><tbody>';
+     for(var i in from.items){
+	    content += '<tr><td>' + from.items[i]["item_name_"+currentLocale] +'</td><td>';
+
+	    if(from.items[i].result.type == "bool"){
 
 
+	    		 content += d_locale_arr[currentLocale][from.items[i].result.value] +'</td></tr>';
+				
+					
+		}else if(from.items[i].result.type == "s_value"){
+			
+				 content += from.items[i].result.value +from.items[i].result.unit+'</td></tr>';
+					
+
+				}else if(from.items[i].result.type == "d_value"){
+			
+				 content +='<ul><li>' +from.items[i].result.value[0] +from.items[i].result.unit[0]+'</li><li>'+from.items[i].result.value[1] +from.items[i].result.unit[1]+'</li></ul></td></tr>';
+					
+				}else if(from.items[i].result.type == "none"){
+			
+				content +='</td></tr>';
+				}
+
+	}
+	content += "</tbody></table>";
+
+  	$("#from_summary").append(content);
+  		$("#from_item_table").table();
+  	var remark_content= '<table data-role="table" id="from_remark_table" data-mode="reflow" class="ui-responsive table-stroke"><thead>\
+			     <tr>\
+			       <th data-priority="1">'+d_locale_arr[currentLocale]['remark']+'</th>\
+			     </tr></thead><tbody>';
+
+	 for(var i in from.remark){
+
+	 		remark_content += '<tr><td>'+(from.remark[i].ref!=""?'<p>'+from.remark[i].ref+'. '+from.remark[i].title+'</p>':'')+'<p>' + from.remark[i].text+'</p></td><tr>';
+
+	 }
+	remark_content += "</tbody></table>";
+  	$("#from_summary").append(remark_content);
+  	$("#remark_content+").table();
+
+
+}
 function showReportSummary(report){
 	var cycle=jQuery.grep(cycles, function(element, index){
 							
@@ -222,7 +312,7 @@ function showReportSummary(report){
 	var project=jQuery.grep(projects, function(element, index){
 						  return element.id==report.project_id;
 						});
-
+	$("#summary").empty();
 	$("#summary").append('<h3>'+report["name_"+currentLocale]+'</h3>');
 	$("#summary").append('<p>'+d_locale_arr[currentLocale]['project']+':  '+project[0]["name_"+currentLocale]+'</p>');
     $("#summary").append('<p>'+d_locale_arr[currentLocale]['report_cycle']+':  '+cycle[0]["name_"+currentLocale]+'</p>');  
@@ -234,18 +324,18 @@ function showReportSummary(report){
 			       <th data-priority="1">'+d_locale_arr[currentLocale]['device_id']+'</th>\
 			       <th data-priority="persist">'+d_locale_arr[currentLocale]['device_model']+'</th>\
 			       <th data-priority="2">'+d_locale_arr[currentLocale]['device_type']+'</th>\
-			       <th data-priority="3">'+d_locale_arr[currentLocale]['remark']+'</th>\
+			       <th data-priority="3">'+d_locale_arr[currentLocale]['sign']+'</th>\
 			     </tr></thead><tbody>';
 	for(i=0; i<report.froms.length; i++){
-	    content += '<tr><td>' + report.froms[i].device_id +'</td><td>'+ report.froms[i].device_model+'</td><td>'+ machine_types[report.froms[i].from_type]["name_"+currentLocale]+'</td><td>';
+	    content += '<tr class="from_row" id="'+i+'"><td>' + report.froms[i].device_id +'</td><td>'+ report.froms[i].device_model+'</td><td>'+ machine_types[report.froms[i].from_type]["name_"+currentLocale]+'</td><td>';
+	     if(report.froms[i].signature==undefined || report.froms[i].signature==""){
+	     	content +=' ';
+	      }else{
+	      	
 
-	    if( report.froms[i].remark.length>0){
-	    	for(var j in report.froms[i].remark){
-	    	content +='<li>'+report.froms[i].remark[j].text+'</li>';
-	    	}
-	    }else{
-	    	content +=' ';
-	    }
+	      	 content +=' <img src="'+dataURLHash[report.photos[report.froms[i].signature].local].url+'" height="50" /></div>';
+	      }
+	   
 
 	     content +='</td></tr>';
 	}
@@ -253,8 +343,23 @@ function showReportSummary(report){
 
   	$("#summary").append(content);
   	$("#from_table").table();
-
+  	$('.from_row').click(function (event,ui) {
+	 	currentFromIndex=this.id;
+	 	 showFromSummary(report.froms[currentFromIndex]);
+	 	//$("#previewFrom").trigger( "create");
+	 	if(report.froms[currentFromIndex].signature!=undefined && report.froms[currentFromIndex].signature!=""){
+			$("#canvasImg").attr("src",dataURLHash[report.photos[report.froms[currentFromIndex].signature].local].url);
+			$("#canvasImg").show();
+		}else{
+			$("#canvasImg").attr("src","");
+			$("#canvasImg").hide();
+		}
+	 	$.mobile.changePage("#previewFrom");
+	 });
 }
+});	
+
+
 // function to setup a new canvas for drawing
 function newCanvas(){
 	//define and resize canvas
@@ -446,12 +551,25 @@ function buzzDevice(pos){
 
  
   </div>
-<div data-role="popup" data-theme="b" id="popupSaveSuccessInfo"  class="ui-content" style="max-width:280px">
-				    <a  href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-b ui-icon-delete ui-btn-icon-notext ui-btn-right close-btn">Close</a>
-					<p data-localize="save_succ">Save successfully!!</p>
-				</div>
 
-  <div data-role="popup" id="popupSignature" data-overlay-theme="b" data-theme="b" data-dismissible="false" >
+  
+			
+    
+    
+     
+	<div id="debug" style="display:none;position:absolute;top:45px;left:1px;right:1px;height:60px;background-color:#eea"></div>
+    <div id="etchHelp">Turning <strong>Etch ON</strong> will enable drawing using the device's accelerometer by tilting the device in any direction.</div>
+</div> 
+
+<div data-role="page" data-theme="a" id="previewFrom" class="my-page">
+	<div data-role="header" data-position="fixed" data-theme="b" >
+			 <a href="#" data-rel="back"  class="ui-btn  ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-left ui-icon-carat-l" data-localize="back">Back</a>
+	      
+			  <h1 id="title" data-localize="signature.previewFrom">Preview From</h1>
+			
+			  		
+	    	</div>
+	    	<div data-role="popup" id="popupSignature" data-overlay-theme="b" data-theme="b" data-dismissible="false" >
 
 			    <div role="main" class="ui-content">
 			      <div id="content"></div>
@@ -466,24 +584,27 @@ function buzzDevice(pos){
 			        <!-- </div> -->
 				</div>
 			</div>
+
+	    	  <div data-role="content" data-iscroll="true" class="ui-content">
+					<div id="from_summary" class="ui-body ui-body-a ui-corner-all">
+
+				 	
+				  </div>
+			    </div>
 <div data-role="footer" data-theme="c" data-position="fixed">
-  
-	<div class="ui-bar">
-				
-				
-			</div>
-			
-	 <a id="sign_pop_btn" href="#popupSignature" data-rel="popup" data-position-to="window" data-transition="pop" data-role="button" data-theme="b" class="ui-btn-right" data-localize="sign">Sign</a>
-	   <img  id="canvasImg"    height="50" >
-   
+  						  
+						<div class="ui-bar">
+									
+									
+								</div>
+								<h1></h1>
+						 <a id="sign_pop_btn" href="#popupSignature" data-rel="popup" data-position-to="window" data-transition="pop" data-role="button" data-theme="b" class="ui-btn-right" data-localize="sign">Sign</a>
+						 <img  id="canvasImg" class="ui-btn-left"   height="60" /></div>
+					   
 	<!--   -->
 		
+
+   
 </div>
-    
-    
-     
-	<div id="debug" style="display:none;position:absolute;top:45px;left:1px;right:1px;height:60px;background-color:#eea"></div>
-    <div id="etchHelp">Turning <strong>Etch ON</strong> will enable drawing using the device's accelerometer by tilting the device in any direction.</div>
-</div> 
 </body>
 </html>
