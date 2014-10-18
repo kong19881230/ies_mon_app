@@ -395,10 +395,12 @@ width: 5em;
 					$.mobile.loading( "hide" );
 				}
 				function uploadDataUrl(imageURI,id) {
+					var dataURLHash=JSON.parse(window.localStorage.getItem("dataURLHash"));
+
 					$.ajax({
 					  type: "POST",
 					  url: "http://uniquecode.net/job/ms/upload_data_url.php",
-					  data: {"image": imageURI,"id":id }
+					  data: {"image": dataURLHash[imageURI],"id":id }
 					}).done(function( respond ) {
 						win(respond);
 					});

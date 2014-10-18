@@ -135,8 +135,9 @@ var d_locale_arr={"en":{
 					    "sign":"簽名"
 
 				}}
+				var dataURLHash={};
 $(document).ready(function () {
-	var dataURLHash={};
+	
 	var dataURLHashStr=window.localStorage.getItem("dataURLHash");
 	if(dataURLHashStr){
 		dataURLHash =JSON.parse(dataURLHashStr); 
@@ -151,17 +152,7 @@ $(document).ready(function () {
 	 showReportSummary(report);
 	 
 
-	 $('tr').click(function (event,ui) {
-	 	currentFromIndex=this.id;
-	 	 showFromSummary(report.froms[currentFromIndex]);
-	 	//$("#previewFrom").trigger( "create");
-	 	if(report.froms[currentFromIndex].signature!=undefined && report.froms[currentFromIndex].signature!=""){
-			$("#canvasImg").attr("src",report.photos[report.froms[currentFromIndex].signature].local);
-		}else{
-			$("#canvasImg").attr("src","");
-		}
-	 	$.mobile.changePage("#previewFrom");
-	 });
+	 
 	// Call onDeviceReady when Cordova is loaded and talking with the native device
 	document.addEventListener("deviceready", onDeviceReady, false);
 		
@@ -209,22 +200,27 @@ $(document).ready(function () {
 	ctx.beginPath();
 		ctx.strokeStyle = color;
 	$("#save_sign").click(function(){
-		
+		 
 			var dataURL = document.getElementById("canvas").toDataURL();
 	      $("#canvasImg").attr("src",dataURL);
 	      var dataURLid=genDataURLID();
+	      alert(currentFromIndex);
+	      alert(creatDataURLRecord(dataURL,dataURLid,report.froms[currentFromIndex].id));
 	      dataURLHash[dataURLid]=creatDataURLRecord(dataURL,dataURLid,report.froms[currentFromIndex].id);
 	      window.localStorage.setItem("dataURLHash", JSON.stringify(dataURLHash));	
+	       
 	      if(report.froms[currentFromIndex].signature==undefined || report.froms[currentFromIndex].signature==""){
 	      	var id =createNewPhotoRecord(dataURLid,"s_"+getTimeStr());
 	      	report.froms[currentFromIndex].signature=id;
 
 	      }else{
-	      	if(report.froms[currentFromIndex].photos[report.signature].local!=dataURLid){
+	      	 alert(report.photos[report.froms[currentFromIndex].signature].local);
+	      	if(report.photos[report.froms[currentFromIndex].signature].local!=dataURLid){
 	      		 updatePhotoRecord(dataURLid,report.froms[currentFromIndex].signature);
 	      	}
 	      }
 	      saveMReport(report);
+	      showReportSummary(report);
 	});
 	function genDataURLID(){
 		return "data_"+getTimeStr();
@@ -251,9 +247,7 @@ $(document).ready(function () {
   		report.photos[id]=photo;
   		return id;
 	}
-});	
-
-function showFromSummary(from){
+	function showFromSummary(from){
 	
 	$("#from_summary").empty();
 	 $("#from_summary").append('<p>'+d_locale_arr[currentLocale]['device_type']+':  '+machine_types[from.from_type]["name_"+currentLocale]+'</p>');  
@@ -318,7 +312,7 @@ function showReportSummary(report){
 	var project=jQuery.grep(projects, function(element, index){
 						  return element.id==report.project_id;
 						});
-
+	$("#summary").empty();
 	$("#summary").append('<h3>'+report["name_"+currentLocale]+'</h3>');
 	$("#summary").append('<p>'+d_locale_arr[currentLocale]['project']+':  '+project[0]["name_"+currentLocale]+'</p>');
     $("#summary").append('<p>'+d_locale_arr[currentLocale]['report_cycle']+':  '+cycle[0]["name_"+currentLocale]+'</p>');  
@@ -333,12 +327,13 @@ function showReportSummary(report){
 			       <th data-priority="3">'+d_locale_arr[currentLocale]['sign']+'</th>\
 			     </tr></thead><tbody>';
 	for(i=0; i<report.froms.length; i++){
-	    content += '<tr id="'+i+'"><td>' + report.froms[i].device_id +'</td><td>'+ report.froms[i].device_model+'</td><td>'+ machine_types[report.froms[i].from_type]["name_"+currentLocale]+'</td><td>';
+	    content += '<tr class="from_row" id="'+i+'"><td>' + report.froms[i].device_id +'</td><td>'+ report.froms[i].device_model+'</td><td>'+ machine_types[report.froms[i].from_type]["name_"+currentLocale]+'</td><td>';
 	     if(report.froms[i].signature==undefined || report.froms[i].signature==""){
-	      	
-	      	content +=' ';
+	     	content +=' ';
 	      }else{
-	      	content +=' ';
+	      	
+
+	      	 content +=' <img src="'+dataURLHash[report.photos[report.froms[i].signature].local].url+'" height="50" /></div>';
 	      }
 	   
 
@@ -348,8 +343,23 @@ function showReportSummary(report){
 
   	$("#summary").append(content);
   	$("#from_table").table();
-
+  	$('.from_row').click(function (event,ui) {
+	 	currentFromIndex=this.id;
+	 	 showFromSummary(report.froms[currentFromIndex]);
+	 	//$("#previewFrom").trigger( "create");
+	 	if(report.froms[currentFromIndex].signature!=undefined && report.froms[currentFromIndex].signature!=""){
+			$("#canvasImg").attr("src",dataURLHash[report.photos[report.froms[currentFromIndex].signature].local].url);
+			$("#canvasImg").show();
+		}else{
+			$("#canvasImg").attr("src","");
+			$("#canvasImg").hide();
+		}
+	 	$.mobile.changePage("#previewFrom");
+	 });
 }
+});	
+
+
 // function to setup a new canvas for drawing
 function newCanvas(){
 	//define and resize canvas
@@ -582,14 +592,14 @@ function buzzDevice(pos){
 				  </div>
 			    </div>
 <div data-role="footer" data-theme="c" data-position="fixed">
-  
+  						  
 						<div class="ui-bar">
 									
 									
 								</div>
 								<h1></h1>
 						 <a id="sign_pop_btn" href="#popupSignature" data-rel="popup" data-position-to="window" data-transition="pop" data-role="button" data-theme="b" class="ui-btn-right" data-localize="sign">Sign</a>
-						   <img  id="canvasImg"    height="50" /></div>
+						 <img  id="canvasImg" class="ui-btn-left"   height="60" /></div>
 					   
 	<!--   -->
 		

@@ -185,8 +185,8 @@
 										});
 					
 
-					report.name_cn= project[0].name_cn+ cycle[0].name_cn+'維護報告'+moment().format("YYYYMM");
-					report.name_en= project[0].name_en+' '+ cycle[0].name_en+' Maintance Report '+moment().format("YYYYMM"); 
+					report.name_cn= project[0].name_cn+ cycle[0].name_cn+'維護報告'+moment().format("YYYYMMDD");
+					report.name_en= project[0].name_en+' '+ cycle[0].name_en+' Maintance Report '+moment().format("YYYYMMDD"); 
 					window.localStorage.setItem("currentMReport", JSON.stringify(report));
 					window.localStorage.setItem("currentForm", JSON.stringify(new_froms));
 					window.localStorage.setItem("current_catalog_index", current_catalog_index);

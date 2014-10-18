@@ -254,64 +254,34 @@ function createReportItem(index,report){
 		
 		</div><!-- /header -->
 		<img id="photo" src="images/home.png" width="500" height="500" />
-		<!-- <div id="photo" class="m-carousel m-fluid  ">
-			<div class="m-carousel-inner">
-				<div class="m-item">
-					<div class="m-card-light">
-						<img  class="m-image"  src="images/3.png">
-						
-					</div>
-				</div>
-				<div class="m-item">
-					<div class="m-card-light">
-						<img class="m-image" src="images/1.png">
-						
-					</div>
-				</div>
-				<div class="m-item">
-					<div class="m-card-light">
-						<img class="m-image"  src="images/2.png">
-						
-					</div>
-				</div>
-
-			</div>
-
-			
-			<div class="m-carousel-controls m-carousel-bulleted">
-				
-				<a href="#" data-slide="1" class="m-active">1</a>
-				<a href="#" data-slide="2">2</a>
-				<a href="#" data-slide="3">3</a>
-				
-			</div>
-
-		</div> -->
+	
 		<div id="menu" data-role="controlgroup" data-type="horizontal" data-theme="b"  >
 			<a id="maint_report_btn"   href="#popupSelectMaintReport" data-rel="popup" data-position-to="window" data-transition="pop"  data-icon="custom"   class="ui-btn ui-alt-icon ui-btn-icon-top ui-corner-all ui-shadow " data-localize="index.maintain">Maintenance Report</a>
 			<a id="emergency_report_btn"   href="#popupSelectServiceReport" data-rel="popup" data-position-to="window" data-transition="pop"  data-icon="custom"  class="ui-btn ui-alt-icon ui-btn-icon-top ui-corner-all ui-shadow " data-localize="index.service">Service Report</a>
 
 		</div>
-		<div data-role="popup" id="popupSelectMaintReport" data-overlay-theme="b" data-theme="a" data-dismissible="false" style="width:500px;height:580px;" >
+		<div data-role="popup" id="popupSelectMaintReport" data-overlay-theme="b" data-theme="a" data-dismissible="false" style="width:500px;height:800px;" >
 			<a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-b ui-icon-delete ui-btn-icon-notext ui-btn-right close-btn ">Close</a>
 			<div data-role="header" data-theme="b">
+				<a id="new_m_report"  href="#" class="ui-btn ui-corner-all ui-shadow ui-btn-a ui-icon-plus  ui-btn-left " data-localize="index.new_report">
+						New Report
+					</a>
 				<h5  data-localize="index.select_m">Select a action</h5>
 			</div>
 			<div role="main" class="ui-content">
 
 				<ul id="m_report_list" data-role="listview" data-inset="true">
-					<li><a id="new_m_report"  href="#">
-						<img src="images/new_report.png" class="ui-li-thumb">
-						<p data-localize="index.new_report">New Report</p>
-
-					</a></li>
+					
 
 
 				</ul>
 
 			</div><!-- /content -->
 		</div>
-		<div data-role="popup" id="popupSelectServiceReport" data-overlay-theme="b" data-theme="a" data-dismissible="false" style="width:500px;height:580px;" >
+		<div data-role="popup" id="popupSelectServiceReport" data-overlay-theme="b" data-theme="a" data-dismissible="false" style="width:500px;height:800px;" >
+			<a id="new_s_report"  href="#" class="ui-btn ui-corner-all ui-shadow ui-btn-a ui-icon-plus  ui-btn-left " data-localize="index.new_report">
+						New Report
+					</a>
 			<a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-b ui-icon-delete ui-btn-icon-notext ui-btn-right close-btn ">Close</a>
 			<div data-role="header" data-theme="b">
 				<h5 data-localize="index.select_s">Select a action</h5>
@@ -319,11 +289,7 @@ function createReportItem(index,report){
 			<div role="main" class="ui-content">
 
 				<ul id="s_report_list" data-role="listview" data-inset="true">
-					<li><a id="new_s_report" href="#">
-						<img src="images/new_report.png" class="ui-li-thumb">
-						<p data-localize="index.new_report">New Report</p>
-					</a></li>
-
+				
 
 				</ul>
 
