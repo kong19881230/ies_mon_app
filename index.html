@@ -123,7 +123,10 @@
 				refreshUILocale(currentLocale);
 				$('input:radio[name=locale][value='+currentLocale+']').attr('checked', 'checked');
 				$("input[type='radio']").checkboxradio("refresh");
-				
+				if(projects.length==0){
+					$("#maint_report_btn").button('disable');  
+					$("#emergency_report_btn").button('disable');
+				}
 				var mReportQueue=[];
 
 				var currentMReport={};
