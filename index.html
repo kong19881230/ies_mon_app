@@ -20,6 +20,7 @@
 	<script src="js/jquery.localize.min.js"></script>
 	<script type="text/javascript" charset="utf-8" src="cordova.js"></script>
 	<script src="js/report_app.js"></script>
+	<script src="js/shared_data.js"></script>
 	<style id="inset-tablist">
 		
 		#photo{
@@ -123,9 +124,10 @@
 				refreshUILocale(currentLocale);
 				$('input:radio[name=locale][value='+currentLocale+']').attr('checked', 'checked');
 				$("input[type='radio']").checkboxradio("refresh");
+
 				if(projects.length==0){
-					$("#maint_report_btn").button('disable');  
-					$("#emergency_report_btn").button('disable');
+					$("#maint_report_btn").addClass("ui-state-disabled"); 
+					$("#emergency_report_btn").addClass("ui-state-disabled");
 				}
 				var mReportQueue=[];
 
@@ -246,8 +248,8 @@ function createReportItem(index,report){
 		<div data-role="header" data-position="fixed" data-theme="b"  >
 
 			<h1 data-localize="index.title">IES Maintainance Report App</h1>
-			
-
+				
+			<a id="setting" href="setting.html" rel="external" data-role="button" data-theme="b" class="ui-btn-left" data-localize="setting_btn">Setting</a>
 				<div  class="ui-btn-right" data-theme="c"  data-role="controlgroup" data-type="horizontal" data-mini="true">
 					<input type="radio" name="locale" id="radio-choice-d" value="cn" checked="true">
 					<label for="radio-choice-d">中</label>
