@@ -116,7 +116,8 @@ var d_locale_arr={"en":{
 					    "remark":"Remarks",
 					    "datetime":"Date and time",
 					    "totaldevice":"Total Device",
-					    "sign":"Signature"
+					    "sign":"Signature",
+					    "hint":"*Please click following row to preview the from"
 				},"cn":{
 						"repaired":"巳修復",
 						"item":"項目",
@@ -132,7 +133,8 @@ var d_locale_arr={"en":{
 					    "remark":"備註",
 					    "datetime":"日期時間",
 					    "totaldevice":"設備總數",
-					    "sign":"簽名"
+					    "sign":"簽名",
+					    "hint":"*請點選以下列表預覽表單"
 
 				}}
 				var dataURLHash={};
@@ -203,9 +205,9 @@ $(document).ready(function () {
 		 
 			var dataURL = document.getElementById("canvas").toDataURL();
 	      $("#canvasImg").attr("src",dataURL);
+	      $("#canvasImg").show();
 	      var dataURLid=genDataURLID();
-	      alert(currentFromIndex);
-	      alert(creatDataURLRecord(dataURL,dataURLid,report.froms[currentFromIndex].id));
+	   
 	      dataURLHash[dataURLid]=creatDataURLRecord(dataURL,dataURLid,report.froms[currentFromIndex].id);
 	      window.localStorage.setItem("dataURLHash", JSON.stringify(dataURLHash));	
 	       
@@ -214,11 +216,12 @@ $(document).ready(function () {
 	      	report.froms[currentFromIndex].signature=id;
 
 	      }else{
-	      	 alert(report.photos[report.froms[currentFromIndex].signature].local);
+	      	 
 	      	if(report.photos[report.froms[currentFromIndex].signature].local!=dataURLid){
 	      		 updatePhotoRecord(dataURLid,report.froms[currentFromIndex].signature);
 	      	}
 	      }
+	      report.froms[currentFromIndex].sign_at=moment().format("YYYY/MM/DD HH:mm:ss");
 	      saveMReport(report);
 	      showReportSummary(report);
 	});
@@ -318,7 +321,7 @@ function showReportSummary(report){
     $("#summary").append('<p>'+d_locale_arr[currentLocale]['report_cycle']+':  '+cycle[0]["name_"+currentLocale]+'</p>');  
     $("#summary").append('<p>'+d_locale_arr[currentLocale]['datetime']+':  '+moment().format("YYYY/MM/DD HH:mm")+ '</p>');   
  	$("#summary").append('<p>'+d_locale_arr[currentLocale]['totaldevice']+':  '+report.froms.length+'</p>');  
- 	  
+ 	 $("#summary").append('<p>'+d_locale_arr[currentLocale]['hint']+'</p>');   
     var content = '<table data-role="table" id="from_table" data-mode="reflow" class="ui-responsive table-stroke"><thead>\
 			     <tr>\
 			       <th data-priority="1">'+d_locale_arr[currentLocale]['device_id']+'</th>\

@@ -35,7 +35,9 @@
   	 "remark":"Remarks",
   	 "camera":"Camera",
   	 "save_succ":"Save successfully!!",
-  	 "add":"Add"
+  	 "add":"Add",
+     "next":"Next",
+     "previous":"Previous"
   },
   "maint_report":{
      "add":"Add",

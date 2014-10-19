@@ -226,7 +226,7 @@ currentLocale=window.localStorage.getItem("locale");
 						    //url: 'http://localhost/ies_report_sys/submit_maint_report.php',
 						    data: {'report': reprot_str},
 						    success: function(msg) {
-						    	// alert(msg);
+						    	alert(msg);
 						    	var res =msg.split("#####");
 								var report_str =res[res.length-1];
 								report=JSON.parse(report_str); 

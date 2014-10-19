@@ -34,7 +34,9 @@
      "device_photo":"設備相片",
      "device_model":"型號",
      "camera":"拍照",
-     "add":"新增"
+     "add":"新增",
+     "next":"下一頁",
+     "previous":"上一頁"
   },
   "maint_report":{
      "add":"新增",

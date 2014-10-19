@@ -19,7 +19,9 @@
 			background-color: rgba(180, 16, 16, 1)!important;
 			padding: 0.7em 0.5em!important;
 	}
-
+	.xxx{
+		background: none repeat scroll 0% 0% rgba(67, 209, 14, 0.27)!important;
+	}
 	.mycontrolgroup .ui-controlgroup-controls
 	{
 		width: 100% !important;
@@ -109,7 +111,9 @@
 				var report=JSON.parse(reportStr);
 				var  froms=JSON.parse(window.localStorage.getItem("currentForm")); 
 				 var custom_tab_list=froms.catalogs;
+				var full_tab_list=["info"];
 				var from_default_name={};
+				var currentTabIndex=0;
 				var projectArr=jQuery.grep(projects, function(element, index){
 									  return element.id==report.project_id;
 									});
@@ -164,6 +168,7 @@
 				updateNavBar(custom_tab_list);
 			
 				for(var i in custom_tab_list){
+					full_tab_list.push(custom_tab_list[i]);
 					//$('#tab_navbar').append(createCustomTabTitle(custom_tab_list[i]));
 					$('#tab_container').append(createCustomTab(custom_tab_list[i]));
 					var tmp = jQuery.grep(items, function(element, index){
@@ -180,6 +185,7 @@
 					  addFormItem(custom_tab_list[i]+"_items",tmp[j],parseInt(j)+1);
 					}
 				}
+				switchNavBtnState();
 				 $("input[type='radio']").checkboxradio();
 					$('.mycontrolgroup').controlgroup();
 				// $("input[type='radio']").checkboxradio();
@@ -295,7 +301,19 @@
 						$(event.currentTarget.id).addClass("ui-btn-active");
 						$('.custom_tab').hide();
 						var tabname=event.currentTarget.id.split("_");
-						$('#'+tabname).show();
+						$('#'+tabname[0]).show();
+					 	currentTabIndex=full_tab_list.indexOf(tabname[0]);
+					 	switchNavBtnState();
+				});
+				$("#next").click(function(event, ui){
+						if(currentTabIndex<full_tab_list.length-1){
+							$("#"+full_tab_list[currentTabIndex+1]+"_btn").click();
+						}
+				});
+				$("#previous").click(function(event, ui){
+						if(currentTabIndex>0){
+							$("#"+full_tab_list[currentTabIndex-1]+"_btn").click();
+						}
 				});
 						$('.custom_tab').hide();
 						$('#info').show();
@@ -322,7 +340,16 @@
 					}
 					alert(JSON.stringify(remarks));
 				});	
-
+				function switchNavBtnState(){
+					$("#next").show();
+					$("#previous").show();
+					if(currentTabIndex==0){
+						$("#previous").hide();
+					}
+					if(currentTabIndex==full_tab_list.length-1){
+						$("#next").hide();
+					}
+				}
 				function createEmptyRemark(eremark){
 					$("#remark_container").append(createRemark(eremark,remarks.length));
 					$("#remark_container").trigger("create");
@@ -344,11 +371,11 @@
 										if(items[i].result.type=="s_value"){
 											items[i].result.value=event.currentTarget.value;
 											
-											showHintEffect(items[i].result.hint,items[i].result.value,this);
+											showHintEffect(items[i].result.hint,items[i].result.value,event.currentTarget.id);
 										}else if (items[i].result.type=="d_value"){
 											items[i].result.value[input_index]=event.currentTarget.value;
 											
-											showHintEffect(items[i].result.hint[input_index],items[i].result.value[input_index],this);
+											showHintEffect(items[i].result.hint[input_index],items[i].result.value[input_index],event.currentTarget.id);
 										}	
 										break;
 								}
@@ -357,12 +384,12 @@
 				});
 					function showHintEffect(hint,value,textfield){
 						if(value==""){
-							textfield.style="";
+							$("#"+textfield).parent().attr("style","");
 						}
 						else if(checkValid(hint,value)){
-							textfield.style=correct_style;
+							$("#"+textfield).parent().attr("style",correct_style);
 						}else{
-							textfield.style=wrong_style;
+							$("#"+textfield).parent().attr("style",wrong_style);
 						}
 					}
 				function checkValid(hint,value){
@@ -762,6 +789,18 @@
 		</div>
 	
 </div>
+<div data-role="footer" data-theme="c" >
+				<a id="previous" href="#"  class="ui-btn ui-btn-b ui-btn-left ui-btn-icon-left ui-icon-carat-l" data-localize="maint_from.previous">Previous</a>
+				<div class="ui-bar">
+				</div>
+					<a id="next" href="#"  class="ui-btn ui-btn-b ui-btn-right ui-btn-icon-right ui-icon-carat-r" data-localize="maint_from.next">next</a>
+				
+				
+					
+			   <h1></h1>
+			
+	    
+		</div>
 </div>
 <div data-role="page" data-theme="a" id="remark" class="my-page">
 	<div data-role="header" data-position="fixed" data-theme="b" >
