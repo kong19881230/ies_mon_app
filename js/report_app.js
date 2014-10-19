@@ -21,7 +21,26 @@ function syncMReport(report){
 		report.index=0;
 		mReportQueue.push(report);
 		if(mReportQueue.length>6){
-			mReportQueue.shift();
+			var temp_report=mReportQueue.shift();
+			var dataURLHash={};
+			var dataURLHashStr=window.localStorage.getItem("dataURLHash");
+			if(dataURLHashStr){
+				dataURLHash =JSON.parse(dataURLHashStr); 
+			}
+			alert(JSON.stringify(dataURLHash));
+			var dataURLArray = $.map(dataURLHash, function(value, index) {
+			    return [value];
+			});
+			for(var index in report.froms){
+				var old_data=jQuery.grep(projects, function(element, index){
+				  return element.from_id==report.froms[index].id;
+				});
+				for(var j in old_data){
+					delete dataURLHash[old_data.id];
+				}
+			}
+			window.localStorage.setItem("dataURLHash",JSON.stringify(dataURLHash));
+			alert(JSON.stringify(dataURLHash));
 		}
 
 	}

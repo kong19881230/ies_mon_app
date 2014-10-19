@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 	<head>
@@ -13,6 +14,10 @@
 	<script src="js/jquery.js"></script>
 	
 	<script src="js/jquery.mobile-1.4.3.min.js"></script>
+	<script src="js/jquery.localize.min.js"></script>
+
+    <script src="js/shared_data.js"></script>
+    <script src="js/default_from_data.js"></script>
 	<script src="js/from_data.js"></script>
 	<script src="js/report_app.js"></script>
 	<script src="js/moment.js"></script>
@@ -69,124 +74,29 @@
 			// device APIs are available
 			//
 			var currentCameraID;
-			$(document).ready(function(){
-				$('#add_maint_item').click(function() {
-					
-					var empty_froms_str = JSON.stringify(empty_froms);
-						  // tmp value: [{"id":21,"children":[{"id":196},{"id":195},{"id":49},{"id":194}]},{"id":29,"children":[{"id":184},{"id":152}]},...]
-						  $.ajax({
-						  	type: 'POST',
-						  	url: 'http://uniquecode.net/job/ms/add_maint_item.php',
-						    //url: 'http://localhost/ies_report_sys/submit_maint_report.php',
-						    data: {'maint_items': empty_froms_str},
-						    success: function(msg) {
-						    	alert(msg);
-						    },
-						    error: function(XMLHttpRequest, textStatus, errorThrown) {
-						    	alert(textStatus);
-						    }
-						});
-						});	
-
-			});
+		
 			
 			$(document).ready(function(){
-				$('#add_project').click(function() {
-					for(var i in projects){
-						projects[i].cycles_str=JSON.stringify(projects[i].cycles);
-						projects[i].machine_str=JSON.stringify(projects[i].catalogs);
-						projects[i].created_at=moment().format("YYYY/MM/DD HH:mm:ss");
-						projects[i].updated_at=moment().format("YYYY/MM/DD HH:mm:ss");
-					}
-					var projectstr = JSON.stringify(projects);
-						  // tmp value: [{"id":21,"children":[{"id":196},{"id":195},{"id":49},{"id":194}]},{"id":29,"children":[{"id":184},{"id":152}]},...]
-						  $.ajax({
-						  	type: 'POST',
-						  	url: 'http://uniquecode.net/job/ms/add_projects.php',
-						    //url: 'http://localhost/ies_report_sys/submit_maint_report.php',
-						    data: {'projects': projectstr},
-						    success: function(msg) {
-						    	alert(msg);
-						    },
-						    error: function(XMLHttpRequest, textStatus, errorThrown) {
-						    	alert(textStatus);
-						    }
-						});
-						});	
-				$('.camera-btn').bind( "click", function(event, ui){
-						
-						
-						captureImage();
-				});	
-				$('.small_photo').bind("click", function(event, ui){
-						
-						currentCameraID=event.currentTarget.id;
-						$('#bigPhoto').attr("src",$('#photo_'+event.currentTarget.id).attr('src'));
-					
 
-				});
-				$('#upload').bind("click", function(event, ui){
-						alert($('#photo_camera_device').attr("src"));
-						uploadPhoto($('#photo_camera_device').attr("src"));
+				currentLocale=window.localStorage.getItem("locale");
+				if(!currentLocale){
+					currentLocale="cn";
+					window.localStorage.setItem("locale", "cn");
+				}
+				refreshUILocale(currentLocale);
+				
+				$('#factory').bind("click", function(event, ui){
 						
-
+					window.localStorage.setItem("projects", JSON.stringify(default_projects));
+					window.localStorage.setItem("cycles", JSON.stringify(default_cycles));
+					window.localStorage.setItem("machine_types", JSON.stringify(default_machine_types));
+					window.localStorage.setItem("empty_froms", JSON.stringify(default_froms));
+					alert("完成原廠設定");
 				});
 
 			});
 
-				
-			function onSuccess(imageURI) {
-				
-				$('#photo_'+currentCameraID).attr("src",imageURI);
-				$('#bigPhoto').attr("src",imageURI);
-				$('#photo_'+currentCameraID).removeClass('transparent_img');
-			}
-
-			function onFail(message) {
-				alert('Failed because: ' + message);
-			}
-
-		    // A button will call this function
-		    //
-		    function captureImage() {
-		        // Launch device camera application,
-		        // allowing user to capture up to 2 images
-		       
-		        
-		         navigator.camera.getPicture(onSuccess, onFail, { quality: 40,
-				destinationType: Camera.DestinationType.FILE_URI, encodingType: Camera.EncodingType.JPEG,targetWidth: 400,
- 					 targetHeight: 300,
- 					 saveToPhotoAlbum: true,correctOrientation:true });
-		    }
-		    
-
-		    function uploadPhoto(imageURI) {
-            var options = new FileUploadOptions();
-            options.fileKey="file";
-            options.fileName=imageURI.substr(imageURI.lastIndexOf('/')+1);
-            options.mimeType="image/jpeg";
-
-            var params = {};
-            params.value1 = "test";
-            params.value2 = "param";
-
-            options.params = params;
-            var ft = new FileTransfer();
-            ft.upload(imageURI, encodeURI("http://uniquecode.net/job/ms/upload.php"), win, fail, options);
-         
-	        }
-
-	        function win(r) {
-	            alert("Code = " + r.responseCode);
-	            alert("Response = " + r.response);
-	            alert("Sent = " + r.bytesSent);
-	        }
-
-	        function fail(error) {
-	            alert("An error has occurred: Code = " + error.code);
-	            console.log("upload error source " + error.source);
-	            console.log("upload error target " + error.target);
-	        }
+	
 	</script>
 </head>
 <body>
@@ -195,30 +105,19 @@
 			
 	      
 			<div data-role="header" data-position="fixed" data-theme="b"  >
-				 <a data-rel="back" class="ui-btn  ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-left ui-icon-carat-l">Back</a>
-						  <h1>Comming Soon</h1>
-						  <div data-role="controlgroup" data-type="horizontal" class="ui-mini ui-btn-right">
+				 <a href="index.html" rel="external" class="ui-btn  ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-left ui-icon-carat-l" data-localize="back">Back</a>
+
+						  <h1 data-localize="setting_btn">Setting</h1>
+						 <!--  <div data-role="controlgroup" data-type="horizontal" class="ui-mini ui-btn-right">
 				<a href="#" id="add_project" class="ui-btn  ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-left ui-icon-carat-l">Add Project</a>
 				<a href="#" id="add_maint_item" class="ui-btn  ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-left ui-icon-carat-l">Add Maint Item</a>
-				</div>
+				</div> -->
 			</div><!-- /header -->
-				<div data-role="popup" id="popupBigPhotoPanel" data-overlay-theme="b" data-theme="b" data-corners="false" data-dismissible="false">
-					    <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-b ui-icon-delete ui-btn-icon-notext ui-btn-right close-btn">Close</a><img src="" id="bigPhoto" class="popphoto"  style="max-height:500px;" >
-					    <button id="itemPhotoCamera"     class="camera-btn ui-btn ui-btn-a ui-icon-camera ui-btn-icon-left ui-shadow ui-corner-all" data-localize="maint_from.camera">Camera</button></div>
-			
-			<div class="ui-field-contain ui-shadow ui-corner-all">
-				<label for="textinput-1" data-localize="maint_from.device_photo">Device Photo</label>
-				<div style="float: left; width: 40%"  class="right-container">
 				
-				<div  style="float: right;" >
-				 <a id="camera_device" class="small_photo" href="#popupBigPhotoPanel" data-rel="popup" data-position-to="window" data-transition="fade" ><img id="photo_camera_device" alt="Smiley face" class="transparent_img" src="eximages/0_device.jpg" width="100" height="70" style="margin:5px"/></a>
-
-				  <button id="upload"     class="ui-btn ui-btn-a ui-icon-camera ui-btn-icon-left ui-shadow ui-corner-all" data-localize="maint_from.camera">Upload</button>
-				 </div>
-				 
-				 </div>
-				
-			</div>
+			 <div data-role="content" data-iscroll="true" class="ui-content">
+						 <a id="update" class="ui-btn ui-btn-b ui-alt-icon ui-nodisc-icon ui-corner-all " data-localize="setting.update">Update Project Data</a>
+						  <a id="factory" class="ui-btn ui-btn-b ui-alt-icon ui-nodisc-icon ui-corner-all " data-localize="setting.factory">Factory Setting</a>
+			  </div>
 		</div>		
 		
 

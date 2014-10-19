@@ -5,6 +5,7 @@
  "sign":"Sign",
   "save_succ":"Save Successfully!!!",
   "cancel":"Cancel",
+  "setting_btn":"Setting",
   "index": {
     "title":"IES Maintainance Report App",
     "maintain":"Maintenance Report",
@@ -53,6 +54,9 @@
   },"signature":{
         "title":"Signature",
         "previewFrom":"Preview From"
+  },"setting":{
+        "update":"Update New Project Data",
+        "factory":"Factory Setting"
   },"service_report":{
         "title":"Service Report",
         "problem":"Problem",

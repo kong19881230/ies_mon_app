@@ -6,6 +6,7 @@
   "sign":"簽名",
   "save_succ":"成功儲存!!!",
   "cancel":"取消",
+  "setting_btn":"設定",
   "index": {
     "title":"IES維護報告手機程式",
     "maintain":"維護報告",
@@ -53,6 +54,9 @@
   ,"signature":{
         "title":"簽名",
         "previewFrom":"預覽表單"
+  },"setting":{
+        "update":"更新項目數據",
+        "factory":"原廠設定"
   },"service_report":{
         "title":"工作報告",
         "problem":"問題類別",
@@ -60,7 +64,6 @@
         "report":"報告",
         "customer":"客戶",
         "problem_reported":"回報的問題",
-
         "system_down":"系統停止",
         "yes":"是",
         "no":"否",
