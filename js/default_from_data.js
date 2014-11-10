@@ -1804,4 +1804,21 @@ var default_machine_types={"heat":{
 					"name_cn": "煙囪系統",
 					"name_en": "Chimney System"
 
+				},"sboiler":{ 
+					"name_cn": "蒸氣煱爐",
+					"name_en": "Steam Boiler"
+
+				},"cpump":{ 
+					"name_cn": "熱煤循環泵",
+					"name_en": "Circulation Pump"
+
+				},"calorifier":{ 
+					"name_cn": "熱水加熱器",
+					"name_en": "Calorifier"
+
+				},"opump":{ 
+					"name_cn": "供油泵",
+					"name_en": "Oil Pump"
+
 				}};
+
