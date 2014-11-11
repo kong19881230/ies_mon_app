@@ -175,9 +175,11 @@ $(document).ready(function () {
 	// });
 	// link the new button with newCanvas() function
 	$("#sign_pop_btn").click(function() {
-
+		 $("html, body").animate({ scrollTop: 0 }, "fast");
 		newCanvas();
 
+		
+		setTimeout(function(){$("#popupSignature").popup('open',{"positionTo":"window","transition":"pop"});}, 500);
 	});
     
     // hide help popup when clicked anywhere on screen
@@ -347,6 +349,7 @@ function showReportSummary(report){
   	$("#summary").append(content);
   	$("#from_table").table();
   	$('.from_row').click(function (event,ui) {
+
 	 	currentFromIndex=this.id;
 	 	 showFromSummary(report.froms[currentFromIndex]);
 	 	//$("#previewFrom").trigger( "create");
@@ -601,7 +604,7 @@ function buzzDevice(pos){
 									
 								</div>
 								<h1></h1>
-						 <a id="sign_pop_btn" href="#popupSignature" data-rel="popup" data-position-to="window" data-transition="pop" data-role="button" data-theme="b" class="ui-btn-right" data-localize="sign">Sign</a>
+						 <a id="sign_pop_btn" data-theme="b" class="ui-btn-right" data-localize="sign">Sign</a>
 						 <img  id="canvasImg" class="ui-btn-left"   height="60" /></div>
 					   
 	<!--   -->

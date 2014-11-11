@@ -18,7 +18,7 @@ function syncMReport(report){
 		mReportQueue[report.index]=report;
 		
 	}else{
-		report.index=0;
+		report.index=mReportQueue.length-1;
 		mReportQueue.push(report);
 		if(mReportQueue.length>6){
 			var temp_report=mReportQueue.shift();
@@ -27,20 +27,23 @@ function syncMReport(report){
 			if(dataURLHashStr){
 				dataURLHash =JSON.parse(dataURLHashStr); 
 			}
-			alert(JSON.stringify(dataURLHash));
 			var dataURLArray = $.map(dataURLHash, function(value, index) {
 			    return [value];
 			});
-			for(var index in report.froms){
-				var old_data=jQuery.grep(projects, function(element, index){
-				  return element.from_id==report.froms[index].id;
+			// alert(dataURLArray.length);
+			for(var i in temp_report.froms){
+				var old_data=jQuery.grep(dataURLArray, function(element, index){
+				
+				  return element.from_id==temp_report.froms[i].id;
 				});
+				// alert(old_data.length);
 				for(var j in old_data){
-					delete dataURLHash[old_data.id];
+					delete dataURLHash[old_data[j].id];
 				}
+
 			}
 			window.localStorage.setItem("dataURLHash",JSON.stringify(dataURLHash));
-			alert(JSON.stringify(dataURLHash));
+			removeReportPhoto(temp_report);
 		}
 
 	}
@@ -48,6 +51,25 @@ function syncMReport(report){
 	window.localStorage.setItem("currentMReport", JSON.stringify(report));	
 
 }
+
+function removeReportPhoto(report){
+
+	 for(var key in report.photos){ 
+     window.resolveLocalFileSystemURI(report.photos[key].local, onResolveSuccess, fail);
+	 }  
+
+
+}
+			
+function onResolveSuccess(fileEntry) {
+	// alert(fileEntry.name);
+    fileEntry.remove();
+}
+
+function fail(evt) {
+    alert(evt.target.error.code);
+}
+
 function saveSReport(report){
 	if(report.status=="uploaded"){
 		report.status="modified";
@@ -70,7 +92,7 @@ function syncSReport(report){
 		
 	}else{
 
-		report.index=0;
+		report.index=sReportQueue.length-1;
 		sReportQueue.push(report);
 		if(sReportQueue.length>6){
 			sReportQueue.shift();

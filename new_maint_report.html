@@ -90,7 +90,7 @@
 				if(technicansStr){
 					technicans =JSON.parse(technicansStr); 
 				}
-				alert(JSON.stringify(technicans));
+				// alert(JSON.stringify(technicans));
 
 				var current_catalog_index=-1;
 				var currentCycles=[];
@@ -207,12 +207,13 @@
 					if(name!=""){
 						technicans.push(name);
 						window.localStorage.setItem("technicans", JSON.stringify(technicans));
+					
+						$("#technican").append($('<option>', {
+							value: name,
+							text: name}));
+						$("#technican").selectmenu('refresh', true);
+						$('#technican_name').val("");
 					}
-					$("#technican").append($('<option>', {
-						value: name,
-						text: name}));
-					$("#technican").selectmenu('refresh', true);
-					$('#technican_name').val("");
 				});
 
 
@@ -288,12 +289,12 @@
 											// "Result: " + result.text + "\n" +
 											// "Format: " + result.format + "\n" +
 											// "Cancelled: " + result.cancelled);
-					$("#projects").val("3");
-					refreshSelect(3);
-					$("#deviceType").val("1");		
-					$("#deviceID").val("Boiler#1");
-					$("#deviceModel").val("Viessmann - Vitoplex 1400KW");
-					$('select').selectmenu('refresh', true);
+					// $("#projects").val("3");
+					// refreshSelect(3);
+					// $("#deviceType").val("1");		
+					// $("#deviceID").val("Boiler#1");
+					// $("#deviceModel").val("Viessmann - Vitoplex 1400KW");
+					// $('select').selectmenu('refresh', true);
 
 				}, 
 				function (error) {

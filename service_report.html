@@ -353,8 +353,7 @@ currentLocale=window.localStorage.getItem("locale");
 					        
 					        navigator.camera.getPicture(onRemarkImageSuccess, onFail, { quality: 40,
 				destinationType: Camera.DestinationType.FILE_URI, encodingType: Camera.EncodingType.JPEG,targetWidth: 500,
- 					 targetHeight: 375,
- 					 saveToPhotoAlbum: true,correctOrientation:true });
+ 					 targetHeight: 375,correctOrientation:true });
 			}
 				function onFail(message) {
 				alert('Failed because: ' + message);

@@ -294,7 +294,7 @@
 						report.froms[editFromIndex]	=froms;
 					}
 					saveMReport(report);	
-					alert(JSON.stringify(report));
+					// alert(JSON.stringify(report));
 					refreshAllCounter();
 				});
 				$(".tab-btn").click(function(event, ui){
@@ -323,7 +323,7 @@
 				});	
 
 				$("#remark_btn").click(function(event, ui){
-					alert(JSON.stringify(items));
+					// alert(JSON.stringify(items));
 					for(var index in items){ 
 
 						if(items[index].result.type=="bool"&&(items[index].result.value=="repaired"||items[index].result.value=="wait")&&items[index].result.rstate=="n"
@@ -495,8 +495,7 @@
 			        // allowing user to capture up to 2 images
 			         navigator.camera.getPicture(onRemarkImageSuccess, onFail, { quality: 40,
 				destinationType: Camera.DestinationType.FILE_URI, encodingType: Camera.EncodingType.JPEG,targetWidth: 500,
- 					 targetHeight: 375,
- 					 saveToPhotoAlbum: true,correctOrientation:true });
+ 					 targetHeight: 375,correctOrientation:true });
 			    }
 
 			    function addFormItem(parent,item,i){
@@ -641,8 +640,7 @@
 		        
 		         navigator.camera.getPicture(onSuccess, onFail, { quality: 40,
 				destinationType: Camera.DestinationType.FILE_URI, encodingType: Camera.EncodingType.JPEG,targetWidth: 500,
- 					 targetHeight: 375,
- 					 saveToPhotoAlbum: true,correctOrientation:true });
+ 					 targetHeight: 375,correctOrientation:true });
 		    }
 		    
 		    function createCustomTab(name){
@@ -664,7 +662,7 @@
 							// "Format: " + result.format + "\n" +
 							// "Cancelled: " + result.cancelled);
 
-					  $("#deviceID").val(result.text);
+					  // $("#deviceID").val(result.text);
 				  }, 
 				  function (error) {
 					  alert("Scanning failed: " + error);
