@@ -95,11 +95,6 @@
 				var current_catalog_index=-1;
 				var currentCycles=[];
 				var currentCatalogs=[];
-				var catalogToIndex={};
-				catalogToIndex["heat"]=0;
-				catalogToIndex["boiler"]=1;
-				catalogToIndex["chimney"]=2;
-				var indexToCatalog=["heat","boiler","chimney"];
 
 
 				for(var index in projects){ 
@@ -160,7 +155,7 @@
 					report.technican=$("#technican").val();
 					var new_froms={};
 					
-					var new_froms = jQuery.extend(true, {}, empty_froms[current_catalog_index]);
+					var new_froms = jQuery.extend(true, {}, empty_froms[currentCatalogs[current_catalog_index]]);
 					new_froms.created_at=moment().format("YYYY/MM/DD HH:mm:ss");
 					new_froms.updated_at=moment().format("YYYY/MM/DD HH:mm:ss");
 				
@@ -237,7 +232,6 @@
 										return false;
 									});
 					currentCatalogs=project[0].catalogs;
-					
 					$("#cycle").empty();
 					$("#cycle").append($('<option>', {
 							text: "Choose ...",

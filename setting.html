@@ -74,7 +74,11 @@
 			// device APIs are available
 			//
 			var currentCameraID;
-		
+			var d_locale_arr={"en":{
+						"loading":"Loading..."
+				},"cn":{
+						"loading":"更新中..."
+				}}
 			
 			$(document).ready(function(){
 
@@ -85,6 +89,34 @@
 				}
 				refreshUILocale(currentLocale);
 				
+				$('#update').bind("click", function(event, ui){
+					$.mobile.loading( "show", {
+						text: d_locale_arr[currentLocale]["loading"],
+			            textVisible: true,
+			            textonly: false,
+			   			 });
+					 $.ajax({
+						  	type: 'POST',
+						  	url: 'http://uniquecode.net/job/ms/get_update_info.php',
+						    //url: 'http://localhost/ies_report_sys/submit_maint_report.php',
+						    data: {'txtUName': 'iesreport','txtToken':'iespass'},
+						    success: function(msg) {
+						    	
+						    	alert(msg);
+					// 	    window.localStorage.setItem("projects", JSON.stringify(default_projects));
+					// window.localStorage.setItem("cycles", JSON.stringify(default_cycles));
+					// window.localStorage.setItem("machine_types", JSON.stringify(default_machine_types));
+					// window.localStorage.setItem("empty_froms", JSON.stringify(default_froms));
+								
+						    	$.mobile.loading( "hide" );
+						    },
+						    error: function(XMLHttpRequest, textStatus, errorThrown) {
+						    	alert(textStatus);
+						    }
+						});
+					
+				
+				});
 				$('#factory').bind("click", function(event, ui){
 						
 					window.localStorage.setItem("projects", JSON.stringify(default_projects));
