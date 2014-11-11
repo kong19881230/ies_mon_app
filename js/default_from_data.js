@@ -1,7 +1,7 @@
-var default_froms=[];
+var default_froms={};
 
 
-default_froms[0]={
+default_froms["heat"]={
 	"name_cn":"",
 	"name_en":"",
 	"from_type": "heat",
@@ -439,7 +439,7 @@ default_froms[0]={
 ]
 };	
 
-default_froms[1]={
+default_froms["boiler"]={
 	"name_cn":"",
 	"name_en":"",
 	"from_type": "boiler",
@@ -1335,7 +1335,7 @@ default_froms[1]={
 }
 ]
 };				
-default_froms[2]={
+default_froms["chimney"]={
 	"name_cn":"",
 	"name_en":"",
 	"from_type": "chimney",
@@ -1656,9 +1656,9 @@ default_froms[2]={
 ]
 };	
 
-default_froms[0].catalogs=["controller","pump","heat"];
-default_froms[1].catalogs=["burner","boiler","controller","chimney"];
-default_froms[2].catalogs=["controller","chimney"];
+default_froms["heat"].catalogs=["controller","pump","heat"];
+default_froms["boiler"].catalogs=["burner","boiler","controller","chimney"];
+default_froms["chimney"].catalogs=["controller","chimney"];
 
 var default_projects= [
 { 	"id" : "1",
