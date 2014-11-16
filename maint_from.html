@@ -158,10 +158,13 @@
 
 
 				from_default_name["heat"]={"cn":"熱交換器表單","en":"Heat Transfer Compact Unit From"};
-				from_default_name["boiler"]={"cn":"鍋爈表單","en":"Boiler From"};
+				from_default_name["boiler"]={"cn":"熱水鍋爈表單","en":"Hot Water Boiler From"};
 				from_default_name["chimney"]={"cn":"煙囪表單","en":"Chimney From"};
-				
-			
+				from_default_name["sboiler"]={"cn":"蒸氣煱爐表單","en":"Steam Boiler From"};
+				from_default_name["cpump"]={"cn":"熱煤循環泵表單","en":"Circulation Pump From"};
+				from_default_name["calorifier"]={"cn":"熱水加熱器表單","en":"Calorifier From"};
+				from_default_name["opump"]={"cn":"供油泵表單","en":"Oil Pump From"};
+	
 				$('#title').text(from_default_name[froms.from_type][currentLocale]);
 				$('#new_remark_count').hide();
 				var items=froms.items;
@@ -187,6 +190,9 @@
 				}
 				switchNavBtnState();
 				 $("input[type='radio']").checkboxradio();
+				 $('input[type="number"]').keypress(function (e) {
+					    if (String.fromCharCode(e.keyCode).match(/[^0-9]/g)) return false;
+					});
 					$('.mycontrolgroup').controlgroup();
 				// $("input[type='radio']").checkboxradio();
 				//$('#tab_navbar_com').trigger('create');

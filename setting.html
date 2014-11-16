@@ -103,10 +103,29 @@
 						    success: function(msg) {
 						    	
 						    	alert(msg);
-					// 	    window.localStorage.setItem("projects", JSON.stringify(default_projects));
-					// window.localStorage.setItem("cycles", JSON.stringify(default_cycles));
-					// window.localStorage.setItem("machine_types", JSON.stringify(default_machine_types));
-					// window.localStorage.setItem("empty_froms", JSON.stringify(default_froms));
+						    	var response=JSON.parse(msg);
+						    	var projects=response["project_list"];
+						    	var from_items_hash=response["from_items_hash"];
+						    	var empty_froms={};
+						    	for (var value in from_items_hash){ 
+								  empty_froms[value]=jQuery.extend(true, {},default_from_template);
+								  empty_froms[value].from_type=value;
+								  empty_froms[value].items=from_items_hash[value];
+ 								  empty_froms[value].exm_photos= value.substr(0, 1)+"0";
+								}
+						    	empty_froms["heat"].catalogs=["controller","pump","heat"];
+								empty_froms["boiler"].catalogs=["burner","boiler","controller","chimney"];
+								empty_froms["sboiler"].catalogs=["burner","boiler","controller","chimney"];
+								empty_froms["chimney"].catalogs=["controller","chimney"];
+								empty_froms["cpump"].catalogs=["controller"];
+								 empty_froms["cpump"].exm_photos= "cp0";
+								empty_froms["opump"].catalogs=["controller"];
+								empty_froms["calorifier"].catalogs=["controller"];
+								 empty_froms["calorifier"].exm_photos= "ca0";
+								 window.localStorage.setItem("projects", JSON.stringify(projects));
+								window.localStorage.setItem("cycles", JSON.stringify(default_cycles));
+								window.localStorage.setItem("machine_types", JSON.stringify(default_machine_types));
+								window.localStorage.setItem("empty_froms", JSON.stringify(empty_froms));
 								
 						    	$.mobile.loading( "hide" );
 						    },

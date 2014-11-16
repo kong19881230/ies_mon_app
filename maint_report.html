@@ -192,7 +192,7 @@ width: 5em;
 				$("#add_btn").click(function (e) {
 					var new_froms={};
 					var new_froms = jQuery.extend(true, {}, empty_froms[indexToCatalog[current_catalog_index]]);
-					new_froms.id=report.id+"_"+current_catalog_index+"_"+(report.froms.length+1)+getTimeStr();
+					new_froms.id=report.project_id+"_"+current_catalog_index+"_"+(report.froms.length+1)+getTimeStr();
 					new_froms.created_at=moment().format("YYYY/MM/DD HH:mm:ss");
 					new_froms.updated_at=moment().format("YYYY/MM/DD HH:mm:ss");
 					new_froms.items=jQuery.grep(new_froms.items, function(element, index){

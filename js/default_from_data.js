@@ -1,5 +1,16 @@
 var default_froms={};
-
+var default_from_template={
+	"name_cn":"",
+	"name_en":"",
+	"from_type": "",
+	"device_id": "",
+	"device_model": "",
+	"inspector":"",
+	"device_photo":"",
+	"remark":[],
+	"exm_photos" : [""],
+	"items":[]
+}
 
 default_froms["heat"]={
 	"name_cn":"",
