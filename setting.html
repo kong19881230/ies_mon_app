@@ -8,6 +8,7 @@
 	
 	<link rel="stylesheet" href="css/jquery.mobile.structure-1.4.3.min.css">
   	<link rel="stylesheet" href="css/jquery.mobile.icons-1.4.3.min.css">
+  		<link rel="stylesheet" href="css/listview-grid1.css">
   	<link rel="stylesheet" href="css/fb-style.min.css" />
 	<link rel="stylesheet" href="css/carousel.css">
 	<link rel="stylesheet" href="css/carousel-style.css">
@@ -26,6 +27,12 @@
 		.tablist-left {
 			width: 25%;
 			display: inline-block;
+		}
+		li.ui-tabs-active > a {
+			background-color: rgb(51, 136, 204)!important;
+			border-color: rgb(51, 136, 204) !important;
+			color: rgb(255, 255, 255) !important;
+			text-shadow: 0 1px 0 rgb(0, 85, 153) !important;
 		}
 		.tablist-content {
 			width: 73%;
@@ -169,7 +176,10 @@ $( document ).on( "click", ".show-page-loading-msg", function() {
 </head>
 <body>
 
-		<div data-role="page" id="home" style="background-image: url('images/bg.jpg'); background-attachment: fixed; background-repeat: no-repeat; background-size: 100% 100%;" >
+		<div class="my-page" data-role="page" id="home" style="background-image: url('images/bg.jpg'); background-attachment: fixed; background-repeat: no-repeat; background-size: 100% 100%;" >
+			
+
+
 			
 	      
 			<div data-role="header" data-position="fixed" data-theme="b"  >
@@ -182,10 +192,21 @@ $( document ).on( "click", ".show-page-loading-msg", function() {
 				</div> -->
 			</div><!-- /header -->
 				
-			 <div data-role="content" data-iscroll="true" class="ui-content">
-						 <a id="update" class="ui-btn ui-btn-b ui-alt-icon ui-nodisc-icon ui-corner-all " data-localize="setting.update">Update Project Data</a>
-						  <a id="factory" class="ui-btn ui-btn-b ui-alt-icon ui-nodisc-icon ui-corner-all " data-localize="setting.factory">Factory Setting</a>
+			 <div data-role="content" data-iscroll="true" class="ui-content" >
+			 <div style="width:500px!important;height:800px;margin-left: auto;margin-right: auto;" role="main" class="ui-content">
+			 		<ul  id="m_report_list" data-role="listview" data-inset="true">
+					
+			 <li> <a id="update"  >
+	<img  src="images/update.png" class="ui-li-thumb">
+	<p data-localize="setting.update">Update Project Data</p></a>
+</li>
+						
+						 <li><a id="factory"  >	<img  src="images/setting.png" class="ui-li-thumb">  <p data-localize="setting.factory">Factory Setting</p></a></li>
+						  	</ul>
+
+						  	</div>
 			  </div>
+			  
 		</div>		
 		
 
