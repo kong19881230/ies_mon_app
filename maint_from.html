@@ -288,6 +288,7 @@
 					}
 					
 					froms.items=items;
+					alert(JSON.stringify(froms.items));
 					var editFromIndex=-1;
 					for(var index in report.froms){ 
 					  	if(report.froms[index].id==froms.id){
@@ -300,7 +301,7 @@
 						report.froms[editFromIndex]	=froms;
 					}
 					saveMReport(report);	
-					// alert(JSON.stringify(report));
+					 // alert(JSON.stringify(report));
 					refreshAllCounter();
 				});
 				$(".tab-btn").click(function(event, ui){
