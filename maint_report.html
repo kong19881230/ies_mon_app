@@ -198,7 +198,7 @@ width: 5em;
 					new_froms.items=jQuery.grep(new_froms.items, function(element, index){
 						var project=element.projects[report.project_id];
 						if(project!=null){
-							return project.cycle<=report.cycle_type;
+							return parseInt(project.cycle)<=parseInt(report.cycle_type);
 						}
 							return false;
 					});

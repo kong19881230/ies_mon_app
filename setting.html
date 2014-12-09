@@ -108,7 +108,6 @@
 						    //url: 'http://localhost/ies_report_sys/submit_maint_report.php',
 						    data: {'txtUName': 'iesreport','txtToken':'iespass'},
 						    success: function(msg) {
-						    	
 						    	alert(msg);
 						    	var response=JSON.parse(msg);
 						    	var projects=response["project_list"];

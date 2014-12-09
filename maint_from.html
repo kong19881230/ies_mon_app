@@ -404,7 +404,7 @@
 						return true;
 					}else{
 						var res=hint.split("~");
-						return value>=res[0]&&value<=res[1];
+						return parseInt(value)>=parseInt(res[0])&&parseInt(value)<=parseInt(res[1]);
 					}
 				}
 				$('.remark_camera').bind( "click", function(event, ui){
