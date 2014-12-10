@@ -38,7 +38,11 @@
   	 "save_succ":"Save successfully!!",
   	 "add":"Add",
      "next":"Next",
-     "previous":"Previous"
+     "previous":"Previous",
+     "yes":"Yes",
+     "no":"No",
+     "confirmBack":"From has not been saved yet",
+     "sure_back":"Do you want to save the from?"
   },
   "maint_report":{
      "add":"Add",

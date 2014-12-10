@@ -106,7 +106,7 @@
 				}}
 			$(document).ready(function(){
 				currentLocale=window.localStorage.getItem("locale");
-				
+				var hasModified=false;
 				var reportStr=	window.localStorage.getItem("currentMReport");
 				var report=JSON.parse(reportStr);
 				var  froms=JSON.parse(window.localStorage.getItem("currentForm")); 
@@ -132,9 +132,10 @@
 				}
 
 				$("#deviceID").bind( "change", function(event, ui) {
-				
+					hasModified=true;
 					var deviceID=$("#deviceID").val();
 					$("#deviceModel").val(project[0].eq_lists[froms.from_type][deviceID].model);
+					refreshAllCounter();
 				});
 				$("#deviceID").selectmenu('refresh', true);
 				refreshUILocale(currentLocale);
@@ -198,6 +199,14 @@
 				//$('#tab_navbar_com').trigger('create');
 				//$('.ui-slider-switch').slider(); 
 				$(".savebtn").click(function() {
+						saveFrom();
+				});
+				$("#saveandback").click(function() {
+						saveFrom();
+						
+						window.location.href="maint_report.html";
+				});
+				function saveFrom(){
 					var validRemarks=[];
 					for(var i in remarks){
 						remarks[i].text=$("#remark_text_"+i).val();
@@ -300,10 +309,13 @@
 					}else{
 						report.froms[editFromIndex]	=froms;
 					}
+
 					saveMReport(report);	
+					hasModified=false;
 					 // alert(JSON.stringify(report));
+				
 					refreshAllCounter();
-				});
+				}
 				$(".tab-btn").click(function(event, ui){
 						$(event.currentTarget.id).addClass("ui-btn-active");
 						$('.custom_tab').hide();
@@ -325,7 +337,7 @@
 						$('.custom_tab').hide();
 						$('#info').show();
 				$("#add_remark_btn").click(function(event, ui){
-					
+					hasModified=true;
 					createEmptyRemark(empty_remark);
 				});	
 
@@ -387,6 +399,7 @@
 										break;
 								}
 							}
+							hasModified=true;
 							refreshAllCounter();
 				});
 					function showHintEffect(hint,value,textfield){
@@ -417,8 +430,15 @@
 						captureImage();
 				});
 				$('#back').bind( "click", function(event, ui){
+						if(hasModified){
+							$('#popupConfrimBack').popup("open");
+						}else{
+							$('#back').addClass("ui-state-disabled");
+							window.location.href="maint_report.html";
+						}
 						
-						$('#back').addClass("ui-state-disabled");
+						
+
 				});
 				
 				$('.small_photo').bind("click", function(event, ui){
@@ -441,10 +461,27 @@
 										break;
 								}
 							}
+					hasModified=true;
 					refreshAllCounter();
                 });   
-				
+			
+
+			
+                $('#photo_camera_device').load( function(event, ui) {
+                	
+					refreshAllCounter();
+                }); 
 				function refreshAllCounter(){
+					var infoCount=0;
+					
+					if($("#deviceID").val()==="Choose ..."||$("#deviceID").val()==="選擇 ..."){
+						infoCount++;
+					}
+					
+					if($("#photo_camera_device").hasClass("transparent_img")){
+						infoCount++;
+					}
+					$(".info_count").text(infoCount);
 					for(var i in custom_tab_list){
 						$("."+custom_tab_list[i]+"_count").text(calCounter(items,custom_tab_list[i]));
 					}
@@ -463,6 +500,7 @@
 				if(froms.device_id!=""){
 					$('#deviceID').val(froms.device_id);
 					$("#deviceID").selectmenu('refresh', true);
+					refreshAllCounter();
 				}
 				if(froms.device_model!=""){
 					$('#deviceModel').val(froms.device_model);
@@ -481,6 +519,7 @@
 			  		}
 			  	}
 				function createNewPhotoRecord(imgsrc,key){
+					hasModified=true;
 					var id =froms.id+"-"+key;
 			  		var photo ={};
 			  		photo.id=id;
@@ -729,7 +768,7 @@
 	
 		<div id="chimney_from"  data-role="page" >
 			 <div data-role="header" data-position="fixed"  >
-			 <a id="back" href="maint_report.html" rel="external"  class="show-page-loading-msg ui-btn  ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-left ui-icon-carat-l" data-localize="back" data-textonly="false" data-textvisible="true" data-msgtext="" data-inline="true">Back</a>
+			 <a id="back" href="#" data-rel="popup" data-position-to="window" data-transition="pop"   class=" ui-btn  ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-left ui-icon-carat-l" data-localize="back" data-textonly="false" data-textvisible="true" data-msgtext="" data-inline="true">Back</a>
 	      
 			  <h1 id="title">Chimney System From</h1>
 			   <div data-role="controlgroup" data-type="horizontal" class="ui-mini ui-btn-right">
@@ -752,7 +791,21 @@
 			<div data-role="popup" id="popupBigPhotoPanel" data-overlay-theme="b" data-theme="b" data-corners="false" data-dismissible="false">
 					    <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-b ui-icon-delete ui-btn-icon-notext ui-btn-right close-btn">Close</a><img src="" id="bigPhoto" class="popphoto"  style="max-height:500px;" >
 					    <button id="itemPhotoCamera"     class="camera-btn ui-btn ui-btn-a ui-icon-camera ui-btn-icon-left ui-shadow ui-corner-all" data-localize="maint_from.camera">Camera</button></div>
-		
+			<div data-role="popup" id="popupConfrimBack" data-overlay-theme="b" data-theme="b" data-dismissible="false" style="max-width:400px;">
+			<div data-role="header" data-theme="a">
+				<h1 data-localize="maint_from.confirmBack">The document have not saved yet</h1>
+			</div>
+			<div role="main" class="ui-content">
+				<h3 class="ui-title" data-localize="maint_from.sure_back">Do you want to save the from?</h3>
+				<p data-localize="maint_report.cannot_undone">This action cannot be undone.</p>
+				<div class="center-wrapper">
+					<a id="saveandback" href="#" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b"  data-localize="maint_from.yes">Yes</a>
+				
+					 <a id="no" href="maint_report.html" rel="external"  class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b" data-localize="maint_from.no" data-textonly="false" >No</a>
+					<a href="#" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b" data-rel="back" data-localize="maint_report.cancel">Cancel</a>
+				</div>
+			</div>
+		</div>
 		  	 <div data-role="popup" data-theme="b" id="popupSaveSuccessInfo"  class="ui-content" style="max-width:280px">
 				    <a  href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-b ui-icon-delete ui-btn-icon-notext ui-btn-right close-btn">Close</a>
 					<p data-localize="save_succ">Save successfully!!</p>
@@ -817,7 +870,7 @@
 	    	</div>
 	    	 <div data-role="popup" data-theme="b" id="popupSaveRemarkSuccessInfo"  class="ui-content" style="max-width:280px">
 				    <a  href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-b ui-icon-delete ui-btn-icon-notext ui-btn-right close-btn">Close</a>
-					<p data-localize="maint_from.save_succ">Save successfully!!</p>
+					<p data-localize="save_succ">Save successfully!!</p>
 				</div>
     <div id="remark_container" role="main"   >
   
