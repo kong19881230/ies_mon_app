@@ -144,10 +144,12 @@
 				});
 				$('#factory').bind("click", function(event, ui){
 						
-					window.localStorage.setItem("projects", JSON.stringify(default_projects));
-					window.localStorage.setItem("cycles", JSON.stringify(default_cycles));
-					window.localStorage.setItem("machine_types", JSON.stringify(default_machine_types));
-					window.localStorage.setItem("empty_froms", JSON.stringify(default_froms));
+					
+					window.localStorage.removeItem("dataURLHash");
+					window.localStorage.removeItem("sReportQueue");
+					window.localStorage.removeItem("currentSReport");	
+					window.localStorage.removeItem("mReportQueue");
+					window.localStorage.removeItem("currentMReport");	
 					alert("完成原廠設定");
 				});
 

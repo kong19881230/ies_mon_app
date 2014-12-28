@@ -272,29 +272,39 @@
 					$('select').selectmenu('refresh', true);
 				}
 				$("#scanBarcode").click(function (e) {
+
 					onScanBarcode();
 				});
 						
 				function onScanBarcode(){
-
+					
 					cordova.plugins.barcodeScanner.scan(
 						function (result) {
-									  // alert("We got a barcode\n" +
-											// "Result: " + result.text + "\n" +
-											// "Format: " + result.format + "\n" +
-											// "Cancelled: " + result.cancelled);
-					// $("#projects").val("3");
-					// refreshSelect(3);
-					// $("#deviceType").val("1");		
-					// $("#deviceID").val("Boiler#1");
-					// $("#deviceModel").val("Viessmann - Vitoplex 1400KW");
-					// $('select').selectmenu('refresh', true);
+						//var text="3?boiler?Boiler VB-01";
+						var resultArr=result.text.split("?");
+						if(resultArr.length>=3){
+							$("#projects").val(resultArr[0]).change();
+							$('#projects').selectmenu('refresh', true);  
+							var deviceTypeIndex=-1;
+							for(var i=0;i<currentCatalogs.length;i++){
+								if(currentCatalogs[i]===resultArr[1]){
+									deviceTypeIndex=i;
+								}
+							}
+							$("#deviceType").val(deviceTypeIndex).change();
+							$('#deviceType').selectmenu('refresh', true);  
+							$("#deviceID").val(resultArr[2]).change();
+							$('#deviceID').selectmenu('refresh', true);  
+							$("#errorMsg").html("");	
+						}else{
+							$("#errorMsg").html("Format error: " + result.text);
+						}
 
-				}, 
-				function (error) {
-					alert("Scanning failed: " + error);
-				}
-				);
+					}, 
+					function (error) {
+						$("#errorMsg").html("Scanning failed: " + error);
+					}
+					);
 				}
 			});
 function checkFillRequired(){
@@ -330,7 +340,7 @@ function checkFillRequired(){
 
 
 			
-
+				<span id="errorMsg" style="color:red;"></span>
 
 			</div>
 		</div>

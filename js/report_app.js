@@ -21,9 +21,11 @@ function syncMReport(report){
 		report.index=mReportQueue.length-1;
 		mReportQueue.push(report);
 		if(mReportQueue.length>6){
+			alert(mReportQueue.length);
 			var temp_report=mReportQueue.shift();
 			var dataURLHash={};
 			var dataURLHashStr=window.localStorage.getItem("dataURLHash");
+			alert(dataURLHashStr);
 			if(dataURLHashStr){
 				dataURLHash =JSON.parse(dataURLHashStr); 
 			}
@@ -38,10 +40,12 @@ function syncMReport(report){
 				});
 				// alert(old_data.length);
 				for(var j in old_data){
+					alert(old_data[j].id);
 					delete dataURLHash[old_data[j].id];
 				}
 
 			}
+			alert(JSON.stringify(dataURLHash));
 			window.localStorage.setItem("dataURLHash",JSON.stringify(dataURLHash));
 			removeReportPhoto(temp_report);
 		}
@@ -53,8 +57,8 @@ function syncMReport(report){
 }
 
 function removeReportPhoto(report){
-
 	 for(var key in report.photos){ 
+	 	alert(report.photos[key].local);
      window.resolveLocalFileSystemURI(report.photos[key].local, onResolveSuccess, fail);
 	 }  
 
@@ -111,10 +115,10 @@ function refreshUILocale(locale){
 }
 
 function clearreport(){
-	window.localStorage.setItem("sReportQueue", null);
-	window.localStorage.setItem("currentSReport", null);	
-	window.localStorage.setItem("mReportQueue", null);
-	window.localStorage.setItem("currentMReport", null);	
+	window.localStorage.removeItem("sReportQueue");
+	window.localStorage.removeItem("currentSReport");	
+	window.localStorage.removeItem("mReportQueue");
+	window.localStorage.removeItem("currentMReport");	
 }
 
 function getTimeStr(){

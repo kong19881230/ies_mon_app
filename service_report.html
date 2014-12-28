@@ -367,7 +367,7 @@ currentLocale=window.localStorage.getItem("locale");
 function createRemark(index,value){
 	return '<div class=" ui-shadow ui-content">\
 	<label for="textinput-hide" class="ui-hidden-accessible">Remark</label>\
-	<input id="remark_text_'+index+'" type="text" name="textinput-hide" id="textinput-hide" placeholder="Text input" value="'+value+'">\
+	<input id="remark_text_'+index+'" type="text" name="textinput-hide" id="textinput-hide" placeholder="填寫備註" value="'+value+'">\
 	<ul id="photos_'+index+'" data-role="listview" data-inset="true">\
 		<li><a id="camera_remark_'+index+'" href="#" class="remark_camera">\
 			<img src="images/camera-icon.jpg" class="ui-li-thumb">\
@@ -513,7 +513,7 @@ $( document ).on( "click", ".show-page-loading-msg", function() {
 					<div class="ui-bar">
 					</div>
 					<div data-role="controlgroup" data-type="horizontal" class="ui-mini ui-btn-left">
-						<a id="add_remark_btn" href="#" rel="external" class="ui-btn ui-btn-icon-right ui-icon-plus" data-localize="add">Add</a>
+						<a id="add_remark_btn" href="#" rel="external" class="ui-btn ui-btn-icon-right ui-icon-plus" data-localize="maint_from.add">Add</a>
 
 					</div>	
 					

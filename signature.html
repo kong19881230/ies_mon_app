@@ -11,6 +11,10 @@
 	<script src="js/jquery.min.js"></script>
 	<script src="js/jquery.mobile-1.4.3.min.js"></script>
 	<script src="cordova.js"></script>
+	
+	<script src="js/modernizr.js"></script>
+	<script src="js/jSignature.min.noconflict.js"></script>
+
     <style type="text/css">
 	  body {
 		margin:0px;
@@ -25,14 +29,10 @@
         /* prevent scrolling in windows phone */
         -ms-touch-action: none;
 	  }
-	  #content {
-        overflow:hidden;
-		background-color:#ddd;
-	  }
-	  #canvas{
-		cursor:crosshair ;
-        background-color:#fff;
-	  }
+	 #content{
+
+		
+	 }
 	  .palette-case {
 		width:260px;
 		margin:auto;
@@ -66,20 +66,34 @@
 		background-color:#000;
 		border:2px dashed #fff;
 	  }
-      #etchHelp {
-        display: none;
-        position: absolute;
-        top: 40px;
-        right: 4px;
-        width: 160px;
-        background-color: #ffa;
-        color: #222;
-        font-size: 14px;
-        line-height: 20px;
-        border-radius: 4px;
-        padding: 6px;
-        box-shadow:  0 0 3px 1px #888;
-      }
+   		#signatureparent {
+		color:darkblue;
+		background-color:darkgrey;
+		
+		/*max-width:600px;*/
+		width: 1000px!important;
+	}
+	
+	/*This is the div within which the signature canvas is fitted*/
+	#signature {
+		border: 2px dotted black;
+		background-color:white;
+	}
+
+	/* Drawing the 'gripper' for touch-enabled devices */ 
+	html.touch #content {
+		float:left;
+		width:92%;
+	}
+	html.touch #scrollgrabber {
+		float:right;
+		width:4%;
+		margin-right:2%;
+		background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAAFCAAAAACh79lDAAAAAXNSR0IArs4c6QAAABJJREFUCB1jmMmQxjCT4T/DfwAPLgOXlrt3IwAAAABJRU5ErkJggg==)
+	}
+	html.borderradius #scrollgrabber {
+		border-radius: 1em;
+	}
      
     </style>
     	<script src="js/jquery.localize.min.js"></script>
@@ -91,14 +105,10 @@
 
 // Cordova is loaded and it is now safe to make calls Cordova methods
 function onDeviceReady() {
-    navigator.splashscreen.hide();
-	newCanvas();
-	
-	// accelerometer triggers
-    startWatch();
+    
 }
 	
-var ctx, color = "#000", x = 0, y = 0, z = 0, etch = 0;	
+
 
 
 var d_locale_arr={"en":{
@@ -148,12 +158,12 @@ $(document).ready(function () {
 	// hide the accelerometer aka etch on/off button
 	currentLocale=window.localStorage.getItem("locale");
 	refreshUILocale(currentLocale);
-	$("#etch").hide();
+
 	var reportStr=	window.localStorage.getItem("currentMReport");
 	var report=JSON.parse(reportStr);
 	 showReportSummary(report);
 	 
-
+	// var $sigdiv = $("#signature").jSignature({'UndoButton':false});
 	 
 	// Call onDeviceReady when Cordova is loaded and talking with the native device
 	document.addEventListener("deviceready", onDeviceReady, false);
@@ -175,37 +185,29 @@ $(document).ready(function () {
 	// });
 	// link the new button with newCanvas() function
 	$("#sign_pop_btn").click(function() {
+		screen.lockOrientation('landscape');
 		 $("html, body").animate({ scrollTop: 0 }, "fast");
-		newCanvas();
+		 $("#signature").html("");
+ 		var $sigdiv = $("#signature").jSignature({'UndoButton':false});
 
-		
+		//$sigdiv.jSignature("reset");
 		setTimeout(function(){$("#popupSignature").popup('open',{"positionTo":"window","transition":"pop"});}, 500);
 	});
     
     // hide help popup when clicked anywhere on screen
-    $("body").click(function(){
-        $("#etchHelp").fadeOut();    
-    });
 
-	$("#etch").click(function(){
-		if(etch) {
-			etch = 0;
-			$("#etch .ui-btn-text").text("Etch OFF");
-			stopWatch();
-		} else {
-			etch = 1;
-			$("#etch .ui-btn-text").text("Etch ON");
-			startWatch();
-		}
-	});
+
+		
+
+	if (Modernizr.touch){
+		$('#scrollgrabber').height($('#content').height())		
+	}
 	
-	newCanvas();
-
-	ctx.beginPath();
-		ctx.strokeStyle = color;
+	$("#cancel").click(function(){
+		   screen.lockOrientation('portrait');
+	});
 	$("#save_sign").click(function(){
-		 
-			var dataURL = document.getElementById("canvas").toDataURL();
+		 var dataURL = $("#signature").jSignature('getData', "default");
 	      $("#canvasImg").attr("src",dataURL);
 	      $("#canvasImg").show();
 	      var dataURLid=genDataURLID();
@@ -226,6 +228,7 @@ $(document).ready(function () {
 	      report.froms[currentFromIndex].sign_at=moment().format("YYYY/MM/DD HH:mm:ss");
 	      saveMReport(report);
 	      showReportSummary(report);
+	      screen.lockOrientation('portrait');
 	});
 	function genDataURLID(){
 		return "data_"+getTimeStr();
@@ -367,180 +370,7 @@ function showReportSummary(report){
 });	
 
 
-// function to setup a new canvas for drawing
-function newCanvas(){
-	//define and resize canvas
-    $("#content").height($(window).height()-180);
-    var canvas = '<canvas id="canvas" width="'+$(window).width()+'" height="'+($(window).height()-180)+'"></canvas>';
-	$("#content").html(canvas);
-    
-    // setup canvas
-	ctx=document.getElementById("canvas").getContext("2d");
-	ctx.strokeStyle = color;
-	ctx.lineWidth = 5;	
-    
-    // set starting point in center
-    ctx.beginPath();
-	x = $(window).width()/2 ;
-	y = ($(window).height()-180)/2 ;
-	ctx.moveTo(x, y);
-	
-	// setup to trigger drawing on mouse or touch
-	$("#canvas").drawTouch();
-    $("#canvas").drawPointer();
-	$("#canvas").drawMouse();	
-}
-        
-// prototype to	start drawing on touch using canvas moveTo and lineTo
-$.fn.drawTouch = function() {
-	var start = function(e) {
-        e = e.originalEvent;
-		ctx.beginPath();
-		x = e.changedTouches[0].pageX;
-		y = e.changedTouches[0].pageY-44;
-		ctx.moveTo(x,y);
-	};
-	var move = function(e) {
-		e.preventDefault();
-        e = e.originalEvent;
-		x = e.changedTouches[0].pageX;
-		y = e.changedTouches[0].pageY-44;
-		ctx.lineTo(x,y);
-		ctx.stroke();
-	};
-	$(this).on("touchstart", start);
-	$(this).on("touchmove", move);	
-}; 
-    
-// prototype to	start drawing on pointer(microsoft ie) using canvas moveTo and lineTo
-$.fn.drawPointer = function() {
-	var start = function(e) {
-        e = e.originalEvent;
-		ctx.beginPath();
-		x = e.pageX;
-		y = e.pageY-44;
-		ctx.moveTo(x,y);
-	};
-	var move = function(e) {
-		e.preventDefault();
-        e = e.originalEvent;
-		x = e.pageX;
-		y = e.pageY-44;
-		ctx.lineTo(x,y);
-		ctx.stroke();
-    };
-	$(this).on("MSPointerDown", start);
-	$(this).on("MSPointerMove", move);
-};       
 
-// prototype to	start drawing on mouse using canvas moveTo and lineTo
-$.fn.drawMouse = function() {
-	var clicked = 0;
-	var start = function(e) {
-		clicked = 1;
-		ctx.beginPath();
-		x = e.pageX;
-		y = e.pageY-44;
-		ctx.moveTo(x,y);
-	};
-	var move = function(e) {
-		if(clicked){
-			x = e.pageX;
-			y = e.pageY-44;
-			ctx.lineTo(x,y);
-			ctx.stroke();
-		}
-	};
-	var stop = function(e) {
-		clicked = 0;
-	};
-	$(this).on("mousedown", start);
-	$(this).on("mousemove", move);
-	$(window).on("mouseup", stop);
-};
-
-// Start checking the accelerometer
-function startWatch() {
-    // Update acceleration every 1 seconds
-    var options = { frequency: 100 };
-    watchID = navigator.accelerometer.watchAcceleration(onSuccess, onError, options);
-}
-
-// Stop checking the accelerometer
-function stopWatch() {
-    if (watchID) {
-        navigator.accelerometer.clearWatch(watchID);
-        watchID = null;
-    }
-}
-
-// onSuccess: draw line based on tilt and amount of tilt
-function onSuccess(acceleration) {
-    // for debug purpose to print out accelerometer values
-	var element = document.getElementById('debug');
-    element.innerHTML = 'Acceleration X: ' + acceleration.x + '<br />' +
-                        'Acceleration Y: ' + acceleration.y + '<br />' +
-                        'Acceleration Z: ' + acceleration.z ;
-	
-	// hide the accelerometer aka etch on/off button
-	$("#etch").show();
-    
-    if (!etch) {
-        $("#etchHelp").fadeIn(); 
-        stopWatch();
-        return;
-    }
-	
-	// draw based on accelerometer positions
-	if(acceleration.x > 2 && Math.abs(acceleration.y) < 2 ){
-		if (x < 3){	
-			buzzDevice(1);
-			x = 3; 
-		}
-		x = x-Math.abs(acceleration.x);
-		ctx.lineTo(x, y);
-		ctx.stroke();
-	} else if(acceleration.x < -2 && Math.abs(acceleration.y) < 2){
-		if (x > $(window).width() - 3){
-			buzzDevice(2);
-			x = $(window).width() - 3;
-		}
-		x = x+Math.abs(acceleration.x);
-		ctx.lineTo(x, y);
-		ctx.stroke();
-	} else if(acceleration.y > 2 && Math.abs(acceleration.x) < 2){
-		if (y > $(window).height() - 93) { 
-			buzzDevice(3);
-			y = $(window).height() - 93;
-		}
-		y = y+Math.abs(acceleration.y);
-		ctx.lineTo(x, y);
-		ctx.stroke();
-	} else if(acceleration.y < -2 && Math.abs(acceleration.x) < 2){
-		if(y < 3) { 
-			buzzDevice(4);
-			y = 3;
-		}
-		y = y-Math.abs(acceleration.y);
-		ctx.lineTo(x, y);
-		ctx.stroke();
-	}	
-}
-
-// onError: Failed to get the acceleration
-function onError() {
-    document.getElementById('debug').innerHTML = 'ERROR';
-}
-
-var position = 0;
-
-// vibrate and beep when edge of screen it hit while accelerometer drawing
-function buzzDevice(pos){
-    if(position !== pos){ // vibrate only once when boudary is reached at a position
-	    navigator.notification.vibrate(300);
-        position = pos;
-    }
-}
 
 
 	</script>
@@ -551,7 +381,6 @@ function buzzDevice(pos){
         <h3 data-localize="signature.title">Signature</h3>
 		<a id="back" href="maint_report.html" rel="external" data-role="button" data-theme="b" class="ui-btn-left" data-localize="back">Back</a>
 		
-		<a id="etch" data-role="button" data-theme="b" class="ui-btn-right">Etch OFF</a>
 		
     </div>
      <div id="summary" class="ui-body ui-body-a ui-corner-all">
@@ -563,9 +392,6 @@ function buzzDevice(pos){
 			
     
     
-     
-	<div id="debug" style="display:none;position:absolute;top:45px;left:1px;right:1px;height:60px;background-color:#eea"></div>
-    <div id="etchHelp">Turning <strong>Etch ON</strong> will enable drawing using the device's accelerometer by tilting the device in any direction.</div>
 </div> 
 
 <div data-role="page" data-theme="a" id="previewFrom" class="my-page">
@@ -578,8 +404,13 @@ function buzzDevice(pos){
 	    	</div>
 	    	<div data-role="popup" id="popupSignature" data-overlay-theme="b" data-theme="b" data-dismissible="false" >
 
-			    <div role="main" class="ui-content">
-			      <div id="content"></div>
+			    <div role="main" >
+			      <div id="content" >
+			      	<div id="signatureparent">
+		
+						<div id="signature"></div></div>
+
+			      </div>
 			      
 			    </div>
 
@@ -587,7 +418,7 @@ function buzzDevice(pos){
 						  <div class="center-wrapper">
   
 			        <a id="save_sign" href="#" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b" data-rel="back" data-transition="flow" data-localize="save">Save</a>
-			        <a href="#" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b" data-rel="back" data-localize="cancel">Cancel</a>
+			        <a id="cancel" href="#" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b" data-rel="back" data-localize="cancel">Cancel</a>
 			        <!-- </div> -->
 				</div>
 			</div>

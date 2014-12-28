@@ -123,7 +123,7 @@
 
 				$("#deviceID").empty();
 				$("#deviceID").append($('<option>', {
-						text: "Choose ...",
+						text: "選擇 ...",
 						"data-localize":"new_maint_report.choose"}));
 				for(var key in project.eq_lists[froms.from_type]){ 
 						$("#deviceID").append($('<option>', {
@@ -131,13 +131,16 @@
 							text: key}));
 				}
 
+				
+				$("#deviceID").selectmenu('refresh', true);
 				$("#deviceID").bind( "change", function(event, ui) {
+				
 					hasModified=true;
 					var deviceID=$("#deviceID").val();
-					$("#deviceModel").val(project[0].eq_lists[froms.from_type][deviceID].model);
 					refreshAllCounter();
+					$("#deviceModel").val(project.eq_lists[froms.from_type][deviceID].model);
+					
 				});
-				$("#deviceID").selectmenu('refresh', true);
 				refreshUILocale(currentLocale);
 				var remarks=froms.remark;
 				// if(remarks.length==0){
@@ -612,6 +615,7 @@
 				}
 				
 			}
+
 			});
 			function calCounter(items,group){
 					var count=0;
@@ -682,11 +686,10 @@
 		    function captureImage() {
 		        // Launch device camera application,
 		        // allowing user to capture up to 2 images
-		       
-		        
 		         navigator.camera.getPicture(onSuccess, onFail, { quality: 40,
 				destinationType: Camera.DestinationType.FILE_URI, encodingType: Camera.EncodingType.JPEG,targetWidth: 500,
  					 targetHeight: 375,correctOrientation:true });
+		         //
 		    }
 		    
 		    function createCustomTab(name){
@@ -700,18 +703,21 @@
 		    		<span class="'+name+'_count ui-li-count">2</span></a></li>';
 		    }			
 	       function onScanBarcode(){
-
+	       	    
 				cordova.plugins.barcodeScanner.scan(
 				  function (result) {
-					  // alert("We got a barcode\n" +
-							// "Result: " + result.text + "\n" +
-							// "Format: " + result.format + "\n" +
-							// "Cancelled: " + result.cancelled);
-
-					  // $("#deviceID").val(result.text);
+					 var resultArr=result.text.split("?");
+						if(resultArr.length>=3){
+							
+							$("#deviceID").val(resultArr[2]).change();
+							$('#deviceID').selectmenu('refresh', true);  	
+							$("#errorMsg").html("");
+						}else{
+							$("#errorMsg").html("Format error: " + result.text);
+						}
 				  }, 
 				  function (error) {
-					  alert("Scanning failed: " + error);
+					  $("#errorMsg").html("Scanning failed: " + error);
 				  }
 			   );
 		   }		
@@ -816,7 +822,7 @@
 				<label for="textinput-1" data-localize="maint_from.device_id">Device ID</label>
 					<div style="float: left; width: 40%"  class="right-container">
 					 <button style="margin:5px" id="submit-1"  onClick="onScanBarcode()" class=" ui-btn ui-icon-search ui-btn-icon-left ui-shadow ui-corner-all" data-localize="maint_from.scan_qr">Scan QRcode</button>
-					
+					<span id="errorMsg" style="color:red;"></span>
 						<select class="input-textbox" data-native-menu="false" id="deviceID" name="deviceID"  >
 						<option data-localize="new_maint_report.choose">Choose ...</option>		
 						</select>
