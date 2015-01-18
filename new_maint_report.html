@@ -158,7 +158,7 @@
 					var new_froms = jQuery.extend(true, {}, empty_froms[currentCatalogs[current_catalog_index]]);
 					new_froms.created_at=moment().format("YYYY/MM/DD HH:mm:ss");
 					new_froms.updated_at=moment().format("YYYY/MM/DD HH:mm:ss");
-				
+					new_froms.technican=report.technican;
 					new_froms.id=report.project_id+"_"+current_catalog_index+"_"+(report.froms.length+1)+getTimeStr();
 					new_froms.items=jQuery.grep(new_froms.items, function(element, index){
 						var project=element.projects[report.project_id];
@@ -383,7 +383,7 @@ function checkFillRequired(){
 		<div class="ui-field-contain ui-shadow ">
 			<label for="textinput-1" data-localize="new_maint_report.device_model">Device Model</label>
 				
-				<input   class="input-textbox ui-state-disabled"  type="text" name="textinput-5" id="deviceModel"   />
+				<input readonly="true"   class="input-textbox ui-state-disabled"  type="text" name="textinput-5" id="deviceModel"   />
 				
 			
 		</div>

@@ -185,7 +185,7 @@ $(document).ready(function () {
 	// });
 	// link the new button with newCanvas() function
 	$("#sign_pop_btn").click(function() {
-		screen.lockOrientation('landscape');
+		 screen.lockOrientation('landscape');
 		 $("html, body").animate({ scrollTop: 0 }, "fast");
 		 $("#signature").html("");
  		var $sigdiv = $("#signature").jSignature({'UndoButton':false});
@@ -214,7 +214,6 @@ $(document).ready(function () {
 	   
 	      dataURLHash[dataURLid]=creatDataURLRecord(dataURL,dataURLid,report.froms[currentFromIndex].id);
 	      window.localStorage.setItem("dataURLHash", JSON.stringify(dataURLHash));	
-	       
 	      if(report.froms[currentFromIndex].signature==undefined || report.froms[currentFromIndex].signature==""){
 	      	var id =createNewPhotoRecord(dataURLid,"s_"+getTimeStr());
 	      	report.froms[currentFromIndex].signature=id;

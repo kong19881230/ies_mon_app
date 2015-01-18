@@ -121,6 +121,12 @@
 
 				var project=projectArr[0];
 
+				var technicans=[];
+				var technicansStr=window.localStorage.getItem("technicans");
+
+				if(technicansStr){
+					technicans =JSON.parse(technicansStr); 
+				}
 				$("#deviceID").empty();
 				$("#deviceID").append($('<option>', {
 						text: "選擇 ...",
@@ -142,6 +148,27 @@
 					
 				});
 				refreshUILocale(currentLocale);
+				for(var index in technicans){ 
+					$("#technican").append($('<option>', {
+						value: technicans[index],
+						text: technicans[index]}));
+				}
+
+				
+				$("#technican").bind( "change", function(event, ui) {
+				
+					hasModified=true;
+					froms.technican=$("#technican").val();
+					
+					
+				});
+
+				$("#technican").val(froms.technican);
+				$("#technican").selectmenu('refresh', true);
+
+
+
+
 				var remarks=froms.remark;
 				// if(remarks.length==0){
 
@@ -284,6 +311,7 @@
 					
 					froms.device_id=$('#deviceID').val();
 					froms.device_model=$('#deviceModel').val();
+					froms.technican=$('#technican').val();
 					froms.remark=validRemarks;
 					froms.updated_at=moment().format("YYYY/MM/DD HH:mm:ss");
 					froms.name_en=from_default_name[froms.from_type]["en"]+" "+froms.device_id;
@@ -833,7 +861,7 @@
 					<div style="float: left; width: 40%"  class="right-container">
 				
 					
-					<input   class="input-textbox ui-state-disabled"  type="text" name="textinput-5" id="deviceModel"    />
+					<input readonly="true"  class="input-textbox ui-state-disabled"  type="text" name="textinput-5" id="deviceModel"    />
 						
 					
 					</div>
@@ -850,6 +878,17 @@
 				 </div>
 				
 			</div>
+			<div class="ui-field-contain ui-shadow ">
+
+			<label for="textinput-1" data-localize="new_maint_report.technican">Maintenance Technican
+			</label>
+			
+			
+			<select data-native-menu="false" id="technican" name="technican"  >
+			<option data-localize="new_maint_report.choose">Choose ...</option>		
+			</select>
+			
+		</div>
 		</div>
 	
 </div>
