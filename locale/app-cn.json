@@ -35,13 +35,15 @@
      "device_photo":"設備相片",
      "device_model":"型號",
      "camera":"拍照",
+     "album":"相簿",
      "add":"新增",
      "next":"下一頁",
      "previous":"上一頁",
      "yes":"是",
      "no":"否",
      "confirmBack":"表單還未儲存",
-     "sure_back":"是否想先儲存表單?"
+     "sure_back":"是否想先儲存表單?",
+     "save_time":"最後儲存: "
   },
   "maint_report":{
      "add":"新增",
@@ -60,7 +62,11 @@
         "previewFrom":"預覽表單"
   },"setting":{
         "update":"更新項目數據",
-        "factory":"原廠設定"
+        "factory":"原廠設定",
+        "photo_quality":"相片質素",
+        "high":"高",
+        "medium":"中",
+        "low":"低"
   },"service_report":{
         "title":"工作報告",
         "problem":"問題類別",

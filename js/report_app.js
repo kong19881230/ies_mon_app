@@ -20,7 +20,7 @@ function syncMReport(report){
 	}else{
 		report.index=mReportQueue.length-1;
 		mReportQueue.push(report);
-		if(mReportQueue.length>6){
+		if(mReportQueue.length>10){
 			//alert(mReportQueue.length);
 			var temp_report=mReportQueue.shift();
 			var dataURLHash={};
@@ -98,7 +98,7 @@ function syncSReport(report){
 
 		report.index=sReportQueue.length-1;
 		sReportQueue.push(report);
-		if(sReportQueue.length>6){
+		if(sReportQueue.length>10){
 			sReportQueue.shift();
 		}
 

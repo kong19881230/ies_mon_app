@@ -28,6 +28,22 @@
 			width: 25%;
 			display: inline-block;
 		}
+		.ui-field-contain>label{
+			float: left;
+			width: 55%;
+			margin: .5em 2% 2% 2%;
+			color: rgb(255, 255, 255) !important;
+			border-color: rgb(51, 136, 204) !important;
+			text-shadow: 0 1px 0 rgb(0, 85, 153) !important;
+	}
+	.ui-field-contain>label~[class*=ui-], .ui-field-contain .right-container 
+	{
+		float: left;
+		width: 40%;
+		-webkit-box-sizing: border-box;
+		-moz-box-sizing: border-box;
+		box-sizing: border-box;
+	}
 		li.ui-tabs-active > a {
 			background-color: rgb(51, 136, 204)!important;
 			border-color: rgb(51, 136, 204) !important;
@@ -112,6 +128,7 @@
 						    	var response=JSON.parse(msg);
 						    	var projects=response["project_list"];
 						    	var from_items_hash=response["from_items_hash"];
+						    	var photo_report_hash=response["photo_report_hash"];
 						    	var empty_froms={};
 						    	for (var value in from_items_hash){ 
 								  empty_froms[value]=jQuery.extend(true, {},default_from_template);
@@ -132,7 +149,8 @@
 								window.localStorage.setItem("cycles", JSON.stringify(default_cycles));
 								window.localStorage.setItem("machine_types", JSON.stringify(default_machine_types));
 								window.localStorage.setItem("empty_froms", JSON.stringify(empty_froms));
-								
+								window.localStorage.setItem("photo_report_hash", JSON.stringify(photo_report_hash));
+								// alert(JSON.stringify(photo_report_hash));
 						    	$.mobile.loading( "hide" );
 						    },
 						    error: function(XMLHttpRequest, textStatus, errorThrown) {
@@ -153,6 +171,23 @@
 					alert("完成原廠設定");
 				});
 
+				$('input[type="radio"]').change( function(event, ui) {
+							var value=$("input:radio[name='filp_1']:checked").val();
+							if(value!=undefined){
+
+								window.localStorage.setItem("photo_quality", value);
+								
+							}
+                });   	
+                var photo_quality=window.localStorage.getItem("photo_quality");
+				if(!photo_quality){
+					photo_quality="40";
+					window.localStorage.setItem("photo_quality",photo_quality);
+				}
+
+				$('input:radio[name="filp_1"][value="'+photo_quality+'"]').attr('checked', 'checked');
+				 $("input[type='radio']").checkboxradio();
+$('.mycontrolgroup').controlgroup();
 			});
 $( document ).on( "click", ".show-page-loading-msg", function() {
     var $this = $( this ),
@@ -194,7 +229,7 @@ $( document ).on( "click", ".show-page-loading-msg", function() {
 			</div><!-- /header -->
 				
 			 <div data-role="content" data-iscroll="true" class="ui-content" >
-			 <div style="width:500px!important;height:800px;margin-left: auto;margin-right: auto;" role="main" class="ui-content">
+			 <div style="width:500px!important;height:300px;margin-left: auto;margin-right: auto;" role="main" class="ui-content">
 			 		<ul  id="m_report_list" data-role="listview" data-inset="true">
 					
 			 <li> <a id="update"  >
@@ -206,6 +241,16 @@ $( document ).on( "click", ".show-page-loading-msg", function() {
 						  	</ul>
 
 						  	</div>
+			<div id="photo_quality"  class="ui-field-contain ui-shadow ">
+							<label for="textinput-1" data-localize="setting.photo_quality">photo quality</label> 
+								 <div id="controlgroup_1" class="mycontrolgroup" data-role="controlgroup" data-type="horizontal" data-mini="true">
+							<label for="radio-choice-d1" data-localize="setting.high">High</label>
+							<input id="radio-choice-d1" type="radio" name="filp_1" value="100" >
+							<label for="radio-choice-e1" data-localize="setting.medium">Medium</label>
+							<input id="radio-choice-e1" type="radio" name="filp_1" value="50">
+							<label for="radio-choice-f1" data-localize="setting.low">Low</label>
+							<input id="radio-choice-f1" type="radio" name="filp_1" value="40">
+						</div></div>
 			  </div>
 			  
 		</div>		

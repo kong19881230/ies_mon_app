@@ -22,6 +22,21 @@
 	.xxx{
 		background: none repeat scroll 0% 0% rgba(67, 209, 14, 0.27)!important;
 	}
+	#menu{
+			
+			
+			
+		}
+		#menu .ui-controlgroup-controls {
+			
+			width: 90%!important;
+			display: block;
+			margin: 0 auto;
+		}
+		#menu button{
+			
+			width: 38%!important; 
+		}
 	.mycontrolgroup .ui-controlgroup-controls
 	{
 		width: 100% !important;
@@ -104,12 +119,14 @@
 						"fill_remark":"填寫備註"
 
 				}}
+				var photo_quality_present=40;
 			$(document).ready(function(){
 				currentLocale=window.localStorage.getItem("locale");
 				var hasModified=false;
 				var reportStr=	window.localStorage.getItem("currentMReport");
 				var report=JSON.parse(reportStr);
 				var  froms=JSON.parse(window.localStorage.getItem("currentForm")); 
+				var  photo_report_hash=JSON.parse(window.localStorage.getItem("photo_report_hash")); 
 				 var custom_tab_list=froms.catalogs;
 				var full_tab_list=["info"];
 				var from_default_name={};
@@ -127,6 +144,12 @@
 				if(technicansStr){
 					technicans =JSON.parse(technicansStr); 
 				}
+				var photo_quality=window.localStorage.getItem("photo_quality");
+				if(!photo_quality){
+					photo_quality="40";
+					window.localStorage.setItem("photo_quality",photo_quality);
+				}
+				photo_quality_present=parseInt(photo_quality);
 				$("#deviceID").empty();
 				$("#deviceID").append($('<option>', {
 						text: "選擇 ...",
@@ -236,6 +259,7 @@
 						
 						window.location.href="maint_report.html";
 				});
+				setInterval(function(){saveFrom();},10000);
 				function saveFrom(){
 					var validRemarks=[];
 					for(var i in remarks){
@@ -344,7 +368,7 @@
 					saveMReport(report);	
 					hasModified=false;
 					 // alert(JSON.stringify(report));
-				
+					$('#save_time').html("最後儲存: "+moment().format("YYYY-MM-DD HH:mm"));
 					refreshAllCounter();
 				}
 				$(".tab-btn").click(function(event, ui){
@@ -460,6 +484,12 @@
 						
 						captureImage();
 				});
+				$('#itemSelectImage').bind( "click", function(event, ui){
+						
+						
+						selectImageFromAlbum();
+				});
+
 				$('#back').bind( "click", function(event, ui){
 						if(hasModified){
 							$('#popupConfrimBack').popup("open");
@@ -479,7 +509,14 @@
 			   			 });
 						currentCameraID=event.currentTarget.id;
 						$('#bigPhoto').attr("src",$('#photo_'+event.currentTarget.id).attr('src'));
+
 						$.mobile.loading( "hide" );
+						var key =$('#photo_'+event.currentTarget.id+'_id').val();
+						if(key == undefined){
+							$('#hint_text').html("");
+						}else{
+							$('#hint_text').html(photo_report_hash[key]["text_cn"]);
+						}
 
 				});
 				$('input[type="radio"]').change( function(event, ui) {
@@ -538,11 +575,12 @@
 				}
 				if(froms.device_photo!=""){
 					 $('#photo_camera_device').attr("src", report.photos[froms.device_photo].local);
+
 					 $('#photo_camera_device').removeClass("transparent_img")
 				}else{
 					$('#photo_camera_device').attr("src",getExmPhotoPath(froms.exm_photos));
 				}
-
+				$('#photo_camera_device_id').val(froms.exm_photos);
 				function updatePhotoRecord(imgsrc,photoKey){
 		  			if(report.photos[photoKey].local!=imgsrc){
 			  			report.photos[photoKey].local=imgsrc;
@@ -570,9 +608,9 @@
 			    function captureRemarkImage() {
 			        // Launch device camera application,
 			        // allowing user to capture up to 2 images
-			         navigator.camera.getPicture(onRemarkImageSuccess, onFail, { quality: 40,
+			         navigator.camera.getPicture(onRemarkImageSuccess, onFail, { quality: photo_quality_present,
 				destinationType: Camera.DestinationType.FILE_URI, encodingType: Camera.EncodingType.JPEG,targetWidth: 500,
- 					 targetHeight: 375,correctOrientation:true });
+ 					 targetHeight: 375,correctOrientation:true,saveToPhotoAlbum:true });
 			    }
 
 			    function addFormItem(parent,item,i){
@@ -630,9 +668,9 @@
 
 				if(item.result.min_photos){
 
-					var photo_album='<div style="margin-right:1.5%;"  ><div  style="float: right;" >';
+					var photo_album='<div style="margin-left:1.5%;"  ><div  style="float: left;" >';
 					for(var i in item.result.exm_photos){
-						photo_album+='<a id="item_'+i+'_'+item.index+'" style="float: right;" href="#popupBigPhotoPanel" data-rel="popup" class="small_photo" data-position-to="window" data-transition="fade"><img id="photo_item_'+i+'_'+item.index+'" alt="Smiley face" '+(!hasPhoto(item.result.photos,i)?'class="transparent_img"':'') +' src="'+(hasPhoto(item.result.photos,i)?report.photos[item.result.photos[i]].local:getExmPhotoPath(item.result.exm_photos[i]))+'" width="100" height="75" style="margin:5px"/></a>';
+						photo_album+='<input id="photo_item_'+i+'_'+item.index+'_id" type="hidden" value="'+item.result.exm_photos[i]+'"/><a id="item_'+i+'_'+item.index+'" style="float: left;" href="#popupBigPhotoPanel" data-rel="popup" class="small_photo" data-position-to="window" data-transition="fade"><img id="photo_item_'+i+'_'+item.index+'" alt="Smiley face" '+(!hasPhoto(item.result.photos,i)?'class="transparent_img"':'') +' src="'+(hasPhoto(item.result.photos,i)?report.photos[item.result.photos[i]].local:getExmPhotoPath(item.result.exm_photos[i]))+'" width="100" height="75" style="margin:5px"/></a>';
 					}
 					photo_album+='</div></div>';
   
@@ -699,10 +737,11 @@
 			}
 
 			function onSuccess(imageURI) {
-				
+
 				$('#photo_'+currentCameraID).attr("src",imageURI);
 				$('#bigPhoto').attr("src",imageURI);
 				$('#photo_'+currentCameraID).removeClass('transparent_img');
+				
 			}
 
 			function onFail(message) {
@@ -714,12 +753,22 @@
 		    function captureImage() {
 		        // Launch device camera application,
 		        // allowing user to capture up to 2 images
-		         navigator.camera.getPicture(onSuccess, onFail, { quality: 40,
+
+				
+		         navigator.camera.getPicture(onSuccess, onFail, { quality: photo_quality_present,
 				destinationType: Camera.DestinationType.FILE_URI, encodingType: Camera.EncodingType.JPEG,targetWidth: 500,
- 					 targetHeight: 375,correctOrientation:true });
+ 					 targetHeight: 375,correctOrientation:true,saveToPhotoAlbum:true,sourceType:Camera.PictureSourceType.Camera});
 		         //
 		    }
-		    
+		     function selectImageFromAlbum() {
+		        // Launch device camera application,
+		        // allowing user to capture up to 2 images
+
+		         navigator.camera.getPicture(onSuccess, onFail, { quality: photo_quality_present,
+				destinationType: Camera.DestinationType.FILE_URI, encodingType: Camera.EncodingType.JPEG,targetWidth: 500,
+ 					 targetHeight: 375,sourceType:Camera.PictureSourceType.SAVEDPHOTOALBUM});
+		         //
+		    }
 		    function createCustomTab(name){
 		    	return '<div id="'+name+'"  data-role="tabs" class="custom_tab" >\
 								<div id="'+name+'_items">\
@@ -822,9 +871,14 @@
 	    	</div>
 			
 			</div><!-- /header -->
-			<div data-role="popup" id="popupBigPhotoPanel" data-overlay-theme="b" data-theme="b" data-corners="false" data-dismissible="false">
+			<div data-role="popup" id="popupBigPhotoPanel" data-overlay-theme="b" data-theme="b" data-corners="false" data-dismissible="false" style="width:500px!important;">
+						<span id="hint_text"></span>
 					    <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-b ui-icon-delete ui-btn-icon-notext ui-btn-right close-btn">Close</a><img src="" id="bigPhoto" class="popphoto"  style="max-height:500px;" >
-					    <button id="itemPhotoCamera"     class="camera-btn ui-btn ui-btn-a ui-icon-camera ui-btn-icon-left ui-shadow ui-corner-all" data-localize="maint_from.camera">Camera</button></div>
+					     <div id="menu" data-role="controlgroup" data-type="horizontal" class="ui-mini">
+					    <button id="itemPhotoCamera"     class="camera-btn ui-btn ui-btn-a ui-icon-camera ui-btn-icon-left ui-shadow ui-corner-all" data-localize="maint_from.camera">Camera</button>
+					    <button id="itemSelectImage"     class="ui-btn ui-btn-a ui-icon-grid ui-btn-icon-left ui-shadow ui-corner-all" data-localize="maint_from.album">Album</button>
+					    </div>
+					    </div>
 			<div data-role="popup" id="popupConfrimBack" data-overlay-theme="b" data-theme="b" data-dismissible="false" style="max-width:400px;">
 			<div data-role="header" data-theme="a">
 				<h1 data-localize="maint_from.confirmBack">The document have not saved yet</h1>
@@ -872,6 +926,7 @@
 				<div style="float: left; width: 40%"  class="right-container">
 				
 				<div  style="float: right;" >
+				<input id="photo_camera_device_id" type="hidden"/>
 				 <a id="camera_device" class="small_photo" href="#popupBigPhotoPanel" data-rel="popup" data-position-to="window" data-transition="fade" ><img id="photo_camera_device" alt="Smiley face" class="transparent_img" src="eximages/device.png" width="100" height="70" style="margin:5px"/></a>
 				 </div>
 				 
@@ -895,7 +950,10 @@
 <div data-role="footer" data-theme="c" >
 				<a id="previous" href="#"  class="ui-btn ui-btn-b ui-btn-left ui-btn-icon-left ui-icon-carat-l" data-localize="maint_from.previous">Previous</a>
 				<div class="ui-bar">
-				</div>
+				
+				</div><!-- 
+				<label style="margin:auto;width:100px;" data-localize="maint_from.save_time">last:</label> -->
+				<label style="margin:auto;width:300px;text-align:center;" id="save_time"></label>
 					<a id="next" href="#"  class="ui-btn ui-btn-b ui-btn-right ui-btn-icon-right ui-icon-carat-r" data-localize="maint_from.next">next</a>
 				
 				

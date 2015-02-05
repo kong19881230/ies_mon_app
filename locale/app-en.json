@@ -35,6 +35,7 @@
      "device_photo":"Device Photo",
   	 "remark":"Remarks",
   	 "camera":"Camera",
+     "album":"Album",
   	 "save_succ":"Save successfully!!",
   	 "add":"Add",
      "next":"Next",
@@ -42,7 +43,8 @@
      "yes":"Yes",
      "no":"No",
      "confirmBack":"From has not been saved yet",
-     "sure_back":"Do you want to save the from?"
+     "sure_back":"Do you want to save the from?",
+     "save_time":"Saved time: "
   },
   "maint_report":{
      "add":"Add",
@@ -60,7 +62,11 @@
         "previewFrom":"Preview From"
   },"setting":{
         "update":"Update New Project Data",
-        "factory":"Factory Setting"
+        "factory":"Factory Setting",
+        "photo_quality":"Photo Quality",
+        "high":"High",
+        "medium":"Medium",
+        "low":"Low"
   },"service_report":{
         "title":"Service Report",
         "problem":"Problem",
