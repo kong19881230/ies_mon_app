@@ -1816,8 +1816,12 @@ var default_machine_types={"heat":{
 					"name_en": "Chimney System"
 
 				},"sboiler":{ 
-					"name_cn": "蒸氣煱爐",
+					"name_cn": "蒸氣鍋爐",
 					"name_en": "Steam Boiler"
+
+				},"oboiler":{ 
+					"name_cn": "燃油熱水鍋爐",
+					"name_en": "Hot Water Boiler"
 
 				},"cpump":{ 
 					"name_cn": "熱煤循環泵",

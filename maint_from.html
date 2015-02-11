@@ -214,7 +214,8 @@
 				from_default_name["heat"]={"cn":"熱交換器表單","en":"Heat Transfer Compact Unit From"};
 				from_default_name["boiler"]={"cn":"熱水鍋爈表單","en":"Hot Water Boiler From"};
 				from_default_name["chimney"]={"cn":"煙囪表單","en":"Chimney From"};
-				from_default_name["sboiler"]={"cn":"蒸氣煱爐表單","en":"Steam Boiler From"};
+				from_default_name["sboiler"]={"cn":"蒸氣鍋爐表單","en":"Steam Boiler From"};
+				from_default_name["oboiler"]={"cn":"燃油熱水鍋爐表單","en":"Hot Water Boiler From"};
 				from_default_name["cpump"]={"cn":"熱煤循環泵表單","en":"Circulation Pump From"};
 				from_default_name["calorifier"]={"cn":"熱水加熱器表單","en":"Calorifier From"};
 				from_default_name["opump"]={"cn":"供油泵表單","en":"Oil Pump From"};
@@ -245,7 +246,7 @@
 				switchNavBtnState();
 				 $("input[type='radio']").checkboxradio();
 				 $('input[type="number"]').keypress(function (e) {
-					    if (String.fromCharCode(e.keyCode).match(/[^0-9]/g)) return false;
+					    if (String.fromCharCode(e.keyCode).match(/[^0-9\.]/g)) return false;
 					});
 					$('.mycontrolgroup').controlgroup();
 				// $("input[type='radio']").checkboxradio();
@@ -873,7 +874,7 @@
 			</div><!-- /header -->
 			<div data-role="popup" id="popupBigPhotoPanel" data-overlay-theme="b" data-theme="b" data-corners="false" data-dismissible="false" style="width:500px!important;">
 						<span id="hint_text"></span>
-					    <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-b ui-icon-delete ui-btn-icon-notext ui-btn-right close-btn">Close</a><img src="" id="bigPhoto" class="popphoto"  style="max-height:500px;" >
+					    <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-b ui-icon-delete ui-btn-icon-notext ui-btn-right close-btn">Close</a><img width="500" height="375" src="" id="bigPhoto" class="popphoto"  style="max-height:500px;" >
 					     <div id="menu" data-role="controlgroup" data-type="horizontal" class="ui-mini">
 					    <button id="itemPhotoCamera"     class="camera-btn ui-btn ui-btn-a ui-icon-camera ui-btn-icon-left ui-shadow ui-corner-all" data-localize="maint_from.camera">Camera</button>
 					    <button id="itemSelectImage"     class="ui-btn ui-btn-a ui-icon-grid ui-btn-icon-left ui-shadow ui-corner-all" data-localize="maint_from.album">Album</button>

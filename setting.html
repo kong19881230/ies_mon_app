@@ -138,11 +138,13 @@
 								}
 						    	empty_froms["heat"].catalogs=["controller","pump","heat"];
 								empty_froms["boiler"].catalogs=["burner","boiler","controller","chimney"];
+								empty_froms["oboiler"].catalogs=["burner","boiler","controller","chimney"];
 								empty_froms["sboiler"].catalogs=["burner","boiler","controller","chimney"];
 								empty_froms["chimney"].catalogs=["controller","chimney"];
 								empty_froms["cpump"].catalogs=["controller"];
 								 empty_froms["cpump"].exm_photos= "cp0";
 								empty_froms["opump"].catalogs=["controller"];
+								empty_froms["opump"].exm_photos="op0";
 								empty_froms["calorifier"].catalogs=["controller"];
 								 empty_froms["calorifier"].exm_photos= "ca0";
 								 window.localStorage.setItem("projects", JSON.stringify(projects));

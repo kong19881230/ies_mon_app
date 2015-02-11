@@ -223,6 +223,7 @@
 					var project=jQuery.grep(projects, function(element, index){
 									  return element.id==project_id;
 									});
+					alert(JSON.stringify(project));
 					currentCycles=jQuery.grep(cycles, function(element, index){
 										for(var index in project[0].cycles){
 										  if(element.value==project[0].cycles[index]){
@@ -231,6 +232,7 @@
 										}
 										return false;
 									});
+
 					currentCatalogs=project[0].catalogs;
 					$("#cycle").empty();
 					$("#cycle").append($('<option>', {
