@@ -18,7 +18,7 @@ function syncMReport(report){
 		mReportQueue[report.index]=report;
 		
 	}else{
-		report.index=mReportQueue.length-1;
+		report.index=mReportQueue.length;
 		mReportQueue.push(report);
 		if(mReportQueue.length>10){
 			//alert(mReportQueue.length);
@@ -96,7 +96,7 @@ function syncSReport(report){
 		
 	}else{
 
-		report.index=sReportQueue.length-1;
+		report.index=sReportQueue.length;
 		sReportQueue.push(report);
 		if(sReportQueue.length>10){
 			sReportQueue.shift();

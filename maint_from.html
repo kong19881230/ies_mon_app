@@ -576,8 +576,8 @@
 				}
 				if(froms.device_photo!=""){
 					 $('#photo_camera_device').attr("src", report.photos[froms.device_photo].local);
-
-					 $('#photo_camera_device').removeClass("transparent_img")
+					 $('#photo_camera_device').attr("onError", "onLoadPhotoError(this,'"+getExmPhotoPath(froms.exm_photos)+"');");
+					 $('#photo_camera_device').removeClass("transparent_img");
 				}else{
 					$('#photo_camera_device').attr("src",getExmPhotoPath(froms.exm_photos));
 				}
@@ -671,7 +671,8 @@
 
 					var photo_album='<div style="margin-left:1.5%;"  ><div  style="float: left;" >';
 					for(var i in item.result.exm_photos){
-						photo_album+='<input id="photo_item_'+i+'_'+item.index+'_id" type="hidden" value="'+item.result.exm_photos[i]+'"/><a id="item_'+i+'_'+item.index+'" style="float: left;" href="#popupBigPhotoPanel" data-rel="popup" class="small_photo" data-position-to="window" data-transition="fade"><img id="photo_item_'+i+'_'+item.index+'" alt="Smiley face" '+(!hasPhoto(item.result.photos,i)?'class="transparent_img"':'') +' src="'+(hasPhoto(item.result.photos,i)?report.photos[item.result.photos[i]].local:getExmPhotoPath(item.result.exm_photos[i]))+'" width="100" height="75" style="margin:5px"/></a>';
+						photo_album+='<input id="photo_item_'+i+'_'+item.index+'_id" type="hidden" value="'+item.result.exm_photos[i]+'"/><a id="item_'+i+'_'+item.index+'" style="float: left;" href="#popupBigPhotoPanel" data-rel="popup" class="small_photo" data-position-to="window" data-transition="fade"><img id="photo_item_'+i+'_'+item.index+'" alt="No Photo" '+(!hasPhoto(item.result.photos,i)?'class="transparent_img"':'') +' src="'+(hasPhoto(item.result.photos,i)?report.photos[item.result.photos[i]].local:getExmPhotoPath(item.result.exm_photos[i]))+'" width="100" height="75" style="margin:5px" onError="onLoadPhotoError(this,\''+getExmPhotoPath(item.result.exm_photos[i])+'\');"/></a>';
+							
 					}
 					photo_album+='</div></div>';
   
@@ -684,6 +685,11 @@
 			}
 
 			});
+			function onLoadPhotoError(element,path){
+				
+				element.src=path;
+				element.classList.add("transparent_img");
+			}
 			function calCounter(items,group){
 					var count=0;
 				
@@ -928,7 +934,7 @@
 				
 				<div  style="float: right;" >
 				<input id="photo_camera_device_id" type="hidden"/>
-				 <a id="camera_device" class="small_photo" href="#popupBigPhotoPanel" data-rel="popup" data-position-to="window" data-transition="fade" ><img id="photo_camera_device" alt="Smiley face" class="transparent_img" src="eximages/device.png" width="100" height="70" style="margin:5px"/></a>
+				 <a id="camera_device" class="small_photo" href="#popupBigPhotoPanel" data-rel="popup" data-position-to="window" data-transition="fade" ><img id="photo_camera_device" alt="no photo" class="transparent_img" src="eximages/device.png" width="100" height="70" style="margin:5px"/></a>
 				 </div>
 				 
 				 </div>
