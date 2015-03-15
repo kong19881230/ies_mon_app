@@ -20,9 +20,10 @@ function syncMReport(report){
 	}else{
 		report.index=mReportQueue.length;
 		mReportQueue.push(report);
-		if(mReportQueue.length>10){
-			//alert(mReportQueue.length);
+		while(mReportQueue.length>12){
+			//
 			var temp_report=mReportQueue.shift();
+			window.localStorage.setItem("mReportQueue", JSON.stringify(mReportQueue));
 			var dataURLHash={};
 			var dataURLHashStr=window.localStorage.getItem("dataURLHash");
 			// alert(dataURLHashStr);
@@ -98,8 +99,9 @@ function syncSReport(report){
 
 		report.index=sReportQueue.length;
 		sReportQueue.push(report);
-		if(sReportQueue.length>10){
+		while(sReportQueue.length>12){
 			sReportQueue.shift();
+			window.localStorage.setItem("sReportQueue", JSON.stringify(sReportQueue));
 		}
 
 	}

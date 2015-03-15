@@ -77,6 +77,7 @@
 	<script src="js/moment.js"></script>
 	<script>
 			
+			var currentNote="";
 			
 		var correct_style="background: none repeat scroll 0% 0% rgba(67, 209, 14, 0.27)!important;"
 		var wrong_style="background: none repeat scroll 0% 0% rgba(209, 14, 14, 0.36)!important;"
@@ -120,6 +121,7 @@
 
 				}}
 				var photo_quality_present=40;
+
 			$(document).ready(function(){
 				currentLocale=window.localStorage.getItem("locale");
 				var hasModified=false;
@@ -185,7 +187,8 @@
 					
 					
 				});
-
+				currentNote=froms.note;
+				$('#note').append(currentNote);
 				$("#technican").val(froms.technican);
 				$("#technican").selectmenu('refresh', true);
 
@@ -260,7 +263,7 @@
 						
 						window.location.href="maint_report.html";
 				});
-				setInterval(function(){saveFrom();},10000);
+				setInterval(function(){saveFrom();},60000);
 				function saveFrom(){
 					var validRemarks=[];
 					for(var i in remarks){
@@ -333,7 +336,7 @@
 						
 					}
 					
-					
+					froms.note=currentNote;
 					froms.device_id=$('#deviceID').val();
 					froms.device_model=$('#deviceModel').val();
 					froms.technican=$('#technican').val();
@@ -365,11 +368,14 @@
 					}else{
 						report.froms[editFromIndex]	=froms;
 					}
-
+					
 					saveMReport(report);	
 					hasModified=false;
 					 // alert(JSON.stringify(report));
 					$('#save_time').html("最後儲存: "+moment().format("YYYY-MM-DD HH:mm"));
+					addNote("report save ");
+					addNote("report from count"+report.froms.length);
+					addNote("report photo"+Object.keys(report.photos).length);
 					refreshAllCounter();
 				}
 				$(".tab-btn").click(function(event, ui){
@@ -600,11 +606,16 @@
 				}
 				function onRemarkImageSuccess(imageURI) {
 				
-			
+						moveFile(imageURI,currentRemarkCameraID,onCopyImageSuccess);
+					
+				}
+
+				function onCopyImageSuccess(fileEntry){
+					// alert(fileEntry.nativeURL);
 					var index=getIndex(currentRemarkCameraID);
-							$("#photos_"+index).prepend(createRemarkPhoto(remarks[index].photos.length,index,imageURI));
-							$("#photos_"+index).listview('refresh');
-							remarks[index].photos.push(imageURI);
+					$("#photos_"+index).prepend(createRemarkPhoto(remarks[index].photos.length,index,fileEntry.nativeURL));
+					$("#photos_"+index).listview('refresh');
+					remarks[index].photos.push(fileEntry.nativeURL);
 				}
 			    function captureRemarkImage() {
 			        // Launch device camera application,
@@ -685,10 +696,17 @@
 			}
 
 			});
+
+			function addNote(note){
+				$("#note").append("<p>["+moment().format("YYYY-MM-DD HH:mm")+"]"+note+"</p>");
+				currentNote+="<p>["+moment().format("YYYY-MM-DD HH:mm")+"]"+note+"</p>";
+
+			}
 			function onLoadPhotoError(element,path){
 				
 				element.src=path;
 				element.classList.add("transparent_img");
+				addNote(element.src+" cannot be loaded,replace with"+path);
 			}
 			function calCounter(items,group){
 					var count=0;
@@ -745,16 +763,48 @@
 
 			function onSuccess(imageURI) {
 
-				$('#photo_'+currentCameraID).attr("src",imageURI);
-				$('#bigPhoto').attr("src",imageURI);
-				$('#photo_'+currentCameraID).removeClass('transparent_img');
 				
+				moveFile(imageURI,currentCameraID,successCallback);
 			}
 
 			function onFail(message) {
 				alert('Failed because: ' + message);
 			}
+			function moveFile(fileUri,fileName,successHandler) {
+			    window.resolveLocalFileSystemURL(
+			          fileUri,
+			          function(fileEntry){
+			                newFileUri  = cordova.file.dataDirectory + "images/";
+			                oldFileUri  = fileUri;
+			                fileExt     = "." + oldFileUri.split('.').pop();
 
+			                newFileName =  fileName+getTimeStr()+ fileExt;
+			                window.resolveLocalFileSystemURL(cordova.file.dataDirectory,
+			                        function(dirEntry) {
+			                            // move the file to a new directory and rename it
+			                            fileEntry.moveTo(dirEntry, newFileName, successHandler, errorCallback);
+			                        },
+			                        errorCallback);
+			          },
+			          errorCallback);
+			}
+
+			function successCallback(e){
+				// alert("Success. New Path: " + e.nativeURL);
+
+				$('#photo_'+currentCameraID).attr("src",e.nativeURL);
+				$('#bigPhoto').attr("src",e.nativeURL);
+				$('#photo_'+currentCameraID).removeClass('transparent_img');
+				navigator.camera.cleanup(succ,errorCallback);
+				addNote("save photo to localstore successfully with path "+e.nativeURL);
+			}
+			function succ(e){
+				
+			}
+			function errorCallback(e){
+				alert(e.code);
+				addNote("save photo to localstore failed with error code"+e.code);
+			}
 		    // A button will call this function
 		    //
 		    function captureImage() {
@@ -765,6 +815,8 @@
 		         navigator.camera.getPicture(onSuccess, onFail, { quality: photo_quality_present,
 				destinationType: Camera.DestinationType.FILE_URI, encodingType: Camera.EncodingType.JPEG,targetWidth: 500,
  					 targetHeight: 375,correctOrientation:true,saveToPhotoAlbum:true,sourceType:Camera.PictureSourceType.Camera});
+
+		         addNote("capture form camera");
 		         //
 		    }
 		     function selectImageFromAlbum() {
@@ -774,6 +826,8 @@
 		         navigator.camera.getPicture(onSuccess, onFail, { quality: photo_quality_present,
 				destinationType: Camera.DestinationType.FILE_URI, encodingType: Camera.EncodingType.JPEG,targetWidth: 500,
  					 targetHeight: 375,sourceType:Camera.PictureSourceType.SAVEDPHOTOALBUM});
+
+		         addNote("select form album");
 		         //
 		    }
 		    function createCustomTab(name){
@@ -951,6 +1005,8 @@
 			</select>
 			
 		</div>
+		<!-- -->
+		<span id="note" style="display:none"  />
 		</div>
 	
 </div>

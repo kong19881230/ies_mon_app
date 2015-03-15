@@ -312,6 +312,10 @@ width: 5em;
 
 				$('#copy_btn').addClass("ui-state-disabled");
 				$('#delete_pop_btn').addClass("ui-state-disabled");
+
+
+
+				
 				$('#upload').click(function() {
 					$('#upload').addClass("ui-state-disabled");
 					$.mobile.loading( "show", {
@@ -430,9 +434,18 @@ width: 5em;
 				}
 
 				function fail(error) {
+					if(currentUploadIndex<totalUpload){
+				    	currentUploadIndex++;
+				    }
+				     report.photos[currentUploadKey].state='f';
+				    syncMReport(report);
+				    $.mobile.loading( "show", {
+									text: d_locale_arr[currentLocale]["uploading_photo"]+currentUploadIndex+"/"+totalUpload,
+						            textVisible: true,
+						            textonly: false,
+						   			 });
 				    alert("An error has occurred: Code = " + error.code+ error.source+ error.target);
-				    $('#upload').removeClass("ui-state-disabled");
-					$.mobile.loading( "hide" );
+				    uploadNextPhoto();
 
 				}	
 
