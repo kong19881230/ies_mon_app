@@ -1,0 +1,442 @@
+[33mcommit 4b9770262e0228f659ee55c3920873b6ad8fde95[m
+Author: thomas un <kong19881230@gmail.com>
+Date:   Sun Mar 15 21:12:23 2015 +0800
+
+    save photo to local store and add logger
+
+[33mcommit fceedab946ff53d86ef725c6d0707e3e8c4d843d[m
+Merge: 002a7fd fb34a63
+Author: thomas un <kong19881230@gmail.com>
+Date:   Fri Feb 13 01:48:33 2015 +0800
+
+    SD
+
+[33mcommit 002a7fd714032c9b33b1697f480d6d6a7272ddbc[m
+Author: thomas un <kong19881230@gmail.com>
+Date:   Fri Feb 13 01:46:35 2015 +0800
+
+    fix photo lose bug
+
+[33mcommit fb34a63934e8829305589c48ee8d13af6d324d55[m
+Author: kong19881230 <kong19881230@gmail.com>
+Date:   Fri Feb 13 01:44:56 2015 +0800
+
+    add exm photo
+
+[33mcommit 72feb5952482931dfedb38b950c7c16c320f5e33[m
+Author: thomas un <kong19881230@gmail.com>
+Date:   Wed Feb 11 09:03:55 2015 +0800
+
+    add oboiler
+
+[33mcommit fb99a7c26db1bbb1f820e63bd402bde328cda303[m
+Author: kong19881230 <kong19881230@gmail.com>
+Date:   Wed Feb 11 08:40:56 2015 +0800
+
+    photo
+
+[33mcommit 890185c17a63f78211d4083f1659cdc4c00956dc[m
+Author: thomas un <kong19881230@gmail.com>
+Date:   Thu Feb 5 08:30:13 2015 +0800
+
+    auto save and add photo description
+
+[33mcommit 16feadc2864bcacce6c2bd9911045e927bd7fb51[m
+Author: thomas un <kong19881230@gmail.com>
+Date:   Thu Jan 22 09:05:21 2015 +0800
+
+    add photo quality and add 10 report
+
+[33mcommit d9ff8bcfb9a83bbbe01921d1f2d0b51e93938fac[m
+Author: kong19881230 <kong19881230@gmail.com>
+Date:   Thu Jan 22 06:27:32 2015 +0800
+
+    add photo of s boiler
+
+[33mcommit 9a9329cac580cb50a090d0eb9182fdc5b0d3ab59[m
+Author: thomas un <kong19881230@gmail.com>
+Date:   Sun Jan 18 15:36:37 2015 +0800
+
+    add techican in maintain form
+
+[33mcommit ad9a754882bc92fa378309d1f11039a2ab55e27c[m
+Author: thomas un <kong19881230@gmail.com>
+Date:   Sun Dec 28 16:15:58 2014 +0800
+
+    fix all bug
+
+[33mcommit ca5553a75ef9f3bc2028bd1b533ffaa9b131f1f3[m
+Author: thomas un <kong19881230@gmail.com>
+Date:   Wed Dec 10 13:44:28 2014 +0800
+
+    enhan
+
+[33mcommit 47d480e11805ddf3f6cf8ee711065d264f589fb4[m
+Author: thomas un <kong19881230@gmail.com>
+Date:   Wed Dec 10 02:59:14 2014 +0800
+
+    remove comment
+
+[33mcommit 2165eb2dbc17f405985524055029e01a248b79cc[m
+Author: kong19881230 <kong19881230@gmail.com>
+Date:   Wed Dec 10 02:50:27 2014 +0800
+
+    fix group error and int comparer bug
+
+[33mcommit 92941f7e6b844d1565bd21536cea2c439be4ae1c[m
+Author: thomas un <kong19881230@gmail.com>
+Date:   Wed Dec 10 01:56:17 2014 +0800
+
+    thomas
+
+[33mcommit e0d210373d9250573d9ee1ba5745055106ba002b[m
+Author: kong19881230 <kong19881230@gmail.com>
+Date:   Wed Dec 3 07:58:52 2014 +0800
+
+    setting page update
+
+[33mcommit c23589a8d32f324ffdbd40833b930d44805b3e93[m
+Author: thomas un <kong19881230@gmail.com>
+Date:   Mon Nov 17 01:52:10 2014 +0800
+
+    fix bug
+
+[33mcommit af65bc0b4599cdc3d44e4a2d8aee499fdf240ec2[m
+Merge: 4812e1d dba5fb3
+Author: thomas un <kong19881230@gmail.com>
+Date:   Tue Nov 11 23:23:42 2014 +0800
+
+    enhan
+
+[33mcommit 4812e1d3f2ef0b5dc2ea5ecbf2a1d4776646d4a8[m
+Author: thomas un <kong19881230@gmail.com>
+Date:   Tue Nov 11 23:21:07 2014 +0800
+
+    enhan
+
+[33mcommit dba5fb33f539d56e9a206db1ff93968abe7beba4[m
+Author: kong19881230 <kong19881230@gmail.com>
+Date:   Tue Nov 11 22:41:30 2014 +0800
+
+    support update
+
+[33mcommit 9a53aa49d240523bfa16e5a6b9282e9d10147703[m
+Author: kong19881230 <kong19881230@gmail.com>
+Date:   Tue Nov 11 07:28:58 2014 +0800
+
+    update data
+
+[33mcommit 7a658ad3b0c236885f8e6649f11189135fe6907f[m
+Author: kong19881230 <kong19881230@gmail.com>
+Date:   Sun Oct 19 12:28:43 2014 +0800
+
+    add all data
+
+[33mcommit da4394f587e838b8a661a5941cca51f12ef81cb3[m
+Author: kong19881230 <kong19881230@gmail.com>
+Date:   Sun Oct 19 12:24:46 2014 +0800
+
+    remove signature when remove report
+
+[33mcommit 64b131b1c3804bcc85ea9332b39aa2487c227e63[m
+Author: kong19881230 <kong19881230@gmail.com>
+Date:   Sun Oct 19 11:32:09 2014 +0800
+
+    split data
+
+[33mcommit 9ad253f8ad7f1fd2ae21111834878ec8a4645f6d[m
+Author: thomas un <kong19881230@gmail.com>
+Date:   Sun Oct 19 11:30:02 2014 +0800
+
+    fix all bug
+
+[33mcommit 7b1604a6801bbde280c4fc54d54bcdc6b0e3f40b[m
+Merge: b50318e 2770ac7
+Author: thomas un <kong19881230@gmail.com>
+Date:   Sat Oct 18 19:04:46 2014 +0800
+
+    merge
+
+[33mcommit b50318ef94ddbb305cb6a0c789903b0988579ae9[m
+Author: thomas un <kong19881230@gmail.com>
+Date:   Sat Oct 18 18:58:30 2014 +0800
+
+    xxx
+
+[33mcommit 2770ac72610e711c7079a7964cdc1b8974a07270[m
+Author: kong19881230 <kong19881230@gmail.com>
+Date:   Sat Oct 18 15:18:16 2014 +0800
+
+    upload signature
+
+[33mcommit 738d5752dc623536c81b171e8752aa5153d52334[m
+Author: kong19881230 <kong19881230@gmail.com>
+Date:   Sat Oct 18 12:36:49 2014 +0800
+
+    add signature
+
+[33mcommit 0d071f04bfac3cde61be5c8f17188b4855fa1cd9[m
+Author: kong19881230 <kong19881230@gmail.com>
+Date:   Fri Oct 17 03:07:01 2014 +0800
+
+    support auto remark
+
+[33mcommit 107d7b339d9c43fe530ecc85cc232a3ea7fdd14b[m
+Author: kong19881230 <kong19881230@gmail.com>
+Date:   Wed Oct 15 01:55:12 2014 +0800
+
+    enhancement
+
+[33mcommit d095ac57df2cc3714b8dfb41ddf44ec76dc098a0[m
+Author: kong19881230 <kong19881230@gmail.com>
+Date:   Mon Oct 13 03:05:09 2014 +0800
+
+    correct photo
+
+[33mcommit bee879dd39f45b7192c1a83afcf49f1e5d85593a[m
+Author: thomas un <kong19881230@gmail.com>
+Date:   Mon Oct 13 03:00:39 2014 +0800
+
+    fix bug
+
+[33mcommit e75b488be01059e3c7f8043a5db701801f9fcde9[m
+Author: kong19881230 <kong19881230@gmail.com>
+Date:   Mon Oct 13 02:59:26 2014 +0800
+
+    highlight status
+
+[33mcommit 95bfa61aa97bf16a819cf6eb0e2842603950c918[m
+Author: kong19881230 <kong19881230@gmail.com>
+Date:   Mon Oct 13 02:33:00 2014 +0800
+
+    support select
+
+[33mcommit e93d1f228e86b596f39c8f357d86c8bafa01db80[m
+Author: thomas un <kong19881230@gmail.com>
+Date:   Mon Oct 13 01:18:52 2014 +0800
+
+    ss
+
+[33mcommit eed7a891c4fb667f68db9ad81c7c96bfe75a288c[m
+Author: thomas un <kong19881230@gmail.com>
+Date:   Sun Oct 12 23:41:27 2014 +0800
+
+    sss
+
+[33mcommit 24885c18604e74aa5b4b44c5444b3813e6da28e8[m
+Author: kong19881230 <kong19881230@gmail.com>
+Date:   Sun Oct 12 23:25:39 2014 +0800
+
+    commit all date
+
+[33mcommit 8fc5aa85553e58a61f25035b509a0222786ea210[m
+Author: thomas un <kong19881230@gmail.com>
+Date:   Sun Oct 12 21:17:52 2014 +0800
+
+    support upload image in service report
+
+[33mcommit e77b89d5feae3c8a3bc618a667ea6f0db5de0aab[m
+Author: kong19881230 <kong19881230@gmail.com>
+Date:   Sun Oct 12 19:30:29 2014 +0800
+
+    support upload data url
+
+[33mcommit 680d8f451338d29103baf9c5893a550fc1786329[m
+Author: thomas un <kong19881230@gmail.com>
+Date:   Sun Oct 12 19:14:58 2014 +0800
+
+    test upload image
+
+[33mcommit 3ed5aed14eb2ef1dba9ee52083534129b0e8e368[m
+Author: kong19881230 <kong19881230@gmail.com>
+Date:   Sun Oct 12 17:28:07 2014 +0800
+
+    support upload all photo in maint report
+
+[33mcommit 8a6b1f7e2155fcd98129ac65fd5f21aae9ff3cc2[m
+Author: kong19881230 <kong19881230@gmail.com>
+Date:   Sat Oct 11 23:37:24 2014 +0800
+
+    update for photo report
+
+[33mcommit d4ad4e5b988536ad6bc81cd660bdbc72b72fc9f3[m
+Author: thomas un <kong19881230@gmail.com>
+Date:   Sat Oct 11 21:53:15 2014 +0800
+
+    fix all ui
+
+[33mcommit 3be031a0accdca31ed36cbca691747bade2c2d82[m
+Author: thomas un <kong19881230@gmail.com>
+Date:   Sat Oct 11 18:38:59 2014 +0800
+
+    fix all bug
+
+[33mcommit b234f4362170afe57b90e1ac3f0e61f3d316ecae[m
+Author: kong19881230 <kong19881230@gmail.com>
+Date:   Sat Oct 11 17:18:35 2014 +0800
+
+    change upload method
+
+[33mcommit 08284ecbba9992f102589362167ff98cf2d81c86[m
+Author: kong19881230 <kong19881230@gmail.com>
+Date:   Sat Oct 11 15:21:27 2014 +0800
+
+    support report photo upload
+
+[33mcommit 6715a1897329194864050d8b8dd96111c6037ccd[m
+Author: thomas un <thomasun@thomasuns-MacBook-Pro.local>
+Date:   Sat Oct 11 14:51:06 2014 +0800
+
+    upload photos
+
+[33mcommit 63dd9e9ac40edd5d84ab11ee29a34fa66e56bc78[m
+Author: kong19881230 <kong19881230@gmail.com>
+Date:   Sat Oct 11 11:44:30 2014 +0800
+
+    test file upload
+
+[33mcommit 6f7e46530d11e36c1e08ce5cc508fd104bc9c9ca[m
+Author: thomas un <thomasun@thomasuns-MacBook-Pro.local>
+Date:   Fri Oct 10 22:55:39 2014 +0800
+
+    tune index position
+
+[33mcommit ad92bae52e3253bf6e8542bb6a8e8c92a73e377f[m
+Author: kong19881230 <kong19881230@gmail.com>
+Date:   Fri Oct 10 22:38:35 2014 +0800
+
+    add shade
+
+[33mcommit dad2055427f47bffe9be65b4b5c4c5231ef120da[m
+Author: kong19881230 <kong19881230@gmail.com>
+Date:   Fri Oct 10 22:34:05 2014 +0800
+
+    add home image
+
+[33mcommit bd9547db3a629ff0d27773e25b97554df0c2a8df[m
+Author: thomas un <thomasun@thomasuns-MacBook-Pro.local>
+Date:   Fri Oct 10 22:28:02 2014 +0800
+
+    fix ipad bug:
+
+[33mcommit 012a727d5981ce5000803ce6334102915ab44190[m
+Author: kong19881230 <kong19881230@gmail.com>
+Date:   Wed Oct 8 02:02:39 2014 +0800
+
+    support all translation
+
+[33mcommit a3cfbc5fe1d7eece045550a7c6ebddea5f846603[m
+Author: kong19881230 <kong19881230@gmail.com>
+Date:   Mon Oct 6 02:20:31 2014 +0800
+
+    add three page localization
+
+[33mcommit 06087aa6b667f8ece54e39605c51cbc9779f7230[m
+Author: kong19881230 <kong19881230@gmail.com>
+Date:   Sun Oct 5 15:01:02 2014 +0800
+
+    support localization
+
+[33mcommit 391c5e78e5ac6e8aa93b087f5f7f051004ab7a9d[m
+Author: kong19881230 <kong19881230@gmail.com>
+Date:   Sat Oct 4 22:52:12 2014 +0800
+
+    add service report
+
+[33mcommit fdf0d30cc4cbbb24610a5769f157b83e67739ef5[m
+Author: kong19881230 <kong19881230@gmail.com>
+Date:   Thu Oct 2 15:20:46 2014 +0800
+
+    compress bg
+
+[33mcommit 4442d525a2e19495f70bb9da417cce8a798d8d40[m
+Author: kong19881230 <kong19881230@gmail.com>
+Date:   Thu Oct 2 15:07:05 2014 +0800
+
+    compress asset
+
+[33mcommit f274dcde6fb7e0d1dd9e5cfe1139648801cd7dd7[m
+Author: thomas un <thomasun@thomasuns-MacBook-Pro.local>
+Date:   Thu Oct 2 13:45:10 2014 +0800
+
+    change the layout to protiart
+
+[33mcommit 20f0269c94786d12fa033714a870a34fba88574f[m
+Author: kong19881230 <kong19881230@gmail.com>
+Date:   Mon Sep 29 21:18:42 2014 +0800
+
+    capture image enhance and bug fix
+
+[33mcommit ddec79cf9d5321ea79d5ada3374d87b4203beae8[m
+Author: kong19881230 <kong19881230@gmail.com>
+Date:   Mon Sep 29 01:58:06 2014 +0800
+
+    add new  from data
+
+[33mcommit 35881a20708e1d50da35a5b074c428dd4de6e5e9[m
+Author: thomas un <thomasun@thomasuns-MacBook-Pro.local>
+Date:   Sun Sep 28 15:25:21 2014 +0800
+
+    tune the ipad mini screen
+
+[33mcommit 2ee6a9af0e77e160fa0b83215adb81e8c852db7f[m
+Author: kong19881230 <kong19881230@gmail.com>
+Date:   Sun Sep 28 09:51:18 2014 +0800
+
+    support new maint report
+
+[33mcommit e958997808e86c9f519ea80ac98abcb90afaaad2[m
+Author: kong19881230 <kong19881230@gmail.com>
+Date:   Sat Sep 27 02:00:46 2014 +0800
+
+    support new report
+    
+    support new report
+
+[33mcommit 658274db4e9b63ba60dfcfeba3ccc77ae460999f[m
+Author: kong19881230 <kong19881230@gmail.com>
+Date:   Wed Sep 24 08:47:36 2014 +0800
+
+    modify index page
+
+[33mcommit 760ee8590d25a38e7575493045283a478a003569[m
+Author: thomas un <thomasun@thomasuns-MacBook-Pro.local>
+Date:   Mon Sep 22 22:34:44 2014 +0800
+
+    fix the font size
+
+[33mcommit 7762e2f6c8b38ec6ffd10c3613f201c1d9265e94[m
+Author: thomas un <thomasun@thomasuns-MacBook-Pro.local>
+Date:   Thu Sep 18 01:04:47 2014 +0800
+
+    fix iphone issue
+
+[33mcommit 47ff11a5de00a6e5c095c1f756961cb44e6e613f[m
+Author: kong19881230 <kong19881230@gmail.com>
+Date:   Wed Sep 17 01:41:05 2014 +0800
+
+    service report support remark
+
+[33mcommit 38080a47aac51e3d4daf55967aee6e9bc97263da[m
+Author: kong19881230 <kong19881230@gmail.com>
+Date:   Tue Sep 16 22:50:25 2014 +0800
+
+    support show remark
+
+[33mcommit a7d026dc00a12e378b1849ab709444169a2c36b8[m
+Author: kong19881230 <kong19881230@gmail.com>
+Date:   Tue Sep 16 21:16:48 2014 +0800
+
+    add remark page
+
+[33mcommit bde45b954d26da825a1b5b517f666d9469e615f7[m
+Author: kong19881230 <kong19881230@gmail.com>
+Date:   Mon Sep 15 21:21:07 2014 +0800
+
+    fix problem
+
+[33mcommit 7f9aba0db24b88ad0fe393ea1cc9cc9dd6c4c23f[m
+Author: thomas un <thomasun@thomasuns-MacBook-Pro.local>
+Date:   Sun Sep 14 23:57:12 2014 +0800
+
+    add pop up for signature
