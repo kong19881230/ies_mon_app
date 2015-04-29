@@ -20,9 +20,15 @@ function syncMReport(report){
 	}else{
 		report.index=mReportQueue.length;
 		mReportQueue.push(report);
-		while(mReportQueue.length>12){
+		while(mReportQueue.length>10){
 			//
 			var temp_report=mReportQueue.shift();
+
+			report.index=mReportQueue.length-1;
+			for(var i in mReportQueue){ 
+				mReportQueue[i].index=i;
+			}
+
 			window.localStorage.setItem("mReportQueue", JSON.stringify(mReportQueue));
 			var dataURLHash={};
 			var dataURLHashStr=window.localStorage.getItem("dataURLHash");
@@ -49,6 +55,7 @@ function syncMReport(report){
 			// alert(JSON.stringify(dataURLHash));
 			window.localStorage.setItem("dataURLHash",JSON.stringify(dataURLHash));
 			removeReportPhoto(temp_report);
+			// alert(mReportQueue.length);
 		}
 
 	}
@@ -56,7 +63,6 @@ function syncMReport(report){
 	window.localStorage.setItem("currentMReport", JSON.stringify(report));	
 
 }
-
 function removeReportPhoto(report){
 	 for(var key in report.photos){ 
 	 	// alert(report.photos[key].local);
@@ -99,8 +105,13 @@ function syncSReport(report){
 
 		report.index=sReportQueue.length;
 		sReportQueue.push(report);
-		while(sReportQueue.length>12){
+		while(sReportQueue.length>10){
 			sReportQueue.shift();
+
+			report.index=sReportQueue.length-1;
+			for(var i in sReportQueue){ 
+				sReportQueue[i].index=i;
+			}
 			window.localStorage.setItem("sReportQueue", JSON.stringify(sReportQueue));
 		}
 

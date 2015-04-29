@@ -315,7 +315,7 @@ width: 5em;
 
 
 
-				
+
 				$('#upload').click(function() {
 					$('#upload').addClass("ui-state-disabled");
 					$.mobile.loading( "show", {
@@ -437,8 +437,8 @@ width: 5em;
 					if(currentUploadIndex<totalUpload){
 				    	currentUploadIndex++;
 				    }
-				     report.photos[currentUploadKey].state='f';
-				    syncMReport(report);
+				     //report.photos[currentUploadKey].state='f';
+				    //syncMReport(report);
 				    $.mobile.loading( "show", {
 									text: d_locale_arr[currentLocale]["uploading_photo"]+currentUploadIndex+"/"+totalUpload,
 						            textVisible: true,
