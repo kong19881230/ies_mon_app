@@ -408,7 +408,9 @@
 						$('#info').show();
 				$("#add_remark_btn").click(function(event, ui){
 					hasModified=true;
-					createEmptyRemark(empty_remark);
+					var new_remark = jQuery.extend(true, {},empty_remark);
+					remarks.push(new_remark);
+					createEmptyRemark(new_remark);
 				});	
 
 				$("#remark_btn").click(function(event, ui){
