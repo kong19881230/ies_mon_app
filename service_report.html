@@ -73,8 +73,14 @@
 					var currentUploadKey;
 			var currentUploadIndex;
 			var totalUpload;
-
+var dataURLHash={};
 		$(document).ready(function(){
+
+			var dataURLHashStr=window.localStorage.getItem("dataURLHash");
+			if(dataURLHashStr){
+				dataURLHash =JSON.parse(dataURLHashStr); 
+			}
+
 currentLocale=window.localStorage.getItem("locale");
 	refreshUILocale(currentLocale);
 
@@ -85,6 +91,8 @@ currentLocale=window.localStorage.getItem("locale");
 			$('input:radio[name=is_system_down][value='+details.is_system_down+']').attr('checked', 'checked');
 			$('#reported_at').val(details.reported_at);
 			$('#device_model').val(details.device_model);
+			$('#project_name').val(details.project_name);
+			$('#device_name').val(details.device_name);
 			$('#device_id').val(details.device_id);
 			$('#power').val(details.power);
 			$('#machine_type').val(details.machine_type);
@@ -102,9 +110,9 @@ currentLocale=window.localStorage.getItem("locale");
 			$('#end_service').val(moment(details.end_service_at,"YYYY-MM-DD hh:mm").format("hh:mm"));
 			$('#service_date').val(moment(details.start_service_at,"YYYY-MM-DD hh:mm").format("YYYY-MM-DD"));
 			var remarks=report.details.situation;
-
 			if(remarks.length==0){
-				remarks.push(empty_remark);
+				var new_remark = jQuery.extend(true, {},empty_remark);
+				remarks.push(new_remark);
 			}
 
 			for(var i in remarks){
@@ -116,6 +124,7 @@ currentLocale=window.localStorage.getItem("locale");
 				}
 
 			}
+
 			for(var index in projects){ 
 				$("#project_id").append($('<option>', {
 					value: projects[index].id,
@@ -139,19 +148,30 @@ currentLocale=window.localStorage.getItem("locale");
 
 				$("#remark_container").append(createRemark(remarks.length,""));
 				$("#remark_container").trigger("create");
-
-				remarks.push(empty_remark);
+				var new_remark = jQuery.extend(true, {},empty_remark);
+				remarks.push(new_remark);
 				$('.remark_camera').bind( "click", function(event, ui){
 					currentRemarkCameraID=event.currentTarget.id;
 					captureRemarkImage();
 				});
+				
 			});	
 			$("#save").click(function(event, ui){
 				
-					var validRemarks=[];
+					saveReport();
+				
+			});	
+			if(report.signature!=undefined && report.signature!=""){
+				$("#signature").attr("src",dataURLHash[report.photos[report.signature].local].url);
+			}else{
+				$("#signature").attr("src","");
+			}
+            function saveReport(){
+            		var validRemarks=[];
 					for(var i in remarks){
 						remarks[i].text=$("#remark_text_"+i).val();
 						for(var j in remarks[i].photos){
+							
 							var imgsrc =$('#remark_img_'+j+'_'+i).attr("src");
 							if(report.photos[remarks[i].photos[j]]==undefined){
 								var id =createNewPhotoRecord(imgsrc, "r"+j+'_'+i);
@@ -166,23 +186,24 @@ currentLocale=window.localStorage.getItem("locale");
 							validRemarks.push(remarks[i]);
 						}
 					}
-						
 					details.situation=validRemarks;
 					details.problem_reported=$('#problem_reported').val();
 					details.is_system_down=$("input:radio[name='is_system_down']:checked").val();
 					details.reported_by=$('#reported_by').val();
-					details.reported_at=$('#reported_at').val();
+					details.project_name=$('#project_name').val();
+					details.device_name=$('#device_name').val();
+					details.reported_at=moment($('#reported_at').val()).format("YYYY/MM/DD HH:mm:ss");
 					details.device_model=$('#device_model').val();
 					details.device_id=$('#device_id').val();
 					details.power=$('#power').val();
 					details.machine_type=$('#machine_type').val();
 					details.location=$('#location').val();
-					details.start_service_at=$('#service_date').val()+" "+$('#start_service').val();
-					details.end_service_at=$('#service_date').val()+" "+$('#end_service').val();
+					details.start_service_at=moment(($('#service_date').val()+" "+$('#start_service').val())).format("YYYY/MM/DD HH:mm:ss");
+					details.end_service_at=moment(($('#service_date').val()+" "+$('#end_service').val())).format("YYYY/MM/DD HH:mm:ss");
 					details.inspection_found=$('#inspection_found').val();
 					details.status_after_service=$("input:radio[name='status_after_service']:checked").val();
 
-					details.reported_at=$('#reported_at').val();
+				
 					details.remarks=$('#remarks').val();
 					details.contact_name=$('#contact_name').val();
 					details.designation=$('#designation').val();
@@ -192,7 +213,8 @@ currentLocale=window.localStorage.getItem("locale");
 
 					report.details=details;
 					report.project_id=$('#project_id').val();
-					if(report.project_id!=""){
+					//alert(report.project_id);
+					if(report.project_id!=null){
 					var project=jQuery.grep(projects, function(element, index){
 											  return element.id==report.project_id;
 											});
@@ -202,14 +224,17 @@ currentLocale=window.localStorage.getItem("locale");
 					report.name_en= project[0].name_en+' Service Report '+moment().format("YYYYMMDD"); 
 					}
 					saveSReport(report);
-					// alert(JSON.stringify(report));
-				
-			});	
+            }
+			$('#sign').bind( "click", function(event, ui){
+				saveReport();
+				window.location.href="s_signature.html";
+			});
 			$('.remark_camera').bind( "click", function(event, ui){
 
 				currentRemarkCameraID=event.currentTarget.id;
 				captureRemarkImage();
 			});
+			setInterval(function(){saveReport();},60000);
 			$('#upload').click(function() {
 					$('#upload').addClass("ui-state-disabled");
 						$.mobile.loading( "show", {
@@ -219,6 +244,7 @@ currentLocale=window.localStorage.getItem("locale");
 			   			 });
 					report.updated_at=moment().format("YYYY/MM/DD HH:mm:ss");
 					var reprot_str = JSON.stringify(report);
+					alert(reprot_str);
 						  // tmp value: [{"id":21,"children":[{"id":196},{"id":195},{"id":49},{"id":194}]},{"id":29,"children":[{"id":184},{"id":152}]},...]
 						  $.ajax({
 						  	type: 'POST',
@@ -226,7 +252,6 @@ currentLocale=window.localStorage.getItem("locale");
 						    //url: 'http://localhost/ies_report_sys/submit_maint_report.php',
 						    data: {'report': reprot_str},
 						    success: function(msg) {
-						    	alert(msg);
 						    	var res =msg.split("#####");
 								var report_str =res[res.length-1];
 								report=JSON.parse(report_str); 
@@ -283,7 +308,9 @@ currentLocale=window.localStorage.getItem("locale");
 										 uploadPhoto(photo.local,photo.id);
 										 return false;
 									}else if(photo.state=='s'){
+									
 										uploadDataUrl(photo.local,photo.id);
+
 										return false;
 									}
 
@@ -295,10 +322,11 @@ currentLocale=window.localStorage.getItem("locale");
 					$.mobile.loading( "hide" );
 				}
 				function uploadDataUrl(imageURI,id) {
+					var dataURLHash=JSON.parse(window.localStorage.getItem("dataURLHash"));
 					$.ajax({
 					  type: "POST",
 					  url: "http://uniquecode.net/job/ms/upload_data_url.php",
-					  data: {"image": imageURI,"id":id }
+					  data: {"image": dataURLHash[imageURI].url,"id":id }
 					}).done(function( respond ) {
 						win(respond);
 					});
@@ -323,6 +351,7 @@ currentLocale=window.localStorage.getItem("locale");
 				    	currentUploadIndex++;
 				    }
 				    report.photos[currentUploadKey].state='u';
+				    //alert(currentUploadKey);
 				    syncSReport(report);
 				    $.mobile.loading( "show", {
 									text: d_locale_arr[currentLocale]["uploading_photo"]+currentUploadIndex+"/"+totalUpload,
@@ -334,19 +363,22 @@ currentLocale=window.localStorage.getItem("locale");
 				}
 
 				function fail(error) {
+					if(currentUploadIndex<totalUpload){
+				    	currentUploadIndex++;
+				    }
+				    //alert(currentUploadIndex);
+				     //report.photos[currentUploadKey].state='f';
+				    //syncMReport(report);
+				    $.mobile.loading( "show", {
+									text: d_locale_arr[currentLocale]["uploading_photo"]+currentUploadIndex+"/"+totalUpload,
+						            textVisible: true,
+						            textonly: false,
+						   			 });
 				    alert("An error has occurred: Code = " + error.code+ error.source+ error.target);
-				    $('#upload').removeClass("ui-state-disabled");
-					$.mobile.loading( "hide" );
+				    uploadNextPhoto();
 
 				}	
-			function onRemarkImageSuccess(imageURI) {
-
-				var index=getIndex(currentRemarkCameraID);
-				$("#photos_"+index).prepend(createRemarkPhoto(remarks[index].photos.length,index,imageURI));
-				$("#photos_"+index).listview('refresh');
-				remarks[index].photos.push(imageURI);
-			}
-
+			
 			function captureRemarkImage() {
 					        // Launch device camera application,
 					        // allowing user to capture up to 2 images
@@ -355,6 +387,19 @@ currentLocale=window.localStorage.getItem("locale");
 				destinationType: Camera.DestinationType.FILE_URI, encodingType: Camera.EncodingType.JPEG,targetWidth: 500,
  					 targetHeight: 375,correctOrientation:true });
 			}
+            function onRemarkImageSuccess(imageURI) {
+				
+						moveFile(imageURI,currentRemarkCameraID,onCopyImageSuccess);
+					
+				}
+
+				function onCopyImageSuccess(fileEntry){
+					var index=getIndex(currentRemarkCameraID);
+					$("#photos_"+index).prepend(createRemarkPhoto(remarks[index].photos.length,index,fileEntry.nativeURL));
+					$("#photos_"+index).listview('refresh');
+					remarks[index].photos.push(fileEntry.nativeURL);
+				}
+
 				function onFail(message) {
 				alert('Failed because: ' + message);
 			}
@@ -363,6 +408,29 @@ currentLocale=window.localStorage.getItem("locale");
 					    	var index =res[res.length-1];
 					    	return index;
 					    }
+
+
+			function moveFile(fileUri,fileName,successHandler) {
+			    window.resolveLocalFileSystemURL(
+			          fileUri,
+			          function(fileEntry){
+			                newFileUri  = cordova.file.dataDirectory + "images/";
+			                oldFileUri  = fileUri;
+			                fileExt     = "." + oldFileUri.split('.').pop();
+
+			                newFileName =  fileName+getTimeStr()+ fileExt;
+			                window.resolveLocalFileSystemURL(cordova.file.dataDirectory,
+			                        function(dirEntry) {
+			                            // move the file to a new directory and rename it
+			                            fileEntry.moveTo(dirEntry, newFileName, successHandler, errorCallback);
+			                        },
+			                        errorCallback);
+			          },
+			          errorCallback);
+			}
+			function errorCallback(e){
+				alert(e.code);
+			}
 });
 function createRemark(index,value){
 	return '<div class=" ui-shadow ui-content">\
@@ -434,8 +502,9 @@ $( document ).on( "click", ".show-page-loading-msg", function() {
 					<label for="textinput-1" data-localize="service_report.customer">Customer</label>
 					<div style="float: left; width: 40%"  class="right-container">
 						<select name="project_id" id="project_id" data-native-menu="false">
-							<option data-localize="service_report.select_a_customer">Select a Customer</option>
+							<option data-localize="service_report.select_a_customer" >Select a Customer</option>
 						</select>
+						<input   class="input-textbox"  type="text" name="textinput-5" id="project_name"   />
 					</div>
 				</div>
 				<div class="ui-field-contain ui-shadow ">
@@ -495,6 +564,7 @@ $( document ).on( "click", ".show-page-loading-msg", function() {
 							<option value="boiler" data-localize="service_report.boiler">Boiler</option>
 							<option value="chimney" data-localize="service_report.chimney">Chimney</option>
 						</select>
+						<input   class="input-textbox"  type="text" name="textinput-5" id="device_name"   />
 					</div>
 				</div>
 				<div class="ui-field-contain ui-shadow ">

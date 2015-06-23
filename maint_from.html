@@ -121,8 +121,14 @@
 
 				}}
 				var photo_quality_present=40;
-
+			    var isShowPhoto="s";
+			    var bigPhotoOpened=false;
 			$(document).ready(function(){
+
+				$('input:radio[name=ShowPhoto][value='+isShowPhoto+']').attr('checked', 'checked');
+				$("input[type='radio']").checkboxradio("refresh");
+
+
 				currentLocale=window.localStorage.getItem("locale");
 				var hasModified=false;
 				var reportStr=	window.localStorage.getItem("currentMReport");
@@ -262,6 +268,7 @@
 						saveFrom();
 						
 						window.location.href="maint_report.html";
+						removeAllElement();
 				});
 				setInterval(function(){saveFrom();},60000);
 				function saveFrom(){
@@ -296,7 +303,7 @@
 							}
 						for(var y in items[index].result.exm_photos){
 
-							var imgsrc =$('#photo_item_'+y+'_'+items[index].index).attr("src");
+							var imgsrc =$('#photo_item_'+y+'_'+items[index].index).attr("alt");
 					  	
 						  	if(imgsrc!=getExmPhotoPath(items[index].result.exm_photos[y])){
 						  		if(items[index].result.photos[y]==""){
@@ -344,7 +351,7 @@
 					froms.updated_at=moment().format("YYYY/MM/DD HH:mm:ss");
 					froms.name_en=from_default_name[froms.from_type]["en"]+" "+froms.device_id;
 					froms.name_cn=from_default_name[froms.from_type]["cn"]+" "+froms.device_id;
-					var imgsrcD=$('#photo_camera_device').attr("src");
+					var imgsrcD=$('#photo_camera_device').attr("alt");
 					if(imgsrcD!=getExmPhotoPath(froms.exm_photos)){
 						if(froms.device_photo==""){
 							  		var id= createNewPhotoRecord(imgsrcD,froms.exm_photos);
@@ -377,6 +384,7 @@
 					addNote("report from count"+report.froms.length);
 					addNote("report photo"+Object.keys(report.photos).length);
 					refreshAllCounter();
+					
 				}
 				$(".tab-btn").click(function(event, ui){
 						$(event.currentTarget.id).addClass("ui-btn-active");
@@ -400,7 +408,9 @@
 						$('#info').show();
 				$("#add_remark_btn").click(function(event, ui){
 					hasModified=true;
-					createEmptyRemark(empty_remark);
+					var new_remark = jQuery.extend(true, {},empty_remark);
+					remarks.push(new_remark);
+					createEmptyRemark(new_remark);
 				});	
 
 				$("#remark_btn").click(function(event, ui){
@@ -482,6 +492,11 @@
 						return parseInt(value)>=parseInt(res[0])&&parseInt(value)<=parseInt(res[1]);
 					}
 				}
+
+				function removeAllElement(){
+					$('#small_photo img').removeAttr('src');
+					$('#small_photo').empty();
+				}
 				$('.remark_camera').bind( "click", function(event, ui){
 						currentRemarkCameraID=event.currentTarget.id;
 						captureRemarkImage();
@@ -503,30 +518,41 @@
 						}else{
 							$('#back').addClass("ui-state-disabled");
 							window.location.href="maint_report.html";
+							removeAllElement();
 						}
 						
-						
+				});
 
+				$('#no').bind( "click", function(event, ui){
+						
+							$('#back').addClass("ui-state-disabled");
+							window.location.href="maint_report.html";
+							removeAllElement();
 				});
 				
 				$('.small_photo').bind("click", function(event, ui){
-						$.mobile.loading( "show", {
-			            textVisible: false,
-			            textonly: false,
-			   			 });
+					if(!bigPhotoOpened){
 						currentCameraID=event.currentTarget.id;
-						$('#bigPhoto').attr("src",$('#photo_'+event.currentTarget.id).attr('src'));
+						$('#bigPhoto').attr("src",$('#photo_'+event.currentTarget.id).attr('alt'));
 
-						$.mobile.loading( "hide" );
+						
 						var key =$('#photo_'+event.currentTarget.id+'_id').val();
 						if(key == undefined){
 							$('#hint_text').html("");
 						}else{
 							$('#hint_text').html(photo_report_hash[key]["text_cn"]);
 						}
+					}
 
 				});
+				$('#popupBigPhotoPanel').on( "popupafterclose", function( event, ui ) {
+					bigPhotoOpened=false;
+				} );
+				$('#popupBigPhotoPanel').on( "popupafteropen", function( event, ui ) {
+					bigPhotoOpened=true;
+				} );
 				$('input[type="radio"]').change( function(event, ui) {
+					if(event.currentTarget.name!="ShowPhoto"){
 					var res = event.currentTarget.name.split("_");
 							var index =res[res.length-1];
 							for(var i in items){ 
@@ -538,8 +564,32 @@
 							}
 					hasModified=true;
 					refreshAllCounter();
+					}
                 });   
-			
+			    $("input[name='ShowPhoto']").change(function(event,ui) {
+			    	if(isShowPhoto!=this.value){
+			    	    isShowPhoto=this.value;
+			    	    
+			    	    if(isShowPhoto=="o"){
+				    	    $('.small_photo img').each(function(i) {
+				    	    	var path=$(this).attr('alt');
+				    	    	if(path.indexOf("eximages")<0)
+				    	    	$(this).removeAttr('src');
+						    	$(this).attr("src",path);
+						  	});
+				    	}else{
+				    		$('.small_photo img').each(function(i) {
+				    	    	var path=$(this).attr('alt');
+				    	    	if(path.indexOf("eximages") <0){
+				    	    		$(this).removeAttr('src');
+						    		$(this).attr("src","images/tick.jpg");
+
+						    	}
+
+						  	});
+				    	}
+				    	}
+				});	
 
 			
                 $('#photo_camera_device').load( function(event, ui) {
@@ -581,11 +631,13 @@
 					$('#deviceModel').val(froms.device_model);
 				}
 				if(froms.device_photo!=""){
-					 $('#photo_camera_device').attr("src", report.photos[froms.device_photo].local);
-					 $('#photo_camera_device').attr("onError", "onLoadPhotoError(this,'"+getExmPhotoPath(froms.exm_photos)+"');");
+					 $('#photo_camera_device').attr("src", getDefaultPhoto());
+					 $('#photo_camera_device').attr("alt", report.photos[froms.device_photo].local);
+					 $('#photo_camera_device').attr("onError", "onLoadPhotoError(this,'"+froms.exm_photos+"');");
 					 $('#photo_camera_device').removeClass("transparent_img");
 				}else{
-					$('#photo_camera_device').attr("src",getExmPhotoPath(froms.exm_photos));
+					$('#photo_camera_device').attr("alt",getExmPhotoPath(froms.exm_photos));
+					$('#photo_camera_device').attr("src",getSmallPhotoPath(froms.exm_photos));
 				}
 				$('#photo_camera_device_id').val(froms.exm_photos);
 				function updatePhotoRecord(imgsrc,photoKey){
@@ -621,8 +673,8 @@
 			        // Launch device camera application,
 			        // allowing user to capture up to 2 images
 			         navigator.camera.getPicture(onRemarkImageSuccess, onFail, { quality: photo_quality_present,
-				destinationType: Camera.DestinationType.FILE_URI, encodingType: Camera.EncodingType.JPEG,targetWidth: 500,
- 					 targetHeight: 375,correctOrientation:true,saveToPhotoAlbum:true });
+				destinationType: Camera.DestinationType.FILE_URI, encodingType: Camera.EncodingType.JPEG,
+ 					correctOrientation:true,saveToPhotoAlbum:true });
 			    }
 
 			    function addFormItem(parent,item,i){
@@ -682,7 +734,7 @@
 
 					var photo_album='<div style="margin-left:1.5%;"  ><div  style="float: left;" >';
 					for(var i in item.result.exm_photos){
-						photo_album+='<input id="photo_item_'+i+'_'+item.index+'_id" type="hidden" value="'+item.result.exm_photos[i]+'"/><a id="item_'+i+'_'+item.index+'" style="float: left;" href="#popupBigPhotoPanel" data-rel="popup" class="small_photo" data-position-to="window" data-transition="fade"><img id="photo_item_'+i+'_'+item.index+'" alt="No Photo" '+(!hasPhoto(item.result.photos,i)?'class="transparent_img"':'') +' src="'+(hasPhoto(item.result.photos,i)?report.photos[item.result.photos[i]].local:getExmPhotoPath(item.result.exm_photos[i]))+'" width="100" height="75" style="margin:5px" onError="onLoadPhotoError(this,\''+getExmPhotoPath(item.result.exm_photos[i])+'\');"/></a>';
+						photo_album+='<input id="photo_item_'+i+'_'+item.index+'_id" type="hidden" value="'+item.result.exm_photos[i]+'"/><a id="item_'+i+'_'+item.index+'" style="float: left;" href="#popupBigPhotoPanel" data-rel="popup" class="small_photo" data-position-to="window" data-transition="none"><img id="photo_item_'+i+'_'+item.index+'" '+(!hasPhoto(item.result.photos,i)?'class="transparent_img"':'') +' alt="'+(hasPhoto(item.result.photos,i)?report.photos[item.result.photos[i]].local:getExmPhotoPath(item.result.exm_photos[i]))+'"  src="'+(hasPhoto(item.result.photos,i)?getDefaultPhoto():getSmallPhotoPath(item.result.exm_photos[i]))+'"width="100" height="75" style="margin:5px" onError="onLoadPhotoError(this,\''+item.result.exm_photos[i]+'\');"/></a>';
 							
 					}
 					photo_album+='</div></div>';
@@ -704,7 +756,8 @@
 			}
 			function onLoadPhotoError(element,path){
 				
-				element.src=path;
+				element.src=getSmallPhotoPath(path);
+				element.alt=getExmPhotoPath(path);
 				element.classList.add("transparent_img");
 				addNote(element.src+" cannot be loaded,replace with"+path);
 			}
@@ -763,7 +816,7 @@
 
 			function onSuccess(imageURI) {
 
-				
+			
 				moveFile(imageURI,currentCameraID,successCallback);
 			}
 
@@ -791,15 +844,19 @@
 
 			function successCallback(e){
 				// alert("Success. New Path: " + e.nativeURL);
-
-				$('#photo_'+currentCameraID).attr("src",e.nativeURL);
+				if(isShowPhoto=="s"){
+					$('#photo_'+currentCameraID).attr("src",getDefaultPhoto());
+				}else{
+					$('#photo_'+currentCameraID).attr("src",e.nativeURL);
+				}		
+				$('#photo_'+currentCameraID).attr("alt",e.nativeURL);
 				$('#bigPhoto').attr("src",e.nativeURL);
 				$('#photo_'+currentCameraID).removeClass('transparent_img');
-				navigator.camera.cleanup(succ,errorCallback);
+				//navigator.camera.cleanup(succ,errorCallback);
 				addNote("save photo to localstore successfully with path "+e.nativeURL);
 			}
 			function succ(e){
-				
+				addNote("clear temp store succ");
 			}
 			function errorCallback(e){
 				alert(e.code);
@@ -813,8 +870,9 @@
 
 				
 		         navigator.camera.getPicture(onSuccess, onFail, { quality: photo_quality_present,
-				destinationType: Camera.DestinationType.FILE_URI, encodingType: Camera.EncodingType.JPEG,targetWidth: 500,
- 					 targetHeight: 375,correctOrientation:true,saveToPhotoAlbum:true,sourceType:Camera.PictureSourceType.Camera});
+				destinationType: Camera.DestinationType.FILE_URI, encodingType: Camera.EncodingType.JPEG,
+  targetWidth: 400,
+  targetHeight: 300,correctOrientation:true,saveToPhotoAlbum:true,sourceType:Camera.PictureSourceType.Camera});
 
 		         addNote("capture form camera");
 		         //
@@ -824,8 +882,8 @@
 		        // allowing user to capture up to 2 images
 
 		         navigator.camera.getPicture(onSuccess, onFail, { quality: photo_quality_present,
-				destinationType: Camera.DestinationType.FILE_URI, encodingType: Camera.EncodingType.JPEG,targetWidth: 500,
- 					 targetHeight: 375,sourceType:Camera.PictureSourceType.SAVEDPHOTOALBUM});
+				destinationType: Camera.DestinationType.FILE_URI, encodingType: Camera.EncodingType.JPEG,targetWidth: 400,
+  targetHeight: 300,sourceType:Camera.PictureSourceType.SAVEDPHOTOALBUM});
 
 		         addNote("select form album");
 		         //
@@ -862,7 +920,12 @@
 		   function getExmPhotoPath(key){
 		   	return "eximages/"+key+".jpg";
 		   }
-		  
+		  function getSmallPhotoPath(key){
+		   	return "sphotos/"+key+".jpg";
+		   }
+		   function getDefaultPhoto(key){
+		   	return "images/tick.jpg";
+		   }
 		   function createRemark(remark,index){
 		   	 return '<div class=" ui-shadow ui-content">'+
 		   	 			(remark.ref!=""?'<span >'+remark.ref+'. '+remark.title+'</span>':'')+
@@ -912,10 +975,17 @@
 	
 		<div id="chimney_from"  data-role="page" >
 			 <div data-role="header" data-position="fixed"  >
-			 <a id="back" href="#" data-rel="popup" data-position-to="window" data-transition="pop"   class=" ui-btn  ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-left ui-icon-carat-l" data-localize="back" data-textonly="false" data-textvisible="true" data-msgtext="" data-inline="true">Back</a>
+			 <a id="back" href="#" data-rel="popup" data-position-to="window" data-transition="none"   class=" ui-btn  ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-left ui-icon-carat-l" data-localize="back" data-textonly="false" data-textvisible="true" data-msgtext="" data-inline="true">Back</a>
 	      
-			  <h1 id="title">Chimney System From</h1>
+			  <h1 style="text-align:left; margin-left:140px!important;" id="title">Chimney System From</h1>
+			  <div  class="ui-btn-right" data-theme="c"  data-role="controlgroup" data-type="horizontal" data-mini="true">
+					
+				</div>
 			   <div data-role="controlgroup" data-type="horizontal" class="ui-mini ui-btn-right">
+			   <input type="radio" name="ShowPhoto" id="radio-choice-d" value="s" checked="true">
+					<label for="radio-choice-d">精簡</label>
+					<input type="radio" name="ShowPhoto" id="radio-choice-e" value="o">
+					<label for="radio-choice-e">原圖</label>
 			<a id="remark_btn" href="#remark" data-ajax="false" data-transition="pop" class="ui-btn ui-btn-b ui-btn-inline ui-corner-all ui-btn-icon-right ui-icon-bullets" data-localize="maint_from.remark">Remark</a>
 					<a id="new_remark_count" class="remark_count ui-btn  ui-btn-b ui-btn-inline">2</a>
 			  		<a href="#popupSaveSuccessInfo" data-rel="popup" data-position-to="window" data-transition="pop" class="savebtn ui-btn ui-btn-b ui-btn-inline ui-mini ui-corner-all ui-btn-icon-right ui-icon-check" data-localize="save">Save</a>
@@ -950,7 +1020,7 @@
 				<div class="center-wrapper">
 					<a id="saveandback" href="#" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b"  data-localize="maint_from.yes">Yes</a>
 				
-					 <a id="no" href="maint_report.html" rel="external"  class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b" data-localize="maint_from.no" data-textonly="false" >No</a>
+					 <a id="no" href="#"  class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b" data-localize="maint_from.no" data-textonly="false" >No</a>
 					<a href="#" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b" data-rel="back" data-localize="maint_report.cancel">Cancel</a>
 				</div>
 			</div>
@@ -988,7 +1058,7 @@
 				
 				<div  style="float: right;" >
 				<input id="photo_camera_device_id" type="hidden"/>
-				 <a id="camera_device" class="small_photo" href="#popupBigPhotoPanel" data-rel="popup" data-position-to="window" data-transition="fade" ><img id="photo_camera_device" alt="no photo" class="transparent_img" src="eximages/device.png" width="100" height="70" style="margin:5px"/></a>
+				 <a id="camera_device" class="small_photo" href="#popupBigPhotoPanel" data-rel="popup" data-position-to="window" data-transition="none" ><img id="photo_camera_device" alt="no photo" class="transparent_img" src="eximages/device.png" width="100" height="70" style="margin:5px"/></a>
 				 </div>
 				 
 				 </div>

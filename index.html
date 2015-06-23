@@ -157,11 +157,12 @@
 				// alert(JSON.stringify(mReportQueue));
 				// alert(JSON.stringify(sReportQueue));
 				for(var index=mReportQueue.length-1;index>=0;index--){
+
 					$("#m_report_list").append(createReportItem(index,mReportQueue[index],mReportQueue.length));
 				}
 				
 				for(var index=sReportQueue.length-1;index>=0;index--){
-					$("#s_report_list").append(createReportItem(index,sReportQueue[index],mReportQueue.length));
+					$("#s_report_list").append(createReportItem(index,sReportQueue[index],sReportQueue.length));
 				}
 
 				$("#m_report_list").listview('refresh');

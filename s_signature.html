@@ -1,0 +1,330 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+	 <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; minimum-scale=1.0; user-scalable=0;" />
+    <title>Sketch Pad</title>
+   
+	<link rel="stylesheet" href="css/jquery.mobile.structure-1.4.3.min.css">
+  	<link rel="stylesheet" href="css/jquery.mobile.icons-1.4.3.min.css">
+  	  <link rel="stylesheet" href="css/fb-style.min.css" />
+	<script src="js/jquery.min.js"></script>
+	<script src="js/jquery.mobile-1.4.3.min.js"></script>
+	<script src="cordova.js"></script>
+	
+	<script src="js/modernizr.js"></script>
+	<script src="js/jSignature.min.noconflict.js"></script>
+
+    <style type="text/css">
+	  body {
+		margin:0px;
+		width:100%;
+		height:100%;
+		overflow:hidden;
+        /* prevent text selection on ui */
+        user-select: none;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        /* prevent scrolling in windows phone */
+        -ms-touch-action: none;
+	  }
+	 #content{
+
+		
+	 }
+	  .palette-case {
+		width:260px;
+		margin:auto;
+		text-align:center;
+	  }
+	  .palette-box {
+		float:left;
+		padding:2px 6px 2px 6px;
+	  }
+	  .palette {
+		border:2px solid #777;
+		height:36px;
+		width:36px;
+	  }
+	  .red{
+		background-color:#c22;
+	  }
+	  .center-wrapper{
+			text-align: center;
+		}
+	  .blue{
+		background-color:#22c;
+	  }
+	  .green{
+		background-color:#2c2;
+	  }
+	  .white{
+		background-color:#fff;
+	  }
+	  .black{
+		background-color:#000;
+		border:2px dashed #fff;
+	  }
+   		#signatureparent {
+		color:darkblue;
+		background-color:darkgrey;
+		
+		/*max-width:600px;*/
+		width: 1000px!important;
+	}
+	
+	/*This is the div within which the signature canvas is fitted*/
+	#signature {
+		border: 2px dotted black;
+		background-color:white;
+	}
+
+	/* Drawing the 'gripper' for touch-enabled devices */ 
+	html.touch #content {
+		float:left;
+		width:92%;
+	}
+	html.touch #scrollgrabber {
+		float:right;
+		width:4%;
+		margin-right:2%;
+		background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAAFCAAAAACh79lDAAAAAXNSR0IArs4c6QAAABJJREFUCB1jmMmQxjCT4T/DfwAPLgOXlrt3IwAAAABJRU5ErkJggg==)
+	}
+	html.borderradius #scrollgrabber {
+		border-radius: 1em;
+	}
+     
+    </style>
+    	<script src="js/jquery.localize.min.js"></script>
+
+    <script src="js/shared_data.js"></script>
+    <script src="js/report_app.js"></script>
+    <script src="js/moment.js"></script>
+	<script type="text/javascript">
+
+// Cordova is loaded and it is now safe to make calls Cordova methods
+
+	
+
+
+
+var d_locale_arr={"en":{
+						"repaired":"Repaired",
+						"normal":"Normal",
+						"item":"Item",
+						"result":"Result",
+						"wait":"Waiting",
+						"false":"Not Check",
+						"project":"Project",
+					    "report_cycle":"Report Cycle",
+					    "device_type":"Device Type",
+					    "device_id":"Device ID",
+					    "device_model":"Device Model",
+					    "remark":"Remarks",
+					    "datetime":"Date and time",
+					    "totaldevice":"Total Device",
+					    "sign":"Signature",
+					    "hint":"*Please click following row to preview the from"
+				},"cn":{
+						"repaired":"巳修復",
+						"item":"項目",
+						"result":"結果",
+						"normal":"正常",
+						"wait":"侍處理",
+						"false":"未檢查",
+						"project":"項目",
+					    "report_cycle":"報告周期",
+					    "device_type":"設備類型",
+					    "device_id":"編號",
+					    "device_model":"型號",
+					    "remark":"備註",
+					    "datetime":"日期時間",
+					    "totaldevice":"設備總數",
+					    "sign":"簽名",
+					    "hint":"*請點選以下列表預覽表單"
+
+				}}
+				var dataURLHash={};
+$(document).ready(function () {
+	
+	var dataURLHashStr=window.localStorage.getItem("dataURLHash");
+	if(dataURLHashStr){
+		dataURLHash =JSON.parse(dataURLHashStr); 
+	}
+	var currentFromIndex=-1;
+	// hide the accelerometer aka etch on/off button
+	currentLocale=window.localStorage.getItem("locale");
+	refreshUILocale(currentLocale);
+
+	var reportStr=	window.localStorage.getItem("currentSReport");
+	var report=JSON.parse(reportStr);
+	
+	// var $sigdiv = $("#signature").jSignature({'UndoButton':false});
+	 
+	// Call onDeviceReady when Cordova is loaded and talking with the native device
+	document.addEventListener("deviceready", function(e){
+		screen.lockOrientation('landscape');
+		
+	}, false);
+		openSign();
+
+		if(report.signature!=undefined && report.signature!=""){
+			$("#canvasImg").attr("src",dataURLHash[report.photos[report.signature].local].url);
+			$("#canvasImg").show();
+		}else{
+			$("#canvasImg").attr("src","");
+			$("#canvasImg").hide();
+		}
+	// setup a new canvas for drawing
+	
+	
+	// prevent footer to toggle on touch
+
+
+	// reset palette selection (css) and select the clicked color for canvas strokeStyle
+	// $(".palette").click(function(){
+	// 	$(".palette").css("border-color", "#777");
+	// 	$(".palette").css("border-style", "solid");
+	// 	$(this).css("border-color", "#fff");
+	// 	$(this).css("border-style", "dashed");
+	// 	color = $(this).css("background-color");
+		
+	// });
+	// link the new button with newCanvas() function
+	$("#sign_pop_btn").click(function() {
+		screen.lockOrientation('landscape');
+		openSign();
+	});
+    function openSign(){
+    		
+    		 $("html, body").animate({ scrollTop: 0 }, "fast");
+		 $("#signature").html("");
+ 		var $sigdiv = $("#signature").jSignature({'UndoButton':false});
+
+		//$sigdiv.jSignature("reset");
+		setTimeout(function(){$("#popupSignature").popup('open',{"positionTo":"window","transition":"pop"});}, 500);
+    }
+    // hide help popup when clicked anywhere on screen
+
+
+		
+
+	if (Modernizr.touch){
+		$('#scrollgrabber').height($('#content').height())		
+	}
+	
+	$("#cancel").click(function(){
+		   screen.lockOrientation('portrait');
+		   window.location.href="service_report.html";
+	});
+	$("#save_sign").click(function(){
+		 var dataURL = $("#signature").jSignature('getData', "default");
+	      $("#canvasImg").attr("src",dataURL);
+	      $("#canvasImg").show();
+	      var dataURLid=genDataURLID();
+	   
+	      dataURLHash[dataURLid]=creatDataURLRecord(dataURL,dataURLid,report.name_en);
+	      window.localStorage.setItem("dataURLHash", JSON.stringify(dataURLHash));	
+	      if(report.signature==undefined || report.signature==""){
+	      	var id =createNewPhotoRecord(dataURLid,"s_"+getTimeStr());
+	      	report.signature=id;
+
+	      }else{
+	      	 
+	      	if(report.photos[report.signature].local!=dataURLid){
+	      		 updatePhotoRecord(dataURLid,report.signature);
+	      	}
+	      }
+	      report.sign_at=moment().format("YYYY/MM/DD HH:mm:ss");
+	      saveSReport(report);
+	      screen.lockOrientation('portrait');
+	});
+	function genDataURLID(){
+		return "data_"+getTimeStr();
+	}
+	function creatDataURLRecord(url,id,from_id){
+		return { 
+			"id":id,
+			"from_id":from_id,
+			"url":url
+		};
+	}
+	function updatePhotoRecord(imgsrc,photoKey){
+			if(report.photos[photoKey].local!=imgsrc){
+  			report.photos[photoKey].local=imgsrc;
+  			report.photos[photoKey].state='s';
+  		}
+  	}
+	function createNewPhotoRecord(imgsrc,key){
+		var id =key;
+  		var photo ={};
+  		photo.id=id;
+  		photo.local=imgsrc;
+  		photo.state='s';
+  		report.photos[id]=photo;
+  		return id;
+	}
+	
+});	
+
+
+
+
+
+	</script>
+</head>
+<body>
+
+<div data-role="page" data-theme="a" id="previewFrom" class="my-page">
+	<div data-role="header" data-position="fixed" data-theme="b" >
+			 <a href="#" data-rel="back"  class="ui-btn  ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-left ui-icon-carat-l" data-localize="back">Back</a>
+	      
+			  <h1 id="title" data-localize="signature.previewFrom">Preview From</h1>
+			
+			  		
+	    	</div>
+	    	<div data-role="popup" id="popupSignature" data-overlay-theme="b" data-theme="b" data-dismissible="false" >
+
+			    <div role="main" >
+			      <div id="content" >
+			      	<div id="signatureparent">
+		
+						<div id="signature"></div></div>
+
+			      </div>
+			      
+			    </div>
+
+			     <!-- <div data-role="footer" data-theme="c" data-position="fixed"> -->
+						  <div class="center-wrapper">
+  
+			        <a id="save_sign" href="#" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b" data-rel="back" data-transition="flow" data-localize="save">Save</a>
+			        <a id="cancel" href="#" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b" data-rel="back" data-localize="cancel">Cancel</a>
+			        <!-- </div> -->
+				</div>
+			</div>
+
+	    	  <div data-role="content" data-iscroll="true" class="ui-content">
+					<div id="from_summary" class="ui-body ui-body-a ui-corner-all">
+
+				 	
+				  </div>
+			    </div>
+<div data-role="footer" data-theme="c" data-position="fixed">
+  						  
+						<div class="ui-bar">
+									
+									
+								</div>
+								<h1></h1>
+						 <a id="sign_pop_btn" data-theme="b" class="ui-btn-right" data-localize="sign">Sign</a>
+						 <img  id="canvasImg" class="ui-btn-left"   height="60" /></div>
+					   
+	<!--   -->
+		
+
+   
+</div>
+</body>
+</html>
