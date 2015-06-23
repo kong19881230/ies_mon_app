@@ -186,6 +186,7 @@ currentLocale=window.localStorage.getItem("locale");
 							validRemarks.push(remarks[i]);
 						}
 					}
+					var details=report.details;
 					details.situation=validRemarks;
 					details.problem_reported=$('#problem_reported').val();
 					details.is_system_down=$("input:radio[name='is_system_down']:checked").val();
@@ -257,7 +258,8 @@ currentLocale=window.localStorage.getItem("locale");
 								report=JSON.parse(report_str); 
 						    	report.status="uploaded";
 						    	syncSReport(report);
-
+						    	alert(report_str);
+						    	alert(report.details.id);
 						    	currentUploadIndex=1;
 						    	totalUpload=getTotalUpdateCount();
 						    	
